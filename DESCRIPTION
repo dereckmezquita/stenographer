@@ -1,0 +1,30 @@
+Package: rlogger
+Type: Package
+Title: Flexible and Customisable Logging System for R
+Version: 0.0.1
+URL: https://github.com/dereckmezquita/R-Logger
+Authors@R: 
+    person(given = "Dereck",
+           family = "Mezquita",
+           role = c("aut", "cre"),
+           email = "dereck@mezquita.io",
+           comment = c(ORCID = "0000-0002-9307-6762"))
+Maintainer: Dereck Mezquita <dereck@mezquita.io>
+Description: A flexible logging system for R that supports multiple log levels, custom output functions, and file logging. It provides an R6 class for easy integration into existing projects and supports colored console output.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+VignetteBuilder: knitr
+RoxygenNote: 7.3.2
+Depends: R (>= 4.1.0)
+Imports:
+    R6,
+    rlang,
+    jsonlite,
+    fs,
+    crayon
+Suggests:
+    testthat (>= 3.0.0),
+    knitr,
+    rmarkdown,
+    box

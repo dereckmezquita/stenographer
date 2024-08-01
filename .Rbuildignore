@@ -1,0 +1,11 @@
+.github
+.lintr
+README.Rmd
+TODO.md
+^.*\.Rproj$
+^\.Rproj\.user$
+^renv$
+^renv\.lock$
+dev-docs/
+dev/
+research/
