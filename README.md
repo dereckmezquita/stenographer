@@ -37,11 +37,11 @@ log <- Logger$new()
 
 # Log some messages
 log$info("This is an informational message")
-#> 2024-08-03T11:18:38.178Z INFO    This is an informational message
+#> 2024-08-03T11:19:17.829Z INFO    This is an informational message
 log$warn("This is a warning")
-#> 2024-08-03T11:18:38.185Z WARNING This is a warning
+#> 2024-08-03T11:19:17.835Z WARNING This is a warning
 log$error("This is an error")
-#> 2024-08-03T11:18:38.202Z ERROR   This is an error
+#> 2024-08-03T11:19:17.849Z ERROR   This is an error
 ```
 
 ## Features
@@ -62,17 +62,17 @@ custom_log <- Logger$new(
 
 custom_log$info("This won't be logged")
 custom_log$warn("This will be logged to console and file")
-#> 2024-08-03T11:18:38.333Z WARNING This will be logged to console and file
+#> 2024-08-03T11:19:17.993Z WARNING This will be logged to console and file
 custom_log$error("This is an error message")
-#> 2024-08-03T11:18:38.343Z ERROR   This is an error message
+#> 2024-08-03T11:19:18.004Z ERROR   This is an error message
 ```
 
 Logs are written to the specified file as JSON objects:
 
 ``` r
 cat(readLines(log_file), sep = "\n")
-#> {"datetime":"2024-08-03T11:18:38.333Z","level":"WARNING","msg":"This will be logged to console and file"} 
-#> {"datetime":"2024-08-03T11:18:38.343Z","level":"ERROR","msg":"This is an error message"}
+#> {"datetime":"2024-08-03T11:19:17.993Z","level":"WARNING","msg":"This will be logged to console and file"} 
+#> {"datetime":"2024-08-03T11:19:18.004Z","level":"ERROR","msg":"This is an error message"}
 ```
 
 ### Helper Functions
@@ -102,7 +102,7 @@ if (nrow(na_coords) > 0) {
         )
     )
 }
-#> 2024-08-03T11:18:38.356Z WARNING NA values found in the dataset
+#> 2024-08-03T11:19:18.018Z WARNING NA values found in the dataset
 #> Data:
 #> {
 #>   "na_locations": [
@@ -156,7 +156,7 @@ process_data <- function(df) {
 # Test the function with problematic data
 df <- data.frame(a = c(1, 2, 3), b = c(0, 2, 0))
 process_data(df)
-#> 2024-08-03T11:18:38.366Z ERROR   Division by zero occurred
+#> 2024-08-03T11:19:18.030Z ERROR   Division by zero occurred
 #> Data:
 #> {
 #>   "infinite_values": [
@@ -171,7 +171,7 @@ process_data(df)
 #>   ],
 #>   "dataset_preview": "  a b\n1 1 0\n2 2 2\n3 3 0"
 #> } 
-#> 2024-08-03T11:18:38.382Z ERROR   An error occurred while processing data: Division by zero error
+#> 2024-08-03T11:19:18.049Z ERROR   An error occurred while processing data: Division by zero error
 #> Data:
 #> {
 #>   "dataset_preview": "  a b\n1 1 0\n2 2 2\n3 3 0"
@@ -225,12 +225,3 @@ Contributions to Logger are welcome! Please refer to the
 
 Logger is released under the MIT License. See the [LICENSE](LICENSE)
 file for details.
-
-## More Information
-
-For more detailed information and examples, please refer to the package
-vignette:
-
-``` r
-vignette("getting-started-with-Logger", package = "Logger")
-```

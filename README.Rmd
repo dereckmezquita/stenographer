@@ -175,11 +175,3 @@ Contributions to Logger are welcome! Please refer to the [CONTRIBUTING.md](CONTR
 ## License
 
 Logger is released under the MIT License. See the [LICENSE](LICENSE) file for details.
-
-## More Information
-
-For more detailed information and examples, please refer to the package vignette:
-
-```{r, eval = FALSE}
-vignette("getting-started-with-Logger", package = "Logger")
-```
