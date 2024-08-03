@@ -630,26 +630,33 @@ with:</p>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Log some messages</span></span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>log<span class="sc">$</span><span class="fu">info</span>(<span class="st">&quot;This is an informational message&quot;</span>)</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2024-08-03T10:41:15.501Z INFO    This is an informational message</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2024-08-03T10:43:00.755Z INFO    This is an informational message</span></span>
 <span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>log<span class="sc">$</span><span class="fu">warn</span>(<span class="st">&quot;This is a warning&quot;</span>)</span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2024-08-03T10:41:15.512Z </span><span class="al">WARNING</span><span class="co"> This is a warning</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2024-08-03T10:43:00.760Z </span><span class="al">WARNING</span><span class="co"> This is a warning</span></span>
 <span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>log<span class="sc">$</span><span class="fu">error</span>(<span class="st">&quot;This is an error&quot;</span>)</span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2024-08-03T10:41:15.539Z ERROR   This is an error</span></span></code></pre></div>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2024-08-03T10:43:00.783Z ERROR   This is an error</span></span></code></pre></div>
 <h2 id="features">Features</h2>
 <h3 id="customisable-logging">Customisable Logging</h3>
 <p>You can customise the logger by specifying the minimum log level,
 output file, and custom print function:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>custom_log <span class="ot">&lt;-</span> Logger<span class="sc">$</span><span class="fu">new</span>(</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">level =</span> LogLevel<span class="sc">$</span>WARNING,</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">file_path =</span> <span class="fu">tempfile</span>(<span class="st">&quot;app_log&quot;</span>),</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">print_fn =</span> message</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>custom_log<span class="sc">$</span><span class="fu">info</span>(<span class="st">&quot;This won&#39;t be logged&quot;</span>)</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>custom_log<span class="sc">$</span><span class="fu">warn</span>(<span class="st">&quot;This will be logged to console and file&quot;</span>)</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2024-08-03T10:41:15.756Z </span><span class="al">WARNING</span><span class="co"> This will be logged to console and file</span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>custom_log<span class="sc">$</span><span class="fu">error</span>(<span class="st">&quot;This is an error message&quot;</span>)</span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2024-08-03T10:41:15.774Z ERROR   This is an error message</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>log_file <span class="ot">&lt;-</span> <span class="fu">tempfile</span>(<span class="st">&quot;app_log&quot;</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>custom_log <span class="ot">&lt;-</span> Logger<span class="sc">$</span><span class="fu">new</span>(</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">level =</span> LogLevel<span class="sc">$</span>WARNING,</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">file_path =</span> log_file,</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">print_fn =</span> message</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>custom_log<span class="sc">$</span><span class="fu">info</span>(<span class="st">&quot;This won&#39;t be logged&quot;</span>)</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>custom_log<span class="sc">$</span><span class="fu">warn</span>(<span class="st">&quot;This will be logged to console and file&quot;</span>)</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2024-08-03T10:43:00.972Z </span><span class="al">WARNING</span><span class="co"> This will be logged to console and file</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>custom_log<span class="sc">$</span><span class="fu">error</span>(<span class="st">&quot;This is an error message&quot;</span>)</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2024-08-03T10:43:00.987Z ERROR   This is an error message</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Logs are written to the specified file as JSON</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">readLines</span>(log_file), <span class="at">sep =</span> <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; {&quot;datetime&quot;:&quot;2024-08-03T10:43:00.972Z&quot;,&quot;level&quot;:&quot;WARNING&quot;,&quot;msg&quot;:&quot;This will be logged to console and file&quot;} </span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; {&quot;datetime&quot;:&quot;2024-08-03T10:43:00.987Z&quot;,&quot;level&quot;:&quot;ERROR&quot;,&quot;msg&quot;:&quot;This is an error message&quot;}</span></span></code></pre></div>
 <h3 id="helper-functions">Helper Functions</h3>
 <p>Logger includes helper functions like <code>valueCoordinates</code>
 and <code>tableToString</code> to provide detailed context in log
@@ -675,7 +682,7 @@ messages:</p>
 <span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>        )</span>
 <span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>    )</span>
 <span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2024-08-03T10:41:15.788Z </span><span class="al">WARNING</span><span class="co"> NA values found in the dataset</span></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2024-08-03T10:43:00.999Z </span><span class="al">WARNING</span><span class="co"> NA values found in the dataset</span></span>
 <span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Data:</span></span>
 <span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; {</span></span>
 <span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &quot;na_locations&quot;: [</span></span>
@@ -724,7 +731,7 @@ messages:</p>
 <span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Test the function with problematic data</span></span>
 <span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">a =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>), <span class="at">b =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">2</span>, <span class="dv">0</span>))</span>
 <span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a><span class="fu">process_data</span>(df)</span>
-<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2024-08-03T10:41:15.804Z ERROR   Division by zero occurred</span></span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2024-08-03T10:43:01.011Z ERROR   Division by zero occurred</span></span>
 <span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Data:</span></span>
 <span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; {</span></span>
 <span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &quot;infinite_values&quot;: [</span></span>
@@ -739,7 +746,7 @@ messages:</p>
 <span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ],</span></span>
 <span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &quot;dataset_preview&quot;: &quot;  a b\n1 1 0\n2 2 2\n3 3 0&quot;</span></span>
 <span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; } </span></span>
-<span id="cb5-44"><a href="#cb5-44" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2024-08-03T10:41:15.832Z ERROR   An error occurred while processing data: Division by zero error</span></span>
+<span id="cb5-44"><a href="#cb5-44" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2024-08-03T10:43:01.036Z ERROR   An error occurred while processing data: Division by zero error</span></span>
 <span id="cb5-45"><a href="#cb5-45" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Data:</span></span>
 <span id="cb5-46"><a href="#cb5-46" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; {</span></span>
 <span id="cb5-47"><a href="#cb5-47" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &quot;dataset_preview&quot;: &quot;  a b\n1 1 0\n2 2 2\n3 3 0&quot;</span></span>
