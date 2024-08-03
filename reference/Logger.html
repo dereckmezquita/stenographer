@@ -63,8 +63,7 @@
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/Logger.html">Logger</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
 <span>  level <span class="op">=</span> <span class="va">LogLevel</span><span class="op">$</span><span class="va">INFO</span>,</span>
-<span>  save_to_file <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  file_path <span class="op">=</span> <span class="st">""</span>,</span>
+<span>  file_path <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  print_fn <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"\n"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
@@ -75,12 +74,8 @@
 <dd><p>The minimum log level to output. Default is LogLevel$INFO.</p></dd>
 
 
-<dt><code>save_to_file</code></dt>
-<dd><p>Logical; whether to save logs to a file. Default is FALSE.</p></dd>
-
-
 <dt><code>file_path</code></dt>
-<dd><p>Character; path to the log file if save_to_file is TRUE.</p></dd>
+<dd><p>Character; the path to a file to save log entries to. Default is NULL.</p></dd>
 
 
 <dt><code>print_fn</code></dt>
@@ -96,7 +91,7 @@ Should accept a single character string as input. Default uses cat with a newlin
 </div>
 <div class="section">
 <h4 id="examples">Examples<a class="anchor" aria-label="anchor" href="#examples"></a></h4>
-<p></p><div class="r example copy"><div class="sourceCode"><pre><code><span><span class="va">logger</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/Logger.html">Logger</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>level <span class="op">=</span> <span class="va">LogLevel</span><span class="op">$</span><span class="va">WARNING</span>, save_to_file <span class="op">=</span> <span class="cn">TRUE</span>, file_path <span class="op">=</span> <span class="st">"log.txt"</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code><span><span class="va">logger</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/Logger.html">Logger</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>level <span class="op">=</span> <span class="va">LogLevel</span><span class="op">$</span><span class="va">WARNING</span>, file_path <span class="op">=</span> <span class="st">"log.txt"</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 
@@ -229,33 +224,32 @@ Should accept a single character string as input. Default uses cat with a newlin
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Create a basic logger</span></span></span>
 <span class="r-in"><span><span class="va">logger</span> <span class="op">&lt;-</span> <span class="va">Logger</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">logger</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"This is an info message"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #555555;">2024-08-03T13:50:02.827Z</span> <span style="color: #0000BB;">INFO   </span> <span style="color: #BBBBBB;">This is an info message</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #555555;">2024-08-03T15:24:17.286Z</span> <span style="color: #0000BB;">INFO   </span> <span style="color: #BBBBBB;">This is an info message</span> </span>
 <span class="r-in"><span><span class="va">logger</span><span class="op">$</span><span class="fu">warn</span><span class="op">(</span><span class="st">"This is a warning"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #555555;">2024-08-03T13:50:02.832Z</span> <span style="color: #BBBB00;">WARNING</span> <span style="color: #BBBBBB;">This is a warning</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #555555;">2024-08-03T15:24:17.290Z</span> <span style="color: #BBBB00;">WARNING</span> <span style="color: #BBBBBB;">This is a warning</span> </span>
 <span class="r-in"><span><span class="va">logger</span><span class="op">$</span><span class="fu">error</span><span class="op">(</span><span class="st">"This is an error"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #555555;">2024-08-03T13:50:02.841Z</span> <span style="color: #BB0000;">ERROR  </span> <span style="color: #BBBBBB;">This is an error</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #555555;">2024-08-03T15:24:17.303Z</span> <span style="color: #BB0000;">ERROR  </span> <span style="color: #BBBBBB;">This is an error</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Create a logger with custom settings</span></span></span>
 <span class="r-in"><span><span class="va">custom_logger</span> <span class="op">&lt;-</span> <span class="va">Logger</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  level <span class="op">=</span> <span class="va">LogLevel</span><span class="op">$</span><span class="va">WARNING</span>,</span></span>
-<span class="r-in"><span>  save_to_file <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
 <span class="r-in"><span>  file_path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span><span class="st">"log_"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  print_fn <span class="op">=</span> <span class="va">message</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">custom_logger</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"This won't be logged"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">custom_logger</span><span class="op">$</span><span class="fu">warn</span><span class="op">(</span><span class="st">"This will be logged"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #555555;">2024-08-03T13:50:02.846Z</span> <span style="color: #BBBB00;">WARNING</span> <span style="color: #BBBBBB;">This will be logged</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #555555;">2024-08-03T15:24:17.308Z</span> <span style="color: #BBBB00;">WARNING</span> <span style="color: #BBBBBB;">This will be logged</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Change log level</span></span></span>
 <span class="r-in"><span><span class="va">custom_logger</span><span class="op">$</span><span class="fu">set_level</span><span class="op">(</span><span class="va">LogLevel</span><span class="op">$</span><span class="va">INFO</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">custom_logger</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"Now this will be logged"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #555555;">2024-08-03T13:50:02.855Z</span> <span style="color: #0000BB;">INFO   </span> <span style="color: #BBBBBB;">Now this will be logged</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #555555;">2024-08-03T15:24:17.310Z</span> <span style="color: #0000BB;">INFO   </span> <span style="color: #BBBBBB;">Now this will be logged</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
 <span class="r-in"><span><span class="co">## Method `Logger$new`</span></span></span>
 <span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">logger</span> <span class="op">&lt;-</span> <span class="va">Logger</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>level <span class="op">=</span> <span class="va">LogLevel</span><span class="op">$</span><span class="va">WARNING</span>, save_to_file <span class="op">=</span> <span class="cn">TRUE</span>, file_path <span class="op">=</span> <span class="st">"log.txt"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">logger</span> <span class="op">&lt;-</span> <span class="va">Logger</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>level <span class="op">=</span> <span class="va">LogLevel</span><span class="op">$</span><span class="va">WARNING</span>, file_path <span class="op">=</span> <span class="st">"log.txt"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
 <span class="r-in"><span><span class="co">## Method `Logger$set_level`</span></span></span>
@@ -270,7 +264,7 @@ Should accept a single character string as input. Default uses cat with a newlin
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">logger</span> <span class="op">&lt;-</span> <span class="va">Logger</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">logger</span><span class="op">$</span><span class="fu">error</span><span class="op">(</span><span class="st">"An error occurred"</span>, data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>, error <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/conditions.html" class="external-link">simpleError</a></span><span class="op">(</span><span class="st">"Oops!"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #555555;">2024-08-03T13:50:02.861Z</span> <span style="color: #BB0000;">ERROR  </span> <span style="color: #BBBBBB;">An error occurred</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #555555;">2024-08-03T15:24:17.316Z</span> <span style="color: #BB0000;">ERROR  </span> <span style="color: #BBBBBB;">An error occurred</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">Data:</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> {</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   "x": 1</span>
@@ -288,7 +282,7 @@ Should accept a single character string as input. Default uses cat with a newlin
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">logger</span> <span class="op">&lt;-</span> <span class="va">Logger</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">logger</span><span class="op">$</span><span class="fu">warn</span><span class="op">(</span><span class="st">"This is a warning"</span>, data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>reason <span class="op">=</span> <span class="st">"example"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #555555;">2024-08-03T13:50:02.864Z</span> <span style="color: #BBBB00;">WARNING</span> <span style="color: #BBBBBB;">This is a warning</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #555555;">2024-08-03T15:24:17.319Z</span> <span style="color: #BBBB00;">WARNING</span> <span style="color: #BBBBBB;">This is a warning</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">Data:</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> {</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   "reason": "example"</span>
@@ -300,7 +294,7 @@ Should accept a single character string as input. Default uses cat with a newlin
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">logger</span> <span class="op">&lt;-</span> <span class="va">Logger</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">logger</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"Operation completed successfully"</span>, data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>duration <span class="op">=</span> <span class="fl">5.2</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #555555;">2024-08-03T13:50:02.866Z</span> <span style="color: #0000BB;">INFO   </span> <span style="color: #BBBBBB;">Operation completed successfully</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #555555;">2024-08-03T15:24:17.321Z</span> <span style="color: #0000BB;">INFO   </span> <span style="color: #BBBBBB;">Operation completed successfully</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">Data:</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> {</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   "duration": 5.2</span>
