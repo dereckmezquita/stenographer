@@ -56,9 +56,206 @@
 </nav><div class="container template-home">
 <div class="row">
   <main id="main" class="col-md-9"><div class="section level1">
-<div class="page-header"><h1 id="r-logger">R-Logger<a class="anchor" aria-label="anchor" href="#r-logger"></a>
+<div class="page-header"><h1 id="logger-">Logger <a href="https://dereckmezquita.github.io/R-Logger"></a>
+<a class="anchor" aria-label="anchor" href="#logger-"></a>
 </h1></div>
-<p>Simple lightweight logger class in R.</p>
+<!-- badges: start -->
+
+<p>Logger is a flexible and powerful logging system for R applications. It provides a <code>Logger</code> class for creating customisable loggers, as well as helper functions for debugging and error reporting.</p>
+<div class="section level2">
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h2>
+<p>You can install Logger from <a href="https://github.com/" class="external-link">GitHub</a> with:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># install.packages("remotes")</span></span>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"Logger"</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="basic-usage">Basic Usage<a class="anchor" aria-label="anchor" href="#basic-usage"></a>
+</h2>
+<p>Here’s a quick example of how to use Logger:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">box</span><span class="fu">::</span><span class="fu"><a href="http://klmr.me/box/reference/use.html" class="external-link">use</a></span><span class="op">(</span><span class="va">Logger</span><span class="op">[</span><span class="va">Logger</span>, <span class="va">LogLevel</span><span class="op">]</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Create a basic logger</span></span>
+<span><span class="va">log</span> <span class="op">&lt;-</span> <span class="va"><a href="reference/Logger.html">Logger</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Log some messages</span></span>
+<span><span class="va">log</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"This is an informational message"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; 2024-08-03T10:41:15.501Z INFO    This is an informational message</span></span>
+<span><span class="va">log</span><span class="op">$</span><span class="fu">warn</span><span class="op">(</span><span class="st">"This is a warning"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; 2024-08-03T10:41:15.512Z WARNING This is a warning</span></span>
+<span><span class="va">log</span><span class="op">$</span><span class="fu">error</span><span class="op">(</span><span class="st">"This is an error"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; 2024-08-03T10:41:15.539Z ERROR   This is an error</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="features">Features<a class="anchor" aria-label="anchor" href="#features"></a>
+</h2>
+<div class="section level3">
+<h3 id="customisable-logging">Customisable Logging<a class="anchor" aria-label="anchor" href="#customisable-logging"></a>
+</h3>
+<p>You can customise the logger by specifying the minimum log level, output file, and custom print function:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">custom_log</span> <span class="op">&lt;-</span> <span class="va"><a href="reference/Logger.html">Logger</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
+<span>    level <span class="op">=</span> <span class="va">LogLevel</span><span class="op">$</span><span class="va">WARNING</span>,</span>
+<span>    file_path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span><span class="st">"app_log"</span><span class="op">)</span>,</span>
+<span>    print_fn <span class="op">=</span> <span class="va">message</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">custom_log</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"This won't be logged"</span><span class="op">)</span></span>
+<span><span class="va">custom_log</span><span class="op">$</span><span class="fu">warn</span><span class="op">(</span><span class="st">"This will be logged to console and file"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; 2024-08-03T10:41:15.756Z WARNING This will be logged to console and file</span></span>
+<span><span class="va">custom_log</span><span class="op">$</span><span class="fu">error</span><span class="op">(</span><span class="st">"This is an error message"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; 2024-08-03T10:41:15.774Z ERROR   This is an error message</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="helper-functions">Helper Functions<a class="anchor" aria-label="anchor" href="#helper-functions"></a>
+</h3>
+<p>Logger includes helper functions like <code>valueCoordinates</code> and <code>tableToString</code> to provide detailed context in log messages:</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">box</span><span class="fu">::</span><span class="fu"><a href="http://klmr.me/box/reference/use.html" class="external-link">use</a></span><span class="op">(</span><span class="va">Logger</span><span class="op">[</span><span class="va">valueCoordinates</span>, <span class="va">tableToString</span><span class="op">]</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Create a sample dataset with some issues</span></span>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>    a <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="cn">NA</span>, <span class="fl">3</span>, <span class="fl">4</span>, <span class="fl">5</span><span class="op">)</span>,</span>
+<span>    b <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">4</span>, <span class="cn">NA</span>, <span class="fl">8</span>, <span class="fl">10</span><span class="op">)</span>,</span>
+<span>    c <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">6</span>, <span class="fl">9</span>, <span class="cn">NA</span>, <span class="fl">15</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Find coordinates of NA values</span></span>
+<span><span class="va">na_coords</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/valueCoordinates.html">valueCoordinates</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span>
+<span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">na_coords</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="va">log</span><span class="op">$</span><span class="fu">warn</span><span class="op">(</span></span>
+<span>        <span class="st">"NA values found in the dataset"</span>,</span>
+<span>        data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>            na_locations <span class="op">=</span> <span class="va">na_coords</span>,</span>
+<span>            dataset_preview <span class="op">=</span> <span class="fu"><a href="reference/tableToString.html">tableToString</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span>
+<span>        <span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="co">#&gt; 2024-08-03T10:41:15.788Z WARNING NA values found in the dataset</span></span>
+<span><span class="co">#&gt; Data:</span></span>
+<span><span class="co">#&gt; {</span></span>
+<span><span class="co">#&gt;   "na_locations": [</span></span>
+<span><span class="co">#&gt;     {</span></span>
+<span><span class="co">#&gt;       "column": 1,</span></span>
+<span><span class="co">#&gt;       "row": 2</span></span>
+<span><span class="co">#&gt;     },</span></span>
+<span><span class="co">#&gt;     {</span></span>
+<span><span class="co">#&gt;       "column": 2,</span></span>
+<span><span class="co">#&gt;       "row": 3</span></span>
+<span><span class="co">#&gt;     },</span></span>
+<span><span class="co">#&gt;     {</span></span>
+<span><span class="co">#&gt;       "column": 3,</span></span>
+<span><span class="co">#&gt;       "row": 4</span></span>
+<span><span class="co">#&gt;     }</span></span>
+<span><span class="co">#&gt;   ],</span></span>
+<span><span class="co">#&gt;   "dataset_preview": "   a  b  c\n1  1  2  3\n2 NA  4  6\n3  3 NA  9\n4  4  8 NA\n5  5 10 15"</span></span>
+<span><span class="co">#&gt; }</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="error-logging-with-context">Error Logging with Context<a class="anchor" aria-label="anchor" href="#error-logging-with-context"></a>
+</h3>
+<p>Logger makes it easy to log errors with context:</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">process_data</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">df</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="kw"><a href="https://rdrr.io/r/base/conditions.html" class="external-link">tryCatch</a></span><span class="op">(</span><span class="op">{</span></span>
+<span>        <span class="va">result</span> <span class="op">&lt;-</span> <span class="va">df</span><span class="op">$</span><span class="va">a</span> <span class="op">/</span> <span class="va">df</span><span class="op">$</span><span class="va">b</span></span>
+<span>        <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/any.html" class="external-link">any</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/is.finite.html" class="external-link">is.infinite</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>            <span class="va">inf_coords</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/valueCoordinates.html">valueCoordinates</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span>, <span class="cn">Inf</span><span class="op">)</span></span>
+<span>            <span class="va">log</span><span class="op">$</span><span class="fu">error</span><span class="op">(</span></span>
+<span>                <span class="st">"Division by zero occurred"</span>,</span>
+<span>                data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>                    infinite_values <span class="op">=</span> <span class="va">inf_coords</span>,</span>
+<span>                    dataset_preview <span class="op">=</span> <span class="fu"><a href="reference/tableToString.html">tableToString</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span>
+<span>                <span class="op">)</span></span>
+<span>            <span class="op">)</span></span>
+<span>            <span class="kw"><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop</a></span><span class="op">(</span><span class="st">"Division by zero error"</span><span class="op">)</span></span>
+<span>        <span class="op">}</span></span>
+<span>        <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span></span>
+<span>    <span class="op">}</span>, error <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">e</span><span class="op">)</span> <span class="op">{</span></span>
+<span>        <span class="va">log</span><span class="op">$</span><span class="fu">error</span><span class="op">(</span></span>
+<span>            <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"An error occurred while processing data:"</span>, <span class="va">e</span><span class="op">$</span><span class="va">message</span><span class="op">)</span>,</span>
+<span>            data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>dataset_preview <span class="op">=</span> <span class="fu"><a href="reference/tableToString.html">tableToString</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>            error <span class="op">=</span> <span class="va">e</span></span>
+<span>        <span class="op">)</span></span>
+<span>        <span class="kw"><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop</a></span><span class="op">(</span><span class="va">e</span><span class="op">)</span></span>
+<span>    <span class="op">}</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="co"># Test the function with problematic data</span></span>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span>, b <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">2</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu">process_data</span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span>
+<span><span class="co">#&gt; 2024-08-03T10:41:15.804Z ERROR   Division by zero occurred</span></span>
+<span><span class="co">#&gt; Data:</span></span>
+<span><span class="co">#&gt; {</span></span>
+<span><span class="co">#&gt;   "infinite_values": [</span></span>
+<span><span class="co">#&gt;     {</span></span>
+<span><span class="co">#&gt;       "column": 1,</span></span>
+<span><span class="co">#&gt;       "row": 1</span></span>
+<span><span class="co">#&gt;     },</span></span>
+<span><span class="co">#&gt;     {</span></span>
+<span><span class="co">#&gt;       "column": 1,</span></span>
+<span><span class="co">#&gt;       "row": 3</span></span>
+<span><span class="co">#&gt;     }</span></span>
+<span><span class="co">#&gt;   ],</span></span>
+<span><span class="co">#&gt;   "dataset_preview": "  a b\n1 1 0\n2 2 2\n3 3 0"</span></span>
+<span><span class="co">#&gt; } </span></span>
+<span><span class="co">#&gt; 2024-08-03T10:41:15.832Z ERROR   An error occurred while processing data: Division by zero error</span></span>
+<span><span class="co">#&gt; Data:</span></span>
+<span><span class="co">#&gt; {</span></span>
+<span><span class="co">#&gt;   "dataset_preview": "  a b\n1 1 0\n2 2 2\n3 3 0"</span></span>
+<span><span class="co">#&gt; }</span></span>
+<span><span class="co">#&gt; Error:</span></span>
+<span><span class="co">#&gt; {</span></span>
+<span><span class="co">#&gt;   "name": "simpleError",</span></span>
+<span><span class="co">#&gt;   "message": "Division by zero error",</span></span>
+<span><span class="co">#&gt;   "call": "doTryCatch(return(expr), name, parentenv, handler)"</span></span>
+<span><span class="co">#&gt; }</span></span>
+<span><span class="co">#&gt; Error in doTryCatch(return(expr), name, parentenv, handler): Division by zero error</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="parallel-processing-support">Parallel Processing Support<a class="anchor" aria-label="anchor" href="#parallel-processing-support"></a>
+</h3>
+<p>Logger provides support for logging in parallel environments:</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">box</span><span class="fu">::</span><span class="fu"><a href="http://klmr.me/box/reference/use.html" class="external-link">use</a></span><span class="op">(</span><span class="va">future</span><span class="op">)</span></span>
+<span><span class="fu">box</span><span class="fu">::</span><span class="fu"><a href="http://klmr.me/box/reference/use.html" class="external-link">use</a></span><span class="op">(</span><span class="va">future.apply</span><span class="op">[</span><span class="va">future_lapply</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="fu">box</span><span class="fu">::</span><span class="fu"><a href="http://klmr.me/box/reference/use.html" class="external-link">use</a></span><span class="op">(</span><span class="va">Logger</span><span class="op">[</span><span class="va">messageParallel</span><span class="op">]</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">log</span> <span class="op">&lt;-</span> <span class="va"><a href="reference/Logger.html">Logger</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>print_fn <span class="op">=</span> <span class="va">messageParallel</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">future</span><span class="fu">::</span><span class="fu"><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan</a></span><span class="op">(</span><span class="fu">future</span><span class="fu">::</span><span class="va"><a href="https://future.futureverse.org/reference/multisession.html" class="external-link">multisession</a></span>, workers <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu">future_lapply</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="kw">function</span><span class="op">(</span><span class="va">i</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="fu"><a href="reference/messageParallel.html">messageParallel</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"Processing item %d"</span>, <span class="va">i</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="kw">if</span> <span class="op">(</span><span class="va">i</span> <span class="op">==</span> <span class="fl">3</span><span class="op">)</span> <span class="op">{</span></span>
+<span>        <span class="va">log</span><span class="op">$</span><span class="fu">warn</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"Warning for item %d"</span>, <span class="va">i</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="op">}</span></span>
+<span>    <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="va">i</span> <span class="op">*</span> <span class="fl">2</span><span class="op">)</span></span>
+<span><span class="op">}</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">future</span><span class="fu">::</span><span class="fu"><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan</a></span><span class="op">(</span><span class="fu">future</span><span class="fu">::</span><span class="va"><a href="https://future.futureverse.org/reference/sequential.html" class="external-link">sequential</a></span><span class="op">)</span></span></code></pre></div>
+</div>
+</div>
+<div class="section level2">
+<h2 id="contributing">Contributing<a class="anchor" aria-label="anchor" href="#contributing"></a>
+</h2>
+<p>Contributions to Logger are welcome! Please refer to the <a href="CONTRIBUTING.html">CONTRIBUTING.md</a> file for guidelines.</p>
+</div>
+<div class="section level2">
+<h2 id="license">License<a class="anchor" aria-label="anchor" href="#license"></a>
+</h2>
+<p>Logger is released under the MIT License. See the <a href="LICENSE">LICENSE</a> file for details.</p>
+</div>
+<div class="section level2">
+<h2 id="more-information">More Information<a class="anchor" aria-label="anchor" href="#more-information"></a>
+</h2>
+<p>For more detailed information and examples, please refer to the package vignette:</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/vignette.html" class="external-link">vignette</a></span><span class="op">(</span><span class="st">"getting-started-with-Logger"</span>, package <span class="op">=</span> <span class="st">"Logger"</span><span class="op">)</span></span></code></pre></div>
+</div>
 </div>
   </main><aside class="col-md-3"><div class="links">
 <h2 data-toc-skip>Links</h2>
@@ -92,7 +289,13 @@
 </ul>
 </div>
 
-
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
+<ul class="list-unstyled">
+<li><a href="https://www.tidyverse.org/lifecycle/#experimental" class="external-link"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="Lifecycle: experimental"></a></li>
+<li><a href="https://travis-ci.org/dereckmezquita/kucoin" class="external-link"><img src="https://travis-ci.org/dereckmezquita/kucoin.svg?branch=master" alt="Travis build status"></a></li>
+</ul>
+</div>
 
   </aside>
 </div>
