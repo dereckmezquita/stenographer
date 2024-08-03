@@ -82,11 +82,11 @@
 <span></span>
 <span><span class="co"># Log some messages</span></span>
 <span><span class="va">log</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"This is an informational message"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2024-08-03T10:41:15.501Z INFO    This is an informational message</span></span>
+<span><span class="co">#&gt; 2024-08-03T10:43:00.755Z INFO    This is an informational message</span></span>
 <span><span class="va">log</span><span class="op">$</span><span class="fu">warn</span><span class="op">(</span><span class="st">"This is a warning"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2024-08-03T10:41:15.512Z WARNING This is a warning</span></span>
+<span><span class="co">#&gt; 2024-08-03T10:43:00.760Z WARNING This is a warning</span></span>
 <span><span class="va">log</span><span class="op">$</span><span class="fu">error</span><span class="op">(</span><span class="st">"This is an error"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2024-08-03T10:41:15.539Z ERROR   This is an error</span></span></code></pre></div>
+<span><span class="co">#&gt; 2024-08-03T10:43:00.783Z ERROR   This is an error</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="features">Features<a class="anchor" aria-label="anchor" href="#features"></a>
@@ -96,17 +96,24 @@
 </h3>
 <p>You can customise the logger by specifying the minimum log level, output file, and custom print function:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">custom_log</span> <span class="op">&lt;-</span> <span class="va"><a href="reference/Logger.html">Logger</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">log_file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span><span class="st">"app_log"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">custom_log</span> <span class="op">&lt;-</span> <span class="va"><a href="reference/Logger.html">Logger</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
 <span>    level <span class="op">=</span> <span class="va">LogLevel</span><span class="op">$</span><span class="va">WARNING</span>,</span>
-<span>    file_path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span><span class="st">"app_log"</span><span class="op">)</span>,</span>
+<span>    file_path <span class="op">=</span> <span class="va">log_file</span>,</span>
 <span>    print_fn <span class="op">=</span> <span class="va">message</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">custom_log</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"This won't be logged"</span><span class="op">)</span></span>
 <span><span class="va">custom_log</span><span class="op">$</span><span class="fu">warn</span><span class="op">(</span><span class="st">"This will be logged to console and file"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2024-08-03T10:41:15.756Z WARNING This will be logged to console and file</span></span>
+<span><span class="co">#&gt; 2024-08-03T10:43:00.972Z WARNING This will be logged to console and file</span></span>
 <span><span class="va">custom_log</span><span class="op">$</span><span class="fu">error</span><span class="op">(</span><span class="st">"This is an error message"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2024-08-03T10:41:15.774Z ERROR   This is an error message</span></span></code></pre></div>
+<span><span class="co">#&gt; 2024-08-03T10:43:00.987Z ERROR   This is an error message</span></span>
+<span></span>
+<span><span class="co"># Logs are written to the specified file as JSON</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/readLines.html" class="external-link">readLines</a></span><span class="op">(</span><span class="va">log_file</span><span class="op">)</span>, sep <span class="op">=</span> <span class="st">"\n"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; {"datetime":"2024-08-03T10:43:00.972Z","level":"WARNING","msg":"This will be logged to console and file"} </span></span>
+<span><span class="co">#&gt; {"datetime":"2024-08-03T10:43:00.987Z","level":"ERROR","msg":"This is an error message"}</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="helper-functions">Helper Functions<a class="anchor" aria-label="anchor" href="#helper-functions"></a>
@@ -134,7 +141,7 @@
 <span>        <span class="op">)</span></span>
 <span>    <span class="op">)</span></span>
 <span><span class="op">}</span></span>
-<span><span class="co">#&gt; 2024-08-03T10:41:15.788Z WARNING NA values found in the dataset</span></span>
+<span><span class="co">#&gt; 2024-08-03T10:43:00.999Z WARNING NA values found in the dataset</span></span>
 <span><span class="co">#&gt; Data:</span></span>
 <span><span class="co">#&gt; {</span></span>
 <span><span class="co">#&gt;   "na_locations": [</span></span>
@@ -187,7 +194,7 @@
 <span><span class="co"># Test the function with problematic data</span></span>
 <span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span>, b <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">2</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu">process_data</span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2024-08-03T10:41:15.804Z ERROR   Division by zero occurred</span></span>
+<span><span class="co">#&gt; 2024-08-03T10:43:01.011Z ERROR   Division by zero occurred</span></span>
 <span><span class="co">#&gt; Data:</span></span>
 <span><span class="co">#&gt; {</span></span>
 <span><span class="co">#&gt;   "infinite_values": [</span></span>
@@ -202,7 +209,7 @@
 <span><span class="co">#&gt;   ],</span></span>
 <span><span class="co">#&gt;   "dataset_preview": "  a b\n1 1 0\n2 2 2\n3 3 0"</span></span>
 <span><span class="co">#&gt; } </span></span>
-<span><span class="co">#&gt; 2024-08-03T10:41:15.832Z ERROR   An error occurred while processing data: Division by zero error</span></span>
+<span><span class="co">#&gt; 2024-08-03T10:43:01.036Z ERROR   An error occurred while processing data: Division by zero error</span></span>
 <span><span class="co">#&gt; Data:</span></span>
 <span><span class="co">#&gt; {</span></span>
 <span><span class="co">#&gt;   "dataset_preview": "  a b\n1 1 0\n2 2 2\n3 3 0"</span></span>
