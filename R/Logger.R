@@ -22,7 +22,6 @@ LogLevel <- list(
 #' # Create a logger with custom settings
 #' custom_logger <- Logger$new(
 #'   level = LogLevel$WARNING,
-#'   save_to_file = TRUE,
 #'   file_path = tempfile("log_"),
 #'   print_fn = message
 #' )
@@ -39,25 +38,22 @@ Logger <- R6::R6Class(
         #' @description
         #' Create a new Logger object.
         #' @param level The minimum log level to output. Default is LogLevel$INFO.
-        #' @param save_to_file Logical; whether to save logs to a file. Default is FALSE.
-        #' @param file_path Character; path to the log file if save_to_file is TRUE.
+        #' @param file_path Character; the path to a file to save log entries to. Default is NULL.
         #' @param print_fn Function; custom print function to use for console output.
         #'   Should accept a single character string as input. Default uses cat with a newline.
         #' @return A new `Logger` object.
         #' @examples
-        #' logger <- Logger$new(level = LogLevel$WARNING, save_to_file = TRUE, file_path = "log.txt")
-        initialize = function(level = LogLevel$INFO, save_to_file = FALSE, file_path = "", 
-                              print_fn = function(x) cat(x, "\n")) {
+        #' logger <- Logger$new(level = LogLevel$WARNING, file_path = "log.txt")
+        initialize = function(
+            level = LogLevel$INFO,
+            file_path = NULL,
+            print_fn = function(x) cat(x, "\n")
+        ) {
             private$level <- level
-            private$save_to_file <- save_to_file
             private$file_path <- file_path
             private$print_fn <- print_fn
 
-            if (private$save_to_file && private$file_path == "") {
-                rlang::abort("File path must be provided when save_to_file is TRUE")
-            }
-
-            if (private$save_to_file) {
+            if (!is.null(private$file_path)) {
                 private$ensure_log_file_exists()
             }
         },
@@ -121,7 +117,6 @@ Logger <- R6::R6Class(
 
     private = list(
         level = NULL,
-        save_to_file = NULL,
         file_path = NULL,
         print_fn = NULL,
 
@@ -136,9 +131,13 @@ Logger <- R6::R6Class(
         },
 
         log_to_file = function(entry) {
-            if (private$save_to_file) {
-                cat(jsonlite::toJSON(entry, auto_unbox = TRUE), "\n", 
-                    file = private$file_path, append = TRUE)
+            if (!is.null(private$file_path)) {
+                cat(
+                    jsonlite::toJSON(entry, auto_unbox = TRUE),
+                    "\n",
+                    file = private$file_path,
+                    append = TRUE
+                )
             }
         },
 
@@ -152,12 +151,12 @@ Logger <- R6::R6Class(
                 entry$data <- data
             }
             if (!is.null(error)) {
-                entry$error <- private$serialize_error(error)
+                entry$error <- private$serialise_error(error)
             }
             return(entry)
         },
 
-        serialize_error = function(error) {
+        serialise_error = function(error) {
             if (inherits(error, "error")) {
                 return(list(
                     name = class(error)[1],
@@ -176,19 +175,23 @@ Logger <- R6::R6Class(
                 INFO = crayon::blue,
                 crayon::white
             )
-            level <- level_color(sprintf("%-7s", entry$level))
+            level <- level_color(sprintf("%-7s", entry$level)) # the %-7s left-aligns the string
             message <- crayon::white(entry$msg)
 
             output <- sprintf("%s %s %s", timestamp, level, message)
 
             if (!is.null(entry$data)) {
-                output <- paste0(output, "\n", crayon::cyan("Data:"), "\n",
-                                 jsonlite::toJSON(entry$data, auto_unbox = TRUE, pretty = TRUE))
+                output <- paste0(
+                    output, "\n", crayon::cyan("Data:"), "\n",
+                    jsonlite::toJSON(entry$data, auto_unbox = TRUE, pretty = TRUE)
+                )
             }
 
             if (!is.null(entry$error)) {
-                output <- paste0(output, "\n", crayon::red("Error:"), "\n",
-                                 jsonlite::toJSON(entry$error, auto_unbox = TRUE, pretty = TRUE))
+                output <- paste0(
+                    output, "\n", crayon::red("Error:"), "\n",
+                    jsonlite::toJSON(entry$error, auto_unbox = TRUE, pretty = TRUE)
+                )
             }
 
             return(output)
