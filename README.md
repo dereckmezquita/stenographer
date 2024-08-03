@@ -37,11 +37,11 @@ log <- Logger$new()
 
 # Log some messages
 log$info("This is an informational message")
-#> 2024-08-03T10:43:00.755Z INFO    This is an informational message
+#> 2024-08-03T10:43:54.459Z INFO    This is an informational message
 log$warn("This is a warning")
-#> 2024-08-03T10:43:00.760Z WARNING This is a warning
+#> 2024-08-03T10:43:54.468Z WARNING This is a warning
 log$error("This is an error")
-#> 2024-08-03T10:43:00.783Z ERROR   This is an error
+#> 2024-08-03T10:43:54.491Z ERROR   This is an error
 ```
 
 ## Features
@@ -62,14 +62,16 @@ custom_log <- Logger$new(
 
 custom_log$info("This won't be logged")
 custom_log$warn("This will be logged to console and file")
-#> 2024-08-03T10:43:00.972Z WARNING This will be logged to console and file
+#> 2024-08-03T10:43:54.691Z WARNING This will be logged to console and file
 custom_log$error("This is an error message")
-#> 2024-08-03T10:43:00.987Z ERROR   This is an error message
+#> 2024-08-03T10:43:54.706Z ERROR   This is an error message
+```
 
+``` r
 # Logs are written to the specified file as JSON
 cat(readLines(log_file), sep = "\n")
-#> {"datetime":"2024-08-03T10:43:00.972Z","level":"WARNING","msg":"This will be logged to console and file"} 
-#> {"datetime":"2024-08-03T10:43:00.987Z","level":"ERROR","msg":"This is an error message"}
+#> {"datetime":"2024-08-03T10:43:54.691Z","level":"WARNING","msg":"This will be logged to console and file"} 
+#> {"datetime":"2024-08-03T10:43:54.706Z","level":"ERROR","msg":"This is an error message"}
 ```
 
 ### Helper Functions
@@ -99,7 +101,7 @@ if (nrow(na_coords) > 0) {
         )
     )
 }
-#> 2024-08-03T10:43:00.999Z WARNING NA values found in the dataset
+#> 2024-08-03T10:43:54.723Z WARNING NA values found in the dataset
 #> Data:
 #> {
 #>   "na_locations": [
@@ -153,7 +155,7 @@ process_data <- function(df) {
 # Test the function with problematic data
 df <- data.frame(a = c(1, 2, 3), b = c(0, 2, 0))
 process_data(df)
-#> 2024-08-03T10:43:01.011Z ERROR   Division by zero occurred
+#> 2024-08-03T10:43:54.738Z ERROR   Division by zero occurred
 #> Data:
 #> {
 #>   "infinite_values": [
@@ -168,7 +170,7 @@ process_data(df)
 #>   ],
 #>   "dataset_preview": "  a b\n1 1 0\n2 2 2\n3 3 0"
 #> } 
-#> 2024-08-03T10:43:01.036Z ERROR   An error occurred while processing data: Division by zero error
+#> 2024-08-03T10:43:54.763Z ERROR   An error occurred while processing data: Division by zero error
 #> Data:
 #> {
 #>   "dataset_preview": "  a b\n1 1 0\n2 2 2\n3 3 0"
