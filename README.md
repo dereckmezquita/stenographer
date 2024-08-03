@@ -22,7 +22,7 @@ You can install Logger from [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("remotes")
-remotes::install_github("Logger")
+remotes::install_github("dereckmezquita/R-Logger")
 ```
 
 ## Basic Usage
@@ -37,11 +37,11 @@ log <- Logger$new()
 
 # Log some messages
 log$info("This is an informational message")
-#> 2024-08-03T10:44:09.280Z INFO    This is an informational message
+#> 2024-08-03T10:51:08.345Z INFO    This is an informational message
 log$warn("This is a warning")
-#> 2024-08-03T10:44:09.287Z WARNING This is a warning
+#> 2024-08-03T10:51:08.354Z WARNING This is a warning
 log$error("This is an error")
-#> 2024-08-03T10:44:09.309Z ERROR   This is an error
+#> 2024-08-03T10:51:08.371Z ERROR   This is an error
 ```
 
 ## Features
@@ -62,17 +62,17 @@ custom_log <- Logger$new(
 
 custom_log$info("This won't be logged")
 custom_log$warn("This will be logged to console and file")
-#> 2024-08-03T10:44:09.508Z WARNING This will be logged to console and file
+#> 2024-08-03T10:51:08.534Z WARNING This will be logged to console and file
 custom_log$error("This is an error message")
-#> 2024-08-03T10:44:09.524Z ERROR   This is an error message
+#> 2024-08-03T10:51:08.547Z ERROR   This is an error message
 ```
 
 Logs are written to the specified file as JSON objects:
 
 ``` r
 cat(readLines(log_file), sep = "\n")
-#> {"datetime":"2024-08-03T10:44:09.508Z","level":"WARNING","msg":"This will be logged to console and file"} 
-#> {"datetime":"2024-08-03T10:44:09.524Z","level":"ERROR","msg":"This is an error message"}
+#> {"datetime":"2024-08-03T10:51:08.534Z","level":"WARNING","msg":"This will be logged to console and file"} 
+#> {"datetime":"2024-08-03T10:51:08.547Z","level":"ERROR","msg":"This is an error message"}
 ```
 
 ### Helper Functions
@@ -102,7 +102,7 @@ if (nrow(na_coords) > 0) {
         )
     )
 }
-#> 2024-08-03T10:44:09.538Z WARNING NA values found in the dataset
+#> 2024-08-03T10:51:08.560Z WARNING NA values found in the dataset
 #> Data:
 #> {
 #>   "na_locations": [
@@ -156,7 +156,7 @@ process_data <- function(df) {
 # Test the function with problematic data
 df <- data.frame(a = c(1, 2, 3), b = c(0, 2, 0))
 process_data(df)
-#> 2024-08-03T10:44:09.550Z ERROR   Division by zero occurred
+#> 2024-08-03T10:51:08.571Z ERROR   Division by zero occurred
 #> Data:
 #> {
 #>   "infinite_values": [
@@ -171,7 +171,7 @@ process_data(df)
 #>   ],
 #>   "dataset_preview": "  a b\n1 1 0\n2 2 2\n3 3 0"
 #> } 
-#> 2024-08-03T10:44:09.574Z ERROR   An error occurred while processing data: Division by zero error
+#> 2024-08-03T10:51:08.591Z ERROR   An error occurred while processing data: Division by zero error
 #> Data:
 #> {
 #>   "dataset_preview": "  a b\n1 1 0\n2 2 2\n3 3 0"
