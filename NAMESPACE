@@ -2,3 +2,6 @@
 
 export(LogLevel)
 export(Logger)
+export(messageParallel)
+export(tableToString)
+export(valueCoordinates)

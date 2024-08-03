@@ -16,7 +16,6 @@ logger$error("This is an error")
 # Create a logger with custom settings
 custom_logger <- Logger$new(
   level = LogLevel$WARNING,
-  save_to_file = TRUE,
   file_path = tempfile("log_"),
   print_fn = message
 )
@@ -31,7 +30,7 @@ custom_logger$info("Now this will be logged")
 ## Method `Logger$new`
 ## ------------------------------------------------
 
-logger <- Logger$new(level = LogLevel$WARNING, save_to_file = TRUE, file_path = "log.txt")
+logger <- Logger$new(level = LogLevel$WARNING, file_path = "log.txt")
 
 ## ------------------------------------------------
 ## Method `Logger$set_level`
@@ -80,8 +79,7 @@ Create a new Logger object.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Logger$new(
   level = LogLevel$INFO,
-  save_to_file = FALSE,
-  file_path = "",
+  file_path = NULL,
   print_fn = function(x) cat(x, "\\n")
 )}\if{html}{\out{</div>}}
 }
@@ -91,9 +89,7 @@ Create a new Logger object.
 \describe{
 \item{\code{level}}{The minimum log level to output. Default is LogLevel$INFO.}
 
-\item{\code{save_to_file}}{Logical; whether to save logs to a file. Default is FALSE.}
-
-\item{\code{file_path}}{Character; path to the log file if save_to_file is TRUE.}
+\item{\code{file_path}}{Character; the path to a file to save log entries to. Default is NULL.}
 
 \item{\code{print_fn}}{Function; custom print function to use for console output.
 Should accept a single character string as input. Default uses cat with a newline.}
@@ -105,7 +101,7 @@ A new `Logger` object.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{logger <- Logger$new(level = LogLevel$WARNING, save_to_file = TRUE, file_path = "log.txt")
+\preformatted{logger <- Logger$new(level = LogLevel$WARNING, file_path = "log.txt")
 }
 \if{html}{\out{</div>}}
 
