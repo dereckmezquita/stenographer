@@ -159,6 +159,15 @@ result <- future_lapply(1:5, function(i) {
 future::plan(future::sequential)
 ```
 
+```
+#> Processing item 1
+#> Processing item 2
+#> Processing item 3
+#> 2024-08-03T11:18:03.091Z WARNING Warning for item 3
+#> Processing item 4
+#> Processing item 5
+```
+
 ## Contributing
 
 Contributions to Logger are welcome! Please refer to the [CONTRIBUTING.md](CONTRIBUTING.md) file for guidelines.
