@@ -68,7 +68,7 @@
 <p>You can install Logger from <a href="https://github.com/" class="external-link">GitHub</a> with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("remotes")</span></span>
-<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"Logger"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"dereckmezquita/R-Logger"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="basic-usage">Basic Usage<a class="anchor" aria-label="anchor" href="#basic-usage"></a>
@@ -82,11 +82,11 @@
 <span></span>
 <span><span class="co"># Log some messages</span></span>
 <span><span class="va">log</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"This is an informational message"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2024-08-03T10:43:54.459Z INFO    This is an informational message</span></span>
+<span><span class="co">#&gt; 2024-08-03T10:51:08.345Z INFO    This is an informational message</span></span>
 <span><span class="va">log</span><span class="op">$</span><span class="fu">warn</span><span class="op">(</span><span class="st">"This is a warning"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2024-08-03T10:43:54.468Z WARNING This is a warning</span></span>
+<span><span class="co">#&gt; 2024-08-03T10:51:08.354Z WARNING This is a warning</span></span>
 <span><span class="va">log</span><span class="op">$</span><span class="fu">error</span><span class="op">(</span><span class="st">"This is an error"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2024-08-03T10:43:54.491Z ERROR   This is an error</span></span></code></pre></div>
+<span><span class="co">#&gt; 2024-08-03T10:51:08.371Z ERROR   This is an error</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="features">Features<a class="anchor" aria-label="anchor" href="#features"></a>
@@ -106,14 +106,14 @@
 <span></span>
 <span><span class="va">custom_log</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"This won't be logged"</span><span class="op">)</span></span>
 <span><span class="va">custom_log</span><span class="op">$</span><span class="fu">warn</span><span class="op">(</span><span class="st">"This will be logged to console and file"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2024-08-03T10:43:54.691Z WARNING This will be logged to console and file</span></span>
+<span><span class="co">#&gt; 2024-08-03T10:51:08.534Z WARNING This will be logged to console and file</span></span>
 <span><span class="va">custom_log</span><span class="op">$</span><span class="fu">error</span><span class="op">(</span><span class="st">"This is an error message"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2024-08-03T10:43:54.706Z ERROR   This is an error message</span></span></code></pre></div>
+<span><span class="co">#&gt; 2024-08-03T10:51:08.547Z ERROR   This is an error message</span></span></code></pre></div>
+<p>Logs are written to the specified file as JSON objects:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Logs are written to the specified file as JSON</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/readLines.html" class="external-link">readLines</a></span><span class="op">(</span><span class="va">log_file</span><span class="op">)</span>, sep <span class="op">=</span> <span class="st">"\n"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; {"datetime":"2024-08-03T10:43:54.691Z","level":"WARNING","msg":"This will be logged to console and file"} </span></span>
-<span><span class="co">#&gt; {"datetime":"2024-08-03T10:43:54.706Z","level":"ERROR","msg":"This is an error message"}</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/readLines.html" class="external-link">readLines</a></span><span class="op">(</span><span class="va">log_file</span><span class="op">)</span>, sep <span class="op">=</span> <span class="st">"\n"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; {"datetime":"2024-08-03T10:51:08.534Z","level":"WARNING","msg":"This will be logged to console and file"} </span></span>
+<span><span class="co">#&gt; {"datetime":"2024-08-03T10:51:08.547Z","level":"ERROR","msg":"This is an error message"}</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="helper-functions">Helper Functions<a class="anchor" aria-label="anchor" href="#helper-functions"></a>
@@ -141,7 +141,7 @@
 <span>        <span class="op">)</span></span>
 <span>    <span class="op">)</span></span>
 <span><span class="op">}</span></span>
-<span><span class="co">#&gt; 2024-08-03T10:43:54.723Z WARNING NA values found in the dataset</span></span>
+<span><span class="co">#&gt; 2024-08-03T10:51:08.560Z WARNING NA values found in the dataset</span></span>
 <span><span class="co">#&gt; Data:</span></span>
 <span><span class="co">#&gt; {</span></span>
 <span><span class="co">#&gt;   "na_locations": [</span></span>
@@ -194,7 +194,7 @@
 <span><span class="co"># Test the function with problematic data</span></span>
 <span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span>, b <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">2</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu">process_data</span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2024-08-03T10:43:54.738Z ERROR   Division by zero occurred</span></span>
+<span><span class="co">#&gt; 2024-08-03T10:51:08.571Z ERROR   Division by zero occurred</span></span>
 <span><span class="co">#&gt; Data:</span></span>
 <span><span class="co">#&gt; {</span></span>
 <span><span class="co">#&gt;   "infinite_values": [</span></span>
@@ -209,7 +209,7 @@
 <span><span class="co">#&gt;   ],</span></span>
 <span><span class="co">#&gt;   "dataset_preview": "  a b\n1 1 0\n2 2 2\n3 3 0"</span></span>
 <span><span class="co">#&gt; } </span></span>
-<span><span class="co">#&gt; 2024-08-03T10:43:54.763Z ERROR   An error occurred while processing data: Division by zero error</span></span>
+<span><span class="co">#&gt; 2024-08-03T10:51:08.591Z ERROR   An error occurred while processing data: Division by zero error</span></span>
 <span><span class="co">#&gt; Data:</span></span>
 <span><span class="co">#&gt; {</span></span>
 <span><span class="co">#&gt;   "dataset_preview": "  a b\n1 1 0\n2 2 2\n3 3 0"</span></span>
@@ -280,6 +280,12 @@
 </ul>
 </div>
 
+<div class="community">
+<h2 data-toc-skip>Community</h2>
+<ul class="list-unstyled">
+<li><a href="CONTRIBUTING.html">Contributing guide</a></li>
+</ul>
+</div>
 
 <div class="citation">
 <h2 data-toc-skip>Citation</h2>
