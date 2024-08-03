@@ -1,16 +1,20 @@
 ---
-title: "Getting Started with Logger"
-author: "Dereck Mezquita"
-date: "`r Sys.Date()`"
+title: "Getting started with Logger"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Getting Started with Logger}
+  %\VignetteIndexEntry{Getting started with Logger}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r, include = FALSE}
+```{r, include=FALSE}
 knitr::opts_chunk$set(
+    warning = FALSE,
+    message = FALSE,
+    fig.align = "center",
+    fig.width = 12,
+    fig.height = 10,
+    dpi = 150,
     collapse = TRUE,
     comment = "#>"
 )
@@ -18,7 +22,7 @@ knitr::opts_chunk$set(
 
 ## Introduction
 
-The `Logger` package provides a flexible and customizable logging system for R. It supports multiple log levels, custom output functions, and file logging. This vignette will guide you through the basic setup and usage of the `Logger` package.
+The `Logger` package provides a flexible and customizable logging system for R applications. It allows developers to easily add logging capabilities to their projects, with features such as multiple log levels, file output, and custom formatting.
 
 ## Installation
 
@@ -26,98 +30,123 @@ You can install the `Logger` package from GitHub using the `devtools` package:
 
 ```r
 # install.packages("devtools")
-devtools::install_github("dereckmezquita/R-Logger")
+devtools::install_github("DereckmezquITA/Logger")
 ```
 
 ## Basic Usage
 
-First, let's load the package and create a basic logger:
+To get started with `Logger`, first load the package:
 
-```{r setup}
+```r
 library(Logger)
+```
 
-# Create a basic logger
+### Creating a Logger
+
+You can create a new logger with default settings:
+
+```r
 logger <- Logger$new()
 ```
 
-Now that we have a logger, we can start logging messages at different levels:
+### Logging Messages
 
-```{r basic-logging}
+The `Logger` class provides three methods for logging messages at different levels:
+
+```r
 logger$info("This is an informational message")
 logger$warn("This is a warning message")
 logger$error("This is an error message")
 ```
 
-## Customizing the Logger
+### Changing Log Level
 
-### Setting Log Level
+You can change the minimum log level:
 
-You can set the minimum log level when creating the logger or change it later:
+```r
+logger$set_level(LogLevel$WARNING)
+# Now, info messages won't be logged
+logger$info("This won't be logged")
+logger$warn("But this will be")
+```
 
-```{r set-log-level}
-# Create a logger that only shows warnings and errors
-warn_logger <- Logger$new(level = LogLevel$WARNING)
+## Advanced Usage
 
-warn_logger$info("This won't be shown")
-warn_logger$warn("This will be shown")
+### Custom Print Function
 
-# Change the log level
-warn_logger$set_level(LogLevel$INFO)
-warn_logger$info("Now this will be shown")
+You can customize how messages are printed by providing a custom print function:
+
+```r
+custom_logger <- Logger$new(
+    print_fn = function(x) cat(crayon::bold(x), "\n")
+)
+custom_logger$info("This will be printed in bold")
 ```
 
 ### Logging to a File
 
-You can set up the logger to save logs to a file:
+To save logs to a file, specify a file path when creating the logger:
 
-```{r file-logging}
-file_logger <- Logger$new(
-  save_to_file = TRUE,
-  file_path = tempfile("Logger")
-)
-
-file_logger$info("This message is saved to a file")
-file_logger$warn("So is this warning")
-
-# Check the contents of the log file
-cat(readLines(file_logger$.__enclos_env__$private$file_path), sep = "\n")
+```r
+file_logger <- Logger$new(file_path = "app.log")
+file_logger$info("This message will be saved to app.log")
 ```
 
-### Custom Print Function
-
-You can provide a custom print function to control how logs are displayed:
-
-```{r custom-print}
-custom_logger <- Logger$new(
-  print_fn = function(x) cat("CUSTOM:", x, "\n")
-)
-
-custom_logger$info("This message has a custom prefix")
-```
-
-## Logging with Additional Data
+### Including Additional Data
 
 You can include additional data with your log messages:
 
-```{r log-with-data}
-logger$info("Operation completed", data = list(duration = 3.5, status = "success"))
+```r
+logger$info("Operation completed", data = list(duration = 5.2, status = "success"))
 ```
 
-## Logging Errors
+### Logging Errors
 
 When logging errors, you can include the error object:
 
-```{r log-errors}
+```r
 tryCatch(
-  {
-    stop("An example error")
-  },
-  error = function(e) {
-    logger$error("An error occurred", error = e)
-  }
+    stop("An error occurred"),
+    error = function(e) {
+        logger$error("Error in operation", error = e)
+    }
 )
+```
+
+## Helper Functions
+
+The `Logger` package also includes some helpful utility functions:
+
+### messageParallel
+
+This function allows you to print messages from parallel forked processes:
+
+```r
+messageParallel("Send this message back up.")
+```
+
+### tableToString
+
+This function converts a data.frame printout to a string, useful for including tabular data in log messages:
+
+```r
+df <- data.frame(a = 1:3, b = letters[1:3])
+log_message <- paste("Current data:", tableToString(df))
+logger$info(log_message)
+```
+
+### valueCoordinates
+
+This function helps you find the coordinates of specific values in a data.frame:
+
+```r
+df <- data.frame(a = c(1, NA, 3), b = c(NA, 2, NA), c = c(3, 2, 1))
+coords <- valueCoordinates(df, NA)
+logger$info("Found NA values at:", data = coords)
 ```
 
 ## Conclusion
 
-This vignette has covered the basic usage of the `Logger` package. You've learned how to create a logger, set log levels, log to a file, use custom print functions, and include additional data with your log messages. For more advanced usage and customization options, please refer to the package documentation.
+The `Logger` package provides a powerful and flexible logging system for R applications. By using this package, you can easily add robust logging capabilities to your projects, helping with debugging, monitoring, and maintaining your code.
+
+For more information, please refer to the package documentation or contact the author, Dereck Mezquita.
