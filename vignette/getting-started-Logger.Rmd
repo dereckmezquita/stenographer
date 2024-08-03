@@ -7,14 +7,8 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r, include=FALSE}
+```{r, include = FALSE}
 knitr::opts_chunk$set(
-    warning = FALSE,
-    message = FALSE,
-    fig.align = "center",
-    fig.width = 12,
-    fig.height = 10,
-    dpi = 150,
     collapse = TRUE,
     comment = "#>"
 )
@@ -22,131 +16,151 @@ knitr::opts_chunk$set(
 
 ## Introduction
 
-The `Logger` package provides a flexible and customizable logging system for R applications. It allows developers to easily add logging capabilities to their projects, with features such as multiple log levels, file output, and custom formatting.
+The `Logger` package provides a flexible and powerful logging system for R applications. It includes a `Logger` class for creating customisable loggers, as well as helper functions for debugging and error reporting. This vignette will guide you through the basics of using the `Logger` package and demonstrate how to leverage its features to improve your R workflows.
 
 ## Installation
 
-You can install the `Logger` package from GitHub using the `devtools` package:
+You can install the `Logger` package from CRAN with:
 
-```r
-# install.packages("devtools")
-devtools::install_github("DereckmezquITA/Logger")
+```{r, eval = FALSE}
+remotes::install_github("Logger")
 ```
 
 ## Basic Usage
 
-To get started with `Logger`, first load the package:
+First, let's load the package and create a basic logger:
 
-```r
-library(Logger)
+```{r}
+box::use(Logger[Logger, LogLevel])
+
+# Create a basic logger
+log <- Logger$new()
+
+# Log some messages
+log$info("This is an informational message")
+log$warn("This is a warning")
+log$error("This is an error")
 ```
 
-### Creating a Logger
+## Customising the Logger
 
-You can create a new logger with default settings:
+You can customise the logger by specifying the minimum log level, output file, and custom print function:
 
-```r
-logger <- Logger$new()
-```
-
-### Logging Messages
-
-The `Logger` class provides three methods for logging messages at different levels:
-
-```r
-logger$info("This is an informational message")
-logger$warn("This is a warning message")
-logger$error("This is an error message")
-```
-
-### Changing Log Level
-
-You can change the minimum log level:
-
-```r
-logger$set_level(LogLevel$WARNING)
-# Now, info messages won't be logged
-logger$info("This won't be logged")
-logger$warn("But this will be")
-```
-
-## Advanced Usage
-
-### Custom Print Function
-
-You can customize how messages are printed by providing a custom print function:
-
-```r
-custom_logger <- Logger$new(
-    print_fn = function(x) cat(crayon::bold(x), "\n")
+```{r}
+# Create a custom logger
+custom_log <- Logger$new(
+    level = LogLevel$WARNING,
+    file_path = "app.log",
+    print_fn = message
 )
-custom_logger$info("This will be printed in bold")
+
+custom_log$info("This won't be logged")
+custom_log$warn("This will be logged to console and file")
+custom_log$error("This is an error message")
 ```
 
-### Logging to a File
+## Using Helper Functions
 
-To save logs to a file, specify a file path when creating the logger:
+The `Logger` package includes several helper functions that can be used in conjunction with the `Logger` class to provide more detailed information in your logs. Let's explore how to use these functions effectively.
 
-```r
-file_logger <- Logger$new(file_path = "app.log")
-file_logger$info("This message will be saved to app.log")
+### Finding and Logging Data Issues
+
+Suppose we have a dataset with some problematic values, and we want to log where these issues occur. We can use the `valueCoordinates` function to locate the problematic values and include this information in our log messages.
+
+```{r}
+box::use(Logger[valueCoordinates])
+
+# Create a sample dataset with some issues
+df <- data.frame(
+    a = c(1, NA, 3, 4, 5),
+    b = c(2, 4, NA, 8, 10),
+    c = c(3, 6, 9, NA, 15)
+)
+
+# Create a logger
+log <- Logger$new()
+
+# Find coordinates of NA values
+na_coords <- valueCoordinates(df)
+
+if (nrow(na_coords) > 0) {
+    log$warn(
+        "NA values found in the dataset",
+        data = list(
+            na_locations = na_coords
+        )
+    )
+}
 ```
 
-### Including Additional Data
+This will produce a log entry like:
 
-You can include additional data with your log messages:
+### Logging Errors with Context
 
-```r
-logger$info("Operation completed", data = list(duration = 5.2, status = "success"))
+When an error occurs, it's often useful to log not just the error message, but also the context in which the error occurred. Here's an example of how to do this using the `Logger` class and helper functions:
+
+```{r}
+box::use(Logger[tableToString])
+
+log <- Logger$new()
+
+process_data <- function(df) {
+    tryCatch({
+        result <- df$a / df$b
+        if (any(is.infinite(result))) {
+            inf_coords <- valueCoordinates(data.frame(result), Inf)
+            log$error(
+                "Division by zero occurred",
+                data = list(
+                    infinite_values = inf_coords,
+                    dataset_preview = tableToString(df)
+                )
+            )
+            stop("Division by zero error")
+        }
+        return(result)
+    }, error = function(e) {
+        log$error(
+            paste("An error occurred while processing data:", e$message),
+            data = list(dataset_preview = tableToString(df)),
+            error = e
+        )
+        stop(e)
+    })
+}
+
+# Test the function with problematic data
+df <- data.frame(a = c(1, 2, 3), b = c(0, 2, 0))
+process_data(df)
 ```
 
-### Logging Errors
+## Logging in Parallel Environments
 
-When logging errors, you can include the error object:
+When working with parallel processing, standard logging functions might not work as expected. The `Logger` package provides a `messageParallel` function to ensure messages are properly logged from parallel processes:
 
-```r
-tryCatch(
-    stop("An error occurred"),
-    error = function(e) {
-        logger$error("Error in operation", error = e)
+```{r}
+box::use(future)
+box::use(future.apply[future_lapply])
+
+log <- Logger$new(print_fn = messageParallel)
+
+future::plan(future::multisession, workers = 2)
+
+result <- future_lapply(1:5, function(i) {
+    messageParallel(sprintf("Processing item %d", i))
+    if (i == 3) {
+        log$warn(sprintf("Warning for item %d", i))
     }
-)
+    return(i * 2)
+})
+
+future::plan(future::sequential)
 ```
 
-## Helper Functions
-
-The `Logger` package also includes some helpful utility functions:
-
-### messageParallel
-
-This function allows you to print messages from parallel forked processes:
-
-```r
-messageParallel("Send this message back up.")
-```
-
-### tableToString
-
-This function converts a data.frame printout to a string, useful for including tabular data in log messages:
-
-```r
-df <- data.frame(a = 1:3, b = letters[1:3])
-log_message <- paste("Current data:", tableToString(df))
-logger$info(log_message)
-```
-
-### valueCoordinates
-
-This function helps you find the coordinates of specific values in a data.frame:
-
-```r
-df <- data.frame(a = c(1, NA, 3), b = c(NA, 2, NA), c = c(3, 2, 1))
-coords <- valueCoordinates(df, NA)
-logger$info("Found NA values at:", data = coords)
-```
+This ensures that messages from parallel processes are properly captured and logged.
 
 ## Conclusion
 
-The `Logger` package provides a powerful and flexible logging system for R applications. By using this package, you can easily add robust logging capabilities to your projects, helping with debugging, monitoring, and maintaining your code.
+The `Logger` package provides a robust and flexible logging system for R applications. By using the `Logger` class in combination with helper functions like `valueCoordinates` and `tableToString`, you can create informative and context-rich log messages that greatly aid in debugging and monitoring your R scripts and applications.
 
-For more information, please refer to the package documentation or contact the author, Dereck Mezquita.
+Remember to adjust the log level, output file, and other settings to suit your specific needs. Happy logging!
