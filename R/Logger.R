@@ -1,7 +1,17 @@
+#' Log Levels
+#'
+#' Defines the available log levels for the Logger class.
+#'
+#' @export
+LogLevel <- list(
+    ERROR = 0L,
+    WARNING = 1L,
+    INFO = 2L
+)
+
 #' @title Logger
 #' @description An R6 class for flexible logging with customizable output.
 #'
-#' @export
 #' @examples
 #' # Create a basic logger
 #' logger <- Logger$new()
@@ -22,14 +32,6 @@
 #' # Change log level
 #' custom_logger$set_level(LogLevel$INFO)
 #' custom_logger$info("Now this will be logged")
-
-#' @export
-LogLevel <- list(
-    ERROR = 0L,
-    WARNING = 1L,
-    INFO = 2L
-)
-
 #' @export
 Logger <- R6::R6Class(
     "Logger",

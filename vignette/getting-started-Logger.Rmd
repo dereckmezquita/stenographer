@@ -1,0 +1,123 @@
+---
+title: "Getting Started with Logger"
+author: "Dereck Mezquita"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Getting Started with Logger}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+    collapse = TRUE,
+    comment = "#>"
+)
+```
+
+## Introduction
+
+The `Logger` package provides a flexible and customizable logging system for R. It supports multiple log levels, custom output functions, and file logging. This vignette will guide you through the basic setup and usage of the `Logger` package.
+
+## Installation
+
+You can install the `Logger` package from GitHub using the `devtools` package:
+
+```r
+# install.packages("devtools")
+devtools::install_github("dereckmezquita/R-Logger")
+```
+
+## Basic Usage
+
+First, let's load the package and create a basic logger:
+
+```{r setup}
+library(Logger)
+
+# Create a basic logger
+logger <- Logger$new()
+```
+
+Now that we have a logger, we can start logging messages at different levels:
+
+```{r basic-logging}
+logger$info("This is an informational message")
+logger$warn("This is a warning message")
+logger$error("This is an error message")
+```
+
+## Customizing the Logger
+
+### Setting Log Level
+
+You can set the minimum log level when creating the logger or change it later:
+
+```{r set-log-level}
+# Create a logger that only shows warnings and errors
+warn_logger <- Logger$new(level = LogLevel$WARNING)
+
+warn_logger$info("This won't be shown")
+warn_logger$warn("This will be shown")
+
+# Change the log level
+warn_logger$set_level(LogLevel$INFO)
+warn_logger$info("Now this will be shown")
+```
+
+### Logging to a File
+
+You can set up the logger to save logs to a file:
+
+```{r file-logging}
+file_logger <- Logger$new(
+  save_to_file = TRUE,
+  file_path = tempfile("Logger")
+)
+
+file_logger$info("This message is saved to a file")
+file_logger$warn("So is this warning")
+
+# Check the contents of the log file
+cat(readLines(file_logger$.__enclos_env__$private$file_path), sep = "\n")
+```
+
+### Custom Print Function
+
+You can provide a custom print function to control how logs are displayed:
+
+```{r custom-print}
+custom_logger <- Logger$new(
+  print_fn = function(x) cat("CUSTOM:", x, "\n")
+)
+
+custom_logger$info("This message has a custom prefix")
+```
+
+## Logging with Additional Data
+
+You can include additional data with your log messages:
+
+```{r log-with-data}
+logger$info("Operation completed", data = list(duration = 3.5, status = "success"))
+```
+
+## Logging Errors
+
+When logging errors, you can include the error object:
+
+```{r log-errors}
+tryCatch(
+  {
+    stop("An example error")
+  },
+  error = function(e) {
+    logger$error("An error occurred", error = e)
+  }
+)
+```
+
+## Conclusion
+
+This vignette has covered the basic usage of the `Logger` package. You've learned how to create a logger, set log levels, log to a file, use custom print functions, and include additional data with your log messages. For more advanced usage and customization options, please refer to the package documentation.
