@@ -27,7 +27,7 @@ You can install Logger from [GitHub](https://github.com/) with:
 
 ```{r, eval = FALSE}
 # install.packages("remotes")
-remotes::install_github("Logger")
+remotes::install_github("dereckmezquita/R-Logger")
 ```
 
 ## Basic Usage
