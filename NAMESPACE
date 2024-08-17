@@ -2,6 +2,7 @@
 
 export(LogLevel)
 export(Logger)
+export(collapse)
 export(messageParallel)
 export(tableToString)
 export(valueCoordinates)

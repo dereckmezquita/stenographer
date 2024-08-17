@@ -1,7 +1,7 @@
 Package: Logger
 Type: Package
 Title: Flexible and Customisable Logging System for R
-Version: 0.0.1
+Version: 0.0.2
 URL: https://github.com/dereckmezquita/R-Logger
 Authors@R: 
     person(given = "Dereck",
