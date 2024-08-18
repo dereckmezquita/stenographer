@@ -199,19 +199,21 @@ Logger <- R6::R6Class(
 
         log_to_db = function(entry) {
             if (!is.null(private$db_conn)) {
-                entry$data <- NULL
-                if (!is.null(entry$data)) {
-                    entry$data <- jsonlite::toJSON(entry$data)
+                db_entry <- entry
+                if (!is.null(db_entry$data)) {
+                    db_entry$data <- jsonlite::toJSON(db_entry$data)
                 }
-                entry$error <- NULL
-                if (!is.null(entry$error)) {
-                    entry$error <- jsonlite::toJSON(entry$error)
+                if (!is.null(db_entry$error)) {
+                    db_entry$error <- jsonlite::toJSON(db_entry$error)
                 }
-                entry$context <- NULL
                 if (length(private$context) > 0) {
-                    entry$context <- jsonlite::toJSON(private$context)
+                    db_entry$context <- jsonlite::toJSON(private$context)
+                } else {
+                    db_entry$context <- NULL
                 }
-                DBI::dbWriteTable(private$db_conn, private$table_name, as.data.frame(entry), append = TRUE)
+                # Remove NULL elements from `db_entry`
+                db_entry <- db_entry[!sapply(db_entry, is.null)]
+                DBI::dbWriteTable(private$db_conn, private$table_name, as.data.frame(db_entry), append = TRUE)
             }
         },
 
@@ -225,17 +227,11 @@ Logger <- R6::R6Class(
             entry <- list(
                 datetime = format(Sys.time(), "%Y-%m-%dT%H:%M:%OS3Z"),
                 level = level,
-                msg = msg
+                msg = msg,
+                data = if (!is.null(data)) jsonlite::toJSON(data) else NULL,
+                error = if (!is.null(error)) jsonlite::toJSON(private$serialise_error(error)) else NULL,
+                context = if (length(private$context) > 0) jsonlite::toJSON(private$context) else NULL
             )
-            if (!is.null(data)) {
-                entry$data <- jsonlite::toJSON(data)
-            }
-            if (!is.null(error)) {
-                entry$error <- jsonlite::toJSON(private$serialise_error(error))
-            }
-            if (length(private$context) > 0) {
-                entry$context <- jsonlite::toJSON(private$context)
-            }
             return(entry)
         },
 
