@@ -40,11 +40,11 @@ log <- Logger$new()
 
 # Log some messages
 log$info("This is an informational message")
-#> 2024-08-18T18:20:15.057Z INFO    This is an informational message
+#> 2024-08-18T18:57:50.871Z INFO    This is an informational message
 log$warn("This is a warning")
-#> 2024-08-18T18:20:15.064Z WARNING This is a warning
+#> 2024-08-18T18:57:50.884Z WARNING This is a warning
 log$error("This is an error")
-#> 2024-08-18T18:20:15.102Z ERROR   This is an error
+#> 2024-08-18T18:57:50.921Z ERROR   This is an error
 ```
 
 ## Features
@@ -65,9 +65,9 @@ custom_log <- Logger$new(
 
 custom_log$info("This won't be logged")
 custom_log$warn("This will be logged to console and file")
-#> 2024-08-18T18:20:15.320Z WARNING This will be logged to console and file
+#> 2024-08-18T18:57:51.208Z WARNING This will be logged to console and file
 custom_log$error("This is an error message", error = "Some error")
-#> 2024-08-18T18:20:15.336Z ERROR   This is an error message
+#> 2024-08-18T18:57:51.226Z ERROR   This is an error message
 #> Error:
 #> "Some error"
 ```
@@ -76,8 +76,8 @@ Logs are written to the specified file as JSON objects:
 
 ``` r
 cat(readLines(log_file), sep = "\n")
-#> {"datetime":"2024-08-18T18:20:15.320Z","level":"WARNING","msg":"This will be logged to console and file","data":{},"error":{},"context":{}} 
-#> {"datetime":"2024-08-18T18:20:15.336Z","level":"ERROR","msg":"This is an error message","data":{},"error":"[\"Some error\"]","context":{}}
+#> {"datetime":"2024-08-18T18:57:51.208Z","level":"WARNING","msg":"This will be logged to console and file","data":{},"error":{},"context":{}} 
+#> {"datetime":"2024-08-18T18:57:51.226Z","level":"ERROR","msg":"This is an error message","data":{},"error":"[\"Some error\"]","context":{}}
 ```
 
 ### Database Logging
@@ -102,14 +102,14 @@ db_log <- Logger$new(
 
 # Log some messages
 db_log$info("This is logged to the database")
-#> 2024-08-18T18:20:15.700Z INFO    This is logged to the database
+#> 2024-08-18T18:57:51.625Z INFO    This is logged to the database
 #> Context:
 #> {
 #>   "app_name": "MyApp",
 #>   "fun": "main"
 #> }
 db_log$warn("This is a warning", data = list(code = 101))
-#> 2024-08-18T18:20:15.773Z WARNING This is a warning
+#> 2024-08-18T18:57:51.701Z WARNING This is a warning
 #> Data:
 #> {
 #>   "code": 101
@@ -120,7 +120,7 @@ db_log$warn("This is a warning", data = list(code = 101))
 #>   "fun": "main"
 #> }
 db_log$error("An error occurred", error = "Division by zero")
-#> 2024-08-18T18:20:15.806Z ERROR   An error occurred
+#> 2024-08-18T18:57:51.739Z ERROR   An error occurred
 #> Error:
 #> "Division by zero"
 #> Context:
@@ -135,8 +135,10 @@ result <- dbGetQuery(db, query)
 print(result)
 #>   id                 datetime level                               context
 #> 1  3 2024-08-18T18:20:15.806Z ERROR {"app_name":["MyApp"],"fun":["main"]}
+#> 2  6 2024-08-18T18:57:51.739Z ERROR {"app_name":["MyApp"],"fun":["main"]}
 #>                 msg data                        error
 #> 1 An error occurred <NA> ["[\\"Division by zero\\"]"]
+#> 2 An error occurred <NA> ["[\\"Division by zero\\"]"]
 
 # Don't forget to close the database connection when you're done
 dbDisconnect(db)
@@ -169,7 +171,7 @@ if (nrow(na_coords) > 0) {
         )
     )
 }
-#> 2024-08-18T18:20:15.834Z WARNING NA values found in the dataset
+#> 2024-08-18T18:57:51.762Z WARNING NA values found in the dataset
 #> Data:
 #> {
 #>   "na_locations": [
@@ -223,7 +225,7 @@ process_data <- function(df) {
 # Test the function with problematic data
 df <- data.frame(a = c(1, 2, 3), b = c(0, 2, 0))
 process_data(df)
-#> 2024-08-18T18:20:15.889Z ERROR   Division by zero occurred
+#> 2024-08-18T18:57:51.801Z ERROR   Division by zero occurred
 #> Data:
 #> {
 #>   "infinite_values": [
@@ -238,7 +240,7 @@ process_data(df)
 #>   ],
 #>   "dataset_preview": "  a b\n1 1 0\n2 2 2\n3 3 0"
 #> } 
-#> 2024-08-18T18:20:15.890Z ERROR   An error occurred while processing data: Division by zero error
+#> 2024-08-18T18:57:51.803Z ERROR   An error occurred while processing data: Division by zero error
 #> Data:
 #> {
 #>   "dataset_preview": "  a b\n1 1 0\n2 2 2\n3 3 0"
