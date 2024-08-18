@@ -90,8 +90,7 @@ Logger <- R6::R6Class(
             if (private$level >= LogLevel$ERROR) {
                 formatted_msg <- private$format_fn("ERROR", msg)
                 entry <- private$create_log_entry("ERROR", formatted_msg, data, error)
-                private$print_fn(private$format_console_output(entry))
-                private$log_to_file(entry)
+                private$log_entry(entry)
             }
         },
 
@@ -106,8 +105,7 @@ Logger <- R6::R6Class(
             if (private$level >= LogLevel$WARNING) {
                 formatted_msg <- private$format_fn("WARNING", msg)
                 entry <- private$create_log_entry("WARNING", formatted_msg, data)
-                private$print_fn(private$format_console_output(entry))
-                private$log_to_file(entry)
+                private$log_entry(entry)
             }
         },
 
@@ -122,8 +120,7 @@ Logger <- R6::R6Class(
             if (private$level >= LogLevel$INFO) {
                 formatted_msg <- private$format_fn("INFO", msg)
                 entry <- private$create_log_entry("INFO", formatted_msg, data)
-                private$print_fn(private$format_console_output(entry))
-                private$log_to_file(entry)
+                private$log_entry(entry)
             }
         }
     ),
@@ -153,6 +150,11 @@ Logger <- R6::R6Class(
                     append = TRUE
                 )
             }
+        },
+
+        log_entry = function(entry) {
+            private$print_fn(private$format_console_output(entry))
+            private$log_to_file(entry)
         },
 
         create_log_entry = function(level, msg, data = NULL, error = NULL) {
