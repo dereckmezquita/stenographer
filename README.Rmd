@@ -21,6 +21,8 @@ knitr::opts_chunk$set(
 
 Logger is a flexible and powerful logging system for R applications. It provides a `Logger` class for creating customisable loggers, as well as helper functions for debugging and error reporting.
 
+The latest version includes support for `SQLite` database logging and context management.
+
 ## Installation
 
 You can install Logger from [GitHub](https://github.com/) with:
@@ -70,6 +72,38 @@ Logs are written to the specified file as JSON objects:
 
 ```{r}
 cat(readLines(log_file), sep = "\n")
+```
+
+### Database Logging
+
+Logger now supports logging to a SQLite database and context management so you can easily track application events. The context is useful for filtering and querying logs based on specific criteria from `SQLite`:
+
+```{r}
+box::use(RSQLite[ SQLite ])
+box::use(DBI[ dbConnect, dbDisconnect, dbGetQuery ])
+
+# Create a database connection
+db <- dbConnect(SQLite(), "log.sqlite")
+
+# Create a logger that logs to the database
+db_log <- Logger$new(
+    context = list(app_name = "MyApp", fun = "main"),
+    db_conn = db,
+    table_name = "app_logs"
+)
+
+# Log some messages
+db_log$info("This is logged to the database")
+db_log$warn("This is a warning", data = list(code = 101))
+db_log$error("An error occurred", error = simpleError("Division by zero"))
+
+# Example of querying the logs
+query <- "SELECT * FROM app_logs WHERE level = 'ERROR'"
+result <- dbGetQuery(db, query)
+print(result)
+
+# Don't forget to close the database connection when you're done
+dbDisconnect(db)
 ```
 
 ### Helper Functions
