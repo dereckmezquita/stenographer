@@ -20,3 +20,15 @@ logger <- Logger$new(
 )
 
 logger$info("This is an info message")
+
+
+logger <- Logger$new(
+    LogLevel$INFO,
+    file = "logs.log",
+    print_fn = messageParallel,
+    format_fn = function(level, msg) {
+        return(collapse(c("BOT ID ", "self$id", ": ", msg)))
+    }
+)
+
+logger$info("This is an info message")
