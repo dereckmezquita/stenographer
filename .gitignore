@@ -4,6 +4,8 @@ temp*
 *.ignore.*
 *html
 
+*.log
+
 # History files
 .Rhistory
 .Rapp.history
