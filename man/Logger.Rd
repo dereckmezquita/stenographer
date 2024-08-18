@@ -4,7 +4,7 @@
 \alias{Logger}
 \title{Logger}
 \description{
-An R6 class for flexible logging with customisable output and message formatting.
+An R6 class for flexible logging with customisable output, message formatting, and context.
 }
 \examples{
 # Create a basic logger
@@ -13,30 +13,21 @@ logger$info("This is an info message")
 logger$warn("This is a warning")
 logger$error("This is an error")
 
-# Create a logger with custom settings and message formatting
+# Create a logger with custom settings, message formatting, and context
 custom_logger <- Logger$new(
   level = LogLevel$WARNING,
   file_path = tempfile("log_"),
   print_fn = function(x) message(paste0("Custom: ", x)),
-  format_fn = function(level, msg) paste0("Hello prefix: ", msg)
+  format_fn = function(level, msg) paste0("Hello prefix: ", msg),
+  context = list(program = "MyApp")
 )
 custom_logger$info("This won't be logged")
 custom_logger$warn("This will be logged with a custom prefix")
 
-# Change log level
+# Change log level and update context
 custom_logger$set_level(LogLevel$INFO)
-custom_logger$info("Now this will be logged with a custom prefix")
-
-## ------------------------------------------------
-## Method `Logger$new`
-## ------------------------------------------------
-
-logger <- Logger$new(
-  level = LogLevel$WARNING,
-  file_path = "log.txt",
-  print_fn = function(x) message(paste0("Custom: ", x)),
-  format_fn = function(level, msg) paste0("Hello prefix: ", msg)
-)
+custom_logger$update_context(list(user = "John"))
+custom_logger$info("Now this will be logged with a custom prefix and context")
 
 ## ------------------------------------------------
 ## Method `Logger$set_level`
@@ -50,7 +41,7 @@ logger$set_level(LogLevel$WARNING)
 ## ------------------------------------------------
 
 logger <- Logger$new()
-logger$error("An error occurred", data = list(x = 1), error = simpleError("Oops!"))
+logger$error("An error occurred", data = list(x = 1), error = "Oops!")
 
 ## ------------------------------------------------
 ## Method `Logger$warn`
@@ -71,6 +62,9 @@ logger$info("Operation completed successfully", data = list(duration = 5.2))
 \itemize{
 \item \href{#method-Logger-new}{\code{Logger$new()}}
 \item \href{#method-Logger-set_level}{\code{Logger$set_level()}}
+\item \href{#method-Logger-update_context}{\code{Logger$update_context()}}
+\item \href{#method-Logger-clear_context}{\code{Logger$clear_context()}}
+\item \href{#method-Logger-get_context}{\code{Logger$get_context()}}
 \item \href{#method-Logger-error}{\code{Logger$error()}}
 \item \href{#method-Logger-warn}{\code{Logger$warn()}}
 \item \href{#method-Logger-info}{\code{Logger$info()}}
@@ -86,8 +80,11 @@ Create a new Logger object.
 \if{html}{\out{<div class="r">}}\preformatted{Logger$new(
   level = LogLevel$INFO,
   file_path = NULL,
+  db_conn = NULL,
+  table_name = "LOGS",
   print_fn = function(x) cat(x, "\\n"),
-  format_fn = function(level, msg) msg
+  format_fn = function(level, msg) msg,
+  context = list()
 )}\if{html}{\out{</div>}}
 }
 
@@ -98,30 +95,23 @@ Create a new Logger object.
 
 \item{\code{file_path}}{Character; the path to a file to save log entries to. Default is NULL.}
 
+\item{\code{db_conn}}{DBI connection object; an existing database connection. Default is NULL.}
+
+\item{\code{table_name}}{Character; the name of the table to log to in the database. Default is "LOGS".}
+
 \item{\code{print_fn}}{Function; custom print function to use for console output.
 Should accept a single character string as input. Default uses cat with a newline.}
 
 \item{\code{format_fn}}{Function; custom format function to modify the log message.
 Should accept level and msg as inputs and return a formatted string.}
+
+\item{\code{context}}{List; initial context for the logger. Default is an empty list.}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
 A new `Logger` object.
 }
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{logger <- Logger$new(
-  level = LogLevel$WARNING,
-  file_path = "log.txt",
-  print_fn = function(x) message(paste0("Custom: ", x)),
-  format_fn = function(level, msg) paste0("Hello prefix: ", msg)
-)
-}
-\if{html}{\out{</div>}}
-
-}
-
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Logger-set_level"></a>}}
@@ -150,6 +140,43 @@ logger$set_level(LogLevel$WARNING)
 
 }
 \if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Logger-update_context"></a>}}
+\if{latex}{\out{\hypertarget{method-Logger-update_context}{}}}
+\subsection{Method \code{update_context()}}{
+Update the logger's context
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Logger$update_context(new_context)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{new_context}}{A list of new context items to add or update}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Logger-clear_context"></a>}}
+\if{latex}{\out{\hypertarget{method-Logger-clear_context}{}}}
+\subsection{Method \code{clear_context()}}{
+Clear the logger's context
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Logger$clear_context()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Logger-get_context"></a>}}
+\if{latex}{\out{\hypertarget{method-Logger-get_context}{}}}
+\subsection{Method \code{get_context()}}{
+Get the current context
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Logger$get_context()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Logger-error"></a>}}
 \if{latex}{\out{\hypertarget{method-Logger-error}{}}}
 \subsection{Method \code{error()}}{
@@ -172,7 +199,7 @@ Log an error message.
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{logger <- Logger$new()
-logger$error("An error occurred", data = list(x = 1), error = simpleError("Oops!"))
+logger$error("An error occurred", data = list(x = 1), error = "Oops!")
 }
 \if{html}{\out{</div>}}
 

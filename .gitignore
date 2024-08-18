@@ -3,6 +3,7 @@ dev/
 temp*
 *.ignore.*
 *html
+*.sqlite
 
 *.log
 

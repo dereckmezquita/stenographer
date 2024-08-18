@@ -20,7 +20,7 @@ The `Logger` package provides a flexible and powerful logging system for R appli
 
 ## Installation
 
-You can install the `Logger` package from CRAN with:
+You can install the `Logger` package from GitHub with:
 
 ```{r, eval = FALSE}
 remotes::install_github("derecksprojects/R-Logger")
@@ -31,7 +31,7 @@ remotes::install_github("derecksprojects/R-Logger")
 First, let's load the package and create a basic logger:
 
 ```{r}
-box::use(Logger[Logger, LogLevel])
+box::use(Logger, Logger[Logger, LogLevel])
 
 # Create a basic logger
 log <- Logger$new()
@@ -57,6 +57,110 @@ custom_log <- Logger$new(
 custom_log$info("This won't be logged")
 custom_log$warn("This will be logged to console and file")
 custom_log$error("This is an error message")
+```
+
+## Logging to a Database
+
+The `Logger` class supports logging to a `SQLite` database. Here's how you can set it up:
+
+```{r}
+box::use(RSQLite[ SQLite ])
+box::use(DBI[ dbConnect, dbDisconnect, dbGetQuery ])
+
+# Create a database connection
+db <- dbConnect(SQLite(), "log.sqlite")
+
+# Create a logger that logs to the database
+db_log <- Logger$new(
+    db_conn = db,
+    table_name = "app_logs"
+)
+
+# Log some messages
+db_log$info("This is logged to the database")
+db_log$warn("This is a warning", data = list(code = 101))
+db_log$error("An error occurred", error = "Division by zero")
+
+# Example of querying the logs
+query <- "SELECT * FROM app_logs WHERE level = 'ERROR'"
+result <- dbGetQuery(db, query)
+print(result)
+
+# Don't forget to close the database connection when you're done
+dbDisconnect(db)
+```
+
+## Using Context
+
+The `Logger` class now supports a context feature, which allows you to add persistent information to your log entries:
+
+```{r}
+context_log <- Logger$new(
+    db_conn = db,
+    table_name = "context_logs",
+    context = list(app_name = "MyApp", version = "1.0.0")
+)
+
+context_log$info("Application started")
+
+# Update context
+context_log$update_context(list(user_id = "12345"))
+context_log$info("User logged in")
+
+# Log an error with context
+context_log$error("Operation failed", data = list(operation = "data_fetch"))
+
+# Example of querying logs with context
+query <- "SELECT * FROM context_logs WHERE json_extract(context, '$.user_id') = '12345'"
+result <- dbGetQuery(db, query)
+print(result)
+
+# Clear context
+context_log$clear_context()
+context_log$info("Context cleared")
+```
+
+## Combining Features
+
+You can combine various features of the `Logger` class to create a powerful logging system:
+
+```{r}
+# Create a combined logger
+combined_log <- Logger$new(
+    level = LogLevel$INFO,
+    file_path = "combined_app.log",
+    db_conn = db,
+    table_name = "combined_logs",
+    context = list(app_name = "CombinedApp", version = "2.0.0"),
+    print_fn = Logger$messageParallel,
+    format_fn = function(level, msg) {
+        # manipulate the message before logging
+        msg <- gsub("API_KEY=[^\\s]+", "API_KEY=***", msg)
+        return(paste(level, msg))
+    }
+)
+
+# Log some messages
+combined_log$info("Application started")
+combined_log$warn("Low memory", data = list(available_mb = 100))
+combined_log$error("Database connection failed", error = "Connection timeout")
+
+# Update context
+combined_log$update_context(list(user_id = "67890"))
+combined_log$info("User action", data = list(action = "button_click"))
+
+# Example of a more complex query using context and data
+query <- "
+SELECT *
+FROM combined_logs
+WHERE json_extract(context, '$.app_name') = 'CombinedApp'
+  AND json_extract(data, '$.available_mb') < 200
+"
+result <- dbGetQuery(db, query)
+print(result)
+
+# Don't forget to close the database connection when you're done
+dbDisconnect(db)
 ```
 
 ## Using Helper Functions
@@ -97,7 +201,7 @@ This will produce a log entry like:
 
 ### Logging Errors with Context
 
-When an error occurs, it's often useful to log not just the error message, but also the context in which the error occurred. Here's an example of how to do this using the `Logger` class and helper functions:
+When an error occurs, it's often useful to catch and log not just the error message, but also the context in which the error occurred. Here's an example of how to do this using the `Logger` class and helper functions:
 
 ```{r}
 box::use(Logger[tableToString])
@@ -142,12 +246,12 @@ When working with parallel processing, standard logging functions might not work
 box::use(future)
 box::use(future.apply[future_lapply])
 
-log <- Logger$new(print_fn = messageParallel)
+log <- Logger$new(print_fn = Logger$messageParallel)
 
 future::plan(future::multisession, workers = 2)
 
 result <- future_lapply(1:5, function(i) {
-    messageParallel(sprintf("Processing item %d", i))
+    Logger$messageParallel(sprintf("Processing item %d", i))
     if (i == 3) {
         log$warn(sprintf("Warning for item %d", i))
     }
@@ -161,6 +265,8 @@ This ensures that messages from parallel processes are properly captured and log
 
 ## Conclusion
 
-The `Logger` package provides a robust and flexible logging system for R applications. By using the `Logger` class in combination with helper functions like `valueCoordinates` and `tableToString`, you can create informative and context-rich log messages that greatly aid in debugging and monitoring your R scripts and applications.
+The `Logger` package provides a robust and flexible logging system for R applications. With features like file logging, database logging, and context management, you can create informative and context-rich log messages that greatly aid in debugging and monitoring your R scripts and applications.
 
-Remember to adjust the log level, output file, and other settings to suit your specific needs. Happy logging!
+Moreover, by using helper functions like `valueCoordinates` and `tableToString` you can more easily track down and log data issues and errors, providing valuable information for troubleshooting and analysis.
+
+Remember to adjust the log level, output file, database settings, and other parameters to suit your specific needs. The ability to query logs using SQL, especially with context-based filtering, makes it easy to analyze and troubleshoot issues in your applications.
