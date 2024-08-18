@@ -40,11 +40,11 @@ log <- Logger$new()
 
 # Log some messages
 log$info("This is an informational message")
-#> 2024-08-18T17:57:26.902Z INFO    This is an informational message
+#> 2024-08-18T17:59:10.848Z INFO    This is an informational message
 log$warn("This is a warning")
-#> 2024-08-18T17:57:26.913Z WARNING This is a warning
+#> 2024-08-18T17:59:10.856Z WARNING This is a warning
 log$error("This is an error")
-#> 2024-08-18T17:57:26.945Z ERROR   This is an error
+#> 2024-08-18T17:59:10.890Z ERROR   This is an error
 ```
 
 ## Features
@@ -65,17 +65,17 @@ custom_log <- Logger$new(
 
 custom_log$info("This won't be logged")
 custom_log$warn("This will be logged to console and file")
-#> 2024-08-18T17:57:27.170Z WARNING This will be logged to console and file
+#> 2024-08-18T17:59:11.110Z WARNING This will be logged to console and file
 custom_log$error("This is an error message")
-#> 2024-08-18T17:57:27.190Z ERROR   This is an error message
+#> 2024-08-18T17:59:11.124Z ERROR   This is an error message
 ```
 
 Logs are written to the specified file as JSON objects:
 
 ``` r
 cat(readLines(log_file), sep = "\n")
-#> {"datetime":"2024-08-18T17:57:27.170Z","level":"WARNING","msg":"This will be logged to console and file"} 
-#> {"datetime":"2024-08-18T17:57:27.190Z","level":"ERROR","msg":"This is an error message"}
+#> {"datetime":"2024-08-18T17:59:11.110Z","level":"WARNING","msg":"This will be logged to console and file"} 
+#> {"datetime":"2024-08-18T17:59:11.124Z","level":"ERROR","msg":"This is an error message"}
 ```
 
 ### Database Logging
@@ -100,14 +100,14 @@ db_log <- Logger$new(
 
 # Log some messages
 db_log$info("This is logged to the database")
-#> 2024-08-18T17:57:27.505Z INFO    This is logged to the database
+#> 2024-08-18T17:59:11.413Z INFO    This is logged to the database
 #> Context:
 #> {
 #>   "app_name": "MyApp",
 #>   "fun": "main"
 #> }
 db_log$warn("This is a warning", data = list(code = 101))
-#> 2024-08-18T17:57:27.632Z WARNING This is a warning
+#> 2024-08-18T17:59:11.483Z WARNING This is a warning
 #> Data:
 #> {
 #>   "code": 101
@@ -117,14 +117,10 @@ db_log$warn("This is a warning", data = list(code = 101))
 #>   "app_name": "MyApp",
 #>   "fun": "main"
 #> }
-db_log$error("An error occurred", error = simpleError("Division by zero"))
-#> 2024-08-18T17:57:27.679Z ERROR   An error occurred
+db_log$error("An error occurred", error = "Division by zero")
+#> 2024-08-18T17:59:11.523Z ERROR   An error occurred
 #> Error:
-#> {
-#>   "name": "simpleError",
-#>   "message": "Division by zero",
-#>   "call": "NULL"
-#> }
+#> "Division by zero"
 #> Context:
 #> {
 #>   "app_name": "MyApp",
@@ -137,8 +133,10 @@ result <- dbGetQuery(db, query)
 print(result)
 #>   id                 datetime level                               context
 #> 1  3 2024-08-18T17:57:27.679Z ERROR {"app_name":["MyApp"],"fun":["main"]}
+#> 2  6 2024-08-18T17:59:11.523Z ERROR {"app_name":["MyApp"],"fun":["main"]}
 #>                 msg data error
 #> 1 An error occurred <NA>  <NA>
+#> 2 An error occurred <NA>  <NA>
 
 # Don't forget to close the database connection when you're done
 dbDisconnect(db)
@@ -171,7 +169,7 @@ if (nrow(na_coords) > 0) {
         )
     )
 }
-#> 2024-08-18T17:57:27.704Z WARNING NA values found in the dataset
+#> 2024-08-18T17:59:11.550Z WARNING NA values found in the dataset
 #> Data:
 #> {
 #>   "na_locations": [
@@ -225,7 +223,7 @@ process_data <- function(df) {
 # Test the function with problematic data
 df <- data.frame(a = c(1, 2, 3), b = c(0, 2, 0))
 process_data(df)
-#> 2024-08-18T17:57:27.753Z ERROR   Division by zero occurred
+#> 2024-08-18T17:59:11.587Z ERROR   Division by zero occurred
 #> Data:
 #> {
 #>   "infinite_values": [
@@ -240,7 +238,7 @@ process_data(df)
 #>   ],
 #>   "dataset_preview": "  a b\n1 1 0\n2 2 2\n3 3 0"
 #> } 
-#> 2024-08-18T17:57:27.755Z ERROR   An error occurred while processing data: Division by zero error
+#> 2024-08-18T17:59:11.589Z ERROR   An error occurred while processing data: Division by zero error
 #> Data:
 #> {
 #>   "dataset_preview": "  a b\n1 1 0\n2 2 2\n3 3 0"

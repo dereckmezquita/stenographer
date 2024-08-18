@@ -79,7 +79,7 @@ db_log <- Logger$new(
 # Log some messages
 db_log$info("This is logged to the database")
 db_log$warn("This is a warning", data = list(code = 101))
-db_log$error("An error occurred", error = simpleError("Division by zero"))
+db_log$error("An error occurred", error = "Division by zero")
 
 # Example of querying the logs
 query <- "SELECT * FROM app_logs WHERE level = 'ERROR'"
@@ -143,7 +143,7 @@ combined_log <- Logger$new(
 # Log some messages
 combined_log$info("Application started")
 combined_log$warn("Low memory", data = list(available_mb = 100))
-combined_log$error("Database connection failed", error = simpleError("Connection timeout"))
+combined_log$error("Database connection failed", error = "Connection timeout")
 
 # Update context
 combined_log$update_context(list(user_id = "67890"))

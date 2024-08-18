@@ -41,7 +41,7 @@ logger$set_level(LogLevel$WARNING)
 ## ------------------------------------------------
 
 logger <- Logger$new()
-logger$error("An error occurred", data = list(x = 1), error = simpleError("Oops!"))
+logger$error("An error occurred", data = list(x = 1), error = "Oops!")
 
 ## ------------------------------------------------
 ## Method `Logger$warn`
@@ -199,7 +199,7 @@ Log an error message.
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{logger <- Logger$new()
-logger$error("An error occurred", data = list(x = 1), error = simpleError("Oops!"))
+logger$error("An error occurred", data = list(x = 1), error = "Oops!")
 }
 \if{html}{\out{</div>}}
 

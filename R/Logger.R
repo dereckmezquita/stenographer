@@ -111,7 +111,7 @@ Logger <- R6::R6Class(
         #' @param error Optional; an error object to include in the log entry.
         #' @examples
         #' logger <- Logger$new()
-        #' logger$error("An error occurred", data = list(x = 1), error = simpleError("Oops!"))
+        #' logger$error("An error occurred", data = list(x = 1), error = "Oops!")
         error = function(msg, data = NULL, error = NULL) {
             if (private$level >= LogLevel$ERROR) {
                 formatted_msg <- private$format_fn("ERROR", msg)
