@@ -9,7 +9,13 @@ logger <- Logger$new(
         messageParallel(x)
     },
     format_fn = function(level, msg) {
-        paste0("Yeet ", msg)
+        prefix <- switch(level,
+            "ERROR" = "E ",
+            "WARNING" = "W ",
+            "INFO" = "S ",
+            "Q "
+        )
+        return(collapse(c(prefix, msg)))
     }
 )
 
