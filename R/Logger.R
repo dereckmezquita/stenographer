@@ -10,7 +10,7 @@ LogLevel <- list(
 )
 
 #' @title Logger
-#' @description An R6 class for flexible logging with customisable output and message formatting.
+#' @description An R6 class for flexible logging with customisable output, message formatting, and context.
 #'
 #' @examples
 #' # Create a basic logger
@@ -19,19 +19,21 @@ LogLevel <- list(
 #' logger$warn("This is a warning")
 #' logger$error("This is an error")
 #'
-#' # Create a logger with custom settings and message formatting
+#' # Create a logger with custom settings, message formatting, and context
 #' custom_logger <- Logger$new(
 #'   level = LogLevel$WARNING,
 #'   file_path = tempfile("log_"),
 #'   print_fn = function(x) message(paste0("Custom: ", x)),
-#'   format_fn = function(level, msg) paste0("Hello prefix: ", msg)
+#'   format_fn = function(level, msg) paste0("Hello prefix: ", msg),
+#'   context = list(program = "MyApp")
 #' )
 #' custom_logger$info("This won't be logged")
 #' custom_logger$warn("This will be logged with a custom prefix")
 #'
-#' # Change log level
+#' # Change log level and update context
 #' custom_logger$set_level(LogLevel$INFO)
-#' custom_logger$info("Now this will be logged with a custom prefix")
+#' custom_logger$update_context(list(user = "John"))
+#' custom_logger$info("Now this will be logged with a custom prefix and context")
 #' @export
 Logger <- R6::R6Class(
     "Logger",
@@ -40,31 +42,36 @@ Logger <- R6::R6Class(
         #' Create a new Logger object.
         #' @param level The minimum log level to output. Default is LogLevel$INFO.
         #' @param file_path Character; the path to a file to save log entries to. Default is NULL.
+        #' @param db_conn DBI connection object; an existing database connection. Default is NULL.
+        #' @param table_name Character; the name of the table to log to in the database. Default is "LOGS".
         #' @param print_fn Function; custom print function to use for console output.
         #'   Should accept a single character string as input. Default uses cat with a newline.
         #' @param format_fn Function; custom format function to modify the log message.
         #'   Should accept level and msg as inputs and return a formatted string.
+        #' @param context List; initial context for the logger. Default is an empty list.
         #' @return A new `Logger` object.
-        #' @examples
-        #' logger <- Logger$new(
-        #'   level = LogLevel$WARNING,
-        #'   file_path = "log.txt",
-        #'   print_fn = function(x) message(paste0("Custom: ", x)),
-        #'   format_fn = function(level, msg) paste0("Hello prefix: ", msg)
-        #' )
         initialize = function(
             level = LogLevel$INFO,
             file_path = NULL,
+            db_conn = NULL,
+            table_name = "LOGS",
             print_fn = function(x) cat(x, "\n"),
-            format_fn = function(level, msg) msg
+            format_fn = function(level, msg) msg,
+            context = list()
         ) {
             private$level <- level
             private$file_path <- file_path
+            private$db_conn <- db_conn
+            private$table_name <- table_name
             private$print_fn <- print_fn
             private$format_fn <- format_fn
+            private$context <- context
 
             if (!is.null(private$file_path)) {
                 private$ensure_log_file_exists()
+            }
+            if (!is.null(private$db_conn)) {
+                private$ensure_log_table_exists()
             }
         },
 
@@ -76,6 +83,25 @@ Logger <- R6::R6Class(
         #' logger$set_level(LogLevel$WARNING)
         set_level = function(level) {
             private$level <- level
+        },
+
+        #' @description
+        #' Update the logger's context
+        #' @param new_context A list of new context items to add or update
+        update_context = function(new_context) {
+            private$context <- modifyList(private$context, new_context)
+        },
+
+        #' @description
+        #' Clear the logger's context
+        clear_context = function() {
+            private$context <- list()
+        },
+
+        #' @description
+        #' Get the current context
+        get_context = function() {
+            return(private$context)
         },
 
         #' @description
@@ -128,8 +154,11 @@ Logger <- R6::R6Class(
     private = list(
         level = NULL,
         file_path = NULL,
+        db_conn = NULL,
+        table_name = NULL,
         print_fn = NULL,
         format_fn = NULL,
+        context = NULL,
 
         ensure_log_file_exists = function() {
             dir <- fs::path_dir(private$file_path)
@@ -138,6 +167,22 @@ Logger <- R6::R6Class(
             }
             if (!fs::file_exists(private$file_path)) {
                 fs::file_create(private$file_path)
+            }
+        },
+
+        ensure_log_table_exists = function() {
+            if (!DBI::dbExistsTable(private$db_conn, private$table_name)) {
+                DBI::dbExecute(private$db_conn, sprintf("
+                    CREATE TABLE %s (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        datetime TEXT,
+                        level TEXT,
+                        context TEXT,
+                        msg TEXT,
+                        data TEXT,
+                        error TEXT
+                    )
+                ", private$table_name))
             }
         },
 
@@ -152,9 +197,28 @@ Logger <- R6::R6Class(
             }
         },
 
+        log_to_db = function(entry) {
+            if (!is.null(private$db_conn)) {
+                entry$data <- NULL
+                if (!is.null(entry$data)) {
+                    entry$data <- jsonlite::toJSON(entry$data)
+                }
+                entry$error <- NULL
+                if (!is.null(entry$error)) {
+                    entry$error <- jsonlite::toJSON(entry$error)
+                }
+                entry$context <- NULL
+                if (length(private$context) > 0) {
+                    entry$context <- jsonlite::toJSON(private$context)
+                }
+                DBI::dbWriteTable(private$db_conn, private$table_name, as.data.frame(entry), append = TRUE)
+            }
+        },
+
         log_entry = function(entry) {
             private$print_fn(private$format_console_output(entry))
             private$log_to_file(entry)
+            private$log_to_db(entry)
         },
 
         create_log_entry = function(level, msg, data = NULL, error = NULL) {
@@ -164,10 +228,13 @@ Logger <- R6::R6Class(
                 msg = msg
             )
             if (!is.null(data)) {
-                entry$data <- data
+                entry$data <- jsonlite::toJSON(data)
             }
             if (!is.null(error)) {
-                entry$error <- private$serialise_error(error)
+                entry$error <- jsonlite::toJSON(private$serialise_error(error))
+            }
+            if (length(private$context) > 0) {
+                entry$context <- jsonlite::toJSON(private$context)
             }
             return(entry)
         },
@@ -199,14 +266,21 @@ Logger <- R6::R6Class(
             if (!is.null(entry$data)) {
                 output <- paste0(
                     output, "\n", crayon::cyan("Data:"), "\n",
-                    jsonlite::toJSON(entry$data, auto_unbox = TRUE, pretty = TRUE)
+                    jsonlite::toJSON(jsonlite::fromJSON(entry$data), auto_unbox = TRUE, pretty = TRUE)
                 )
             }
 
             if (!is.null(entry$error)) {
                 output <- paste0(
                     output, "\n", crayon::red("Error:"), "\n",
-                    jsonlite::toJSON(entry$error, auto_unbox = TRUE, pretty = TRUE)
+                    jsonlite::toJSON(jsonlite::fromJSON(entry$error), auto_unbox = TRUE, pretty = TRUE)
+                )
+            }
+
+            if (!is.null(entry$context)) {
+                output <- paste0(
+                    output, "\n", crayon::magenta("Context:"), "\n",
+                    jsonlite::toJSON(jsonlite::fromJSON(entry$context), auto_unbox = TRUE, pretty = TRUE)
                 )
             }
 
