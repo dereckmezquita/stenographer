@@ -4,7 +4,7 @@
 \alias{Logger}
 \title{Logger}
 \description{
-An R6 class for flexible logging with customizable output and message formatting.
+An R6 class for flexible logging with customisable output and message formatting.
 }
 \examples{
 # Create a basic logger
@@ -18,14 +18,14 @@ custom_logger <- Logger$new(
   level = LogLevel$WARNING,
   file_path = tempfile("log_"),
   print_fn = function(x) message(paste0("Custom: ", x)),
-  format_fn = function(level, msg) paste0("[", level, "] ", msg)
+  format_fn = function(level, msg) paste0("Hello prefix: ", msg)
 )
 custom_logger$info("This won't be logged")
-custom_logger$warn("This will be logged with custom formatting")
+custom_logger$warn("This will be logged with a custom prefix")
 
 # Change log level
 custom_logger$set_level(LogLevel$INFO)
-custom_logger$info("Now this will be logged with custom formatting")
+custom_logger$info("Now this will be logged with a custom prefix")
 
 ## ------------------------------------------------
 ## Method `Logger$new`
@@ -35,7 +35,7 @@ logger <- Logger$new(
   level = LogLevel$WARNING,
   file_path = "log.txt",
   print_fn = function(x) message(paste0("Custom: ", x)),
-  format_fn = function(level, msg) paste0("[", level, "] ", msg)
+  format_fn = function(level, msg) paste0("Hello prefix: ", msg)
 )
 
 ## ------------------------------------------------
@@ -115,7 +115,7 @@ A new `Logger` object.
   level = LogLevel$WARNING,
   file_path = "log.txt",
   print_fn = function(x) message(paste0("Custom: ", x)),
-  format_fn = function(level, msg) paste0("[", level, "] ", msg)
+  format_fn = function(level, msg) paste0("Hello prefix: ", msg)
 )
 }
 \if{html}{\out{</div>}}
