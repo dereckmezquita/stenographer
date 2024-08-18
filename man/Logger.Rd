@@ -4,7 +4,7 @@
 \alias{Logger}
 \title{Logger}
 \description{
-An R6 class for flexible logging with customizable output.
+An R6 class for flexible logging with customizable output and message formatting.
 }
 \examples{
 # Create a basic logger
@@ -13,24 +13,30 @@ logger$info("This is an info message")
 logger$warn("This is a warning")
 logger$error("This is an error")
 
-# Create a logger with custom settings
+# Create a logger with custom settings and message formatting
 custom_logger <- Logger$new(
   level = LogLevel$WARNING,
   file_path = tempfile("log_"),
-  print_fn = message
+  print_fn = function(x) message(paste0("Custom: ", x)),
+  format_fn = function(level, msg) paste0("[", level, "] ", msg)
 )
 custom_logger$info("This won't be logged")
-custom_logger$warn("This will be logged")
+custom_logger$warn("This will be logged with custom formatting")
 
 # Change log level
 custom_logger$set_level(LogLevel$INFO)
-custom_logger$info("Now this will be logged")
+custom_logger$info("Now this will be logged with custom formatting")
 
 ## ------------------------------------------------
 ## Method `Logger$new`
 ## ------------------------------------------------
 
-logger <- Logger$new(level = LogLevel$WARNING, file_path = "log.txt")
+logger <- Logger$new(
+  level = LogLevel$WARNING,
+  file_path = "log.txt",
+  print_fn = function(x) message(paste0("Custom: ", x)),
+  format_fn = function(level, msg) paste0("[", level, "] ", msg)
+)
 
 ## ------------------------------------------------
 ## Method `Logger$set_level`
@@ -80,7 +86,8 @@ Create a new Logger object.
 \if{html}{\out{<div class="r">}}\preformatted{Logger$new(
   level = LogLevel$INFO,
   file_path = NULL,
-  print_fn = function(x) cat(x, "\\n")
+  print_fn = function(x) cat(x, "\\n"),
+  format_fn = function(level, msg) msg
 )}\if{html}{\out{</div>}}
 }
 
@@ -93,6 +100,9 @@ Create a new Logger object.
 
 \item{\code{print_fn}}{Function; custom print function to use for console output.
 Should accept a single character string as input. Default uses cat with a newline.}
+
+\item{\code{format_fn}}{Function; custom format function to modify the log message.
+Should accept level and msg as inputs and return a formatted string.}
 }
 \if{html}{\out{</div>}}
 }
@@ -101,7 +111,12 @@ A new `Logger` object.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{logger <- Logger$new(level = LogLevel$WARNING, file_path = "log.txt")
+\preformatted{logger <- Logger$new(
+  level = LogLevel$WARNING,
+  file_path = "log.txt",
+  print_fn = function(x) message(paste0("Custom: ", x)),
+  format_fn = function(level, msg) paste0("[", level, "] ", msg)
+)
 }
 \if{html}{\out{</div>}}
 

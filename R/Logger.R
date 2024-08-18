@@ -10,7 +10,7 @@ LogLevel <- list(
 )
 
 #' @title Logger
-#' @description An R6 class for flexible logging with customizable output.
+#' @description An R6 class for flexible logging with customisable output and message formatting.
 #'
 #' @examples
 #' # Create a basic logger
@@ -19,18 +19,19 @@ LogLevel <- list(
 #' logger$warn("This is a warning")
 #' logger$error("This is an error")
 #'
-#' # Create a logger with custom settings
+#' # Create a logger with custom settings and message formatting
 #' custom_logger <- Logger$new(
 #'   level = LogLevel$WARNING,
 #'   file_path = tempfile("log_"),
-#'   print_fn = message
+#'   print_fn = function(x) message(paste0("Custom: ", x)),
+#'   format_fn = function(level, msg) paste0("Hello prefix: ", msg)
 #' )
 #' custom_logger$info("This won't be logged")
-#' custom_logger$warn("This will be logged")
+#' custom_logger$warn("This will be logged with a custom prefix")
 #'
 #' # Change log level
 #' custom_logger$set_level(LogLevel$INFO)
-#' custom_logger$info("Now this will be logged")
+#' custom_logger$info("Now this will be logged with a custom prefix")
 #' @export
 Logger <- R6::R6Class(
     "Logger",
@@ -41,17 +42,26 @@ Logger <- R6::R6Class(
         #' @param file_path Character; the path to a file to save log entries to. Default is NULL.
         #' @param print_fn Function; custom print function to use for console output.
         #'   Should accept a single character string as input. Default uses cat with a newline.
+        #' @param format_fn Function; custom format function to modify the log message.
+        #'   Should accept level and msg as inputs and return a formatted string.
         #' @return A new `Logger` object.
         #' @examples
-        #' logger <- Logger$new(level = LogLevel$WARNING, file_path = "log.txt")
+        #' logger <- Logger$new(
+        #'   level = LogLevel$WARNING,
+        #'   file_path = "log.txt",
+        #'   print_fn = function(x) message(paste0("Custom: ", x)),
+        #'   format_fn = function(level, msg) paste0("Hello prefix: ", msg)
+        #' )
         initialize = function(
             level = LogLevel$INFO,
             file_path = NULL,
-            print_fn = function(x) cat(x, "\n")
+            print_fn = function(x) cat(x, "\n"),
+            format_fn = function(level, msg) msg
         ) {
             private$level <- level
             private$file_path <- file_path
             private$print_fn <- print_fn
+            private$format_fn <- format_fn
 
             if (!is.null(private$file_path)) {
                 private$ensure_log_file_exists()
@@ -78,7 +88,8 @@ Logger <- R6::R6Class(
         #' logger$error("An error occurred", data = list(x = 1), error = simpleError("Oops!"))
         error = function(msg, data = NULL, error = NULL) {
             if (private$level >= LogLevel$ERROR) {
-                entry <- private$create_log_entry("ERROR", msg, data, error)
+                formatted_msg <- private$format_fn("ERROR", msg)
+                entry <- private$create_log_entry("ERROR", formatted_msg, data, error)
                 private$print_fn(private$format_console_output(entry))
                 private$log_to_file(entry)
             }
@@ -93,7 +104,8 @@ Logger <- R6::R6Class(
         #' logger$warn("This is a warning", data = list(reason = "example"))
         warn = function(msg, data = NULL) {
             if (private$level >= LogLevel$WARNING) {
-                entry <- private$create_log_entry("WARNING", msg, data)
+                formatted_msg <- private$format_fn("WARNING", msg)
+                entry <- private$create_log_entry("WARNING", formatted_msg, data)
                 private$print_fn(private$format_console_output(entry))
                 private$log_to_file(entry)
             }
@@ -108,7 +120,8 @@ Logger <- R6::R6Class(
         #' logger$info("Operation completed successfully", data = list(duration = 5.2))
         info = function(msg, data = NULL) {
             if (private$level >= LogLevel$INFO) {
-                entry <- private$create_log_entry("INFO", msg, data)
+                formatted_msg <- private$format_fn("INFO", msg)
+                entry <- private$create_log_entry("INFO", formatted_msg, data)
                 private$print_fn(private$format_console_output(entry))
                 private$log_to_file(entry)
             }
@@ -119,6 +132,7 @@ Logger <- R6::R6Class(
         level = NULL,
         file_path = NULL,
         print_fn = NULL,
+        format_fn = NULL,
 
         ensure_log_file_exists = function() {
             dir <- fs::path_dir(private$file_path)
