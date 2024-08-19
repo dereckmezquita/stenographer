@@ -217,7 +217,7 @@ process_data <- function(df) {
                     dataset_preview = tableToString(df)
                 )
             )
-            stop("Division by zero error")
+            cat("Division by zero error")
         }
         return(result)
     }, error = function(e) {
