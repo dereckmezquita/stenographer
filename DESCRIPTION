@@ -23,7 +23,7 @@ Imports:
     jsonlite,
     fs,
     crayon,
-    RSQlite,
+    RSQLite,
     DBI
 Suggests:
     testthat (>= 3.0.0),
