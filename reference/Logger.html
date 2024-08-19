@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">Logger</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.32</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -36,7 +36,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Logger</h1>
-      <small class="dont-index">Source: <a href="https://github.com/dereckmezquita/R-Logger/blob/v0.0.3/R/Logger.R" class="external-link"><code>R/Logger.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/dereckmezquita/R-Logger/blob/master/R/Logger.R" class="external-link"><code>R/Logger.R</code></a></small>
       <div class="d-none name"><code>Logger.Rd</code></div>
     </div>
 
@@ -275,11 +275,11 @@ Should accept level and msg as inputs and return a formatted string.</p></dd>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Create a basic logger</span></span></span>
 <span class="r-in"><span><span class="va">logger</span> <span class="op">&lt;-</span> <span class="va">Logger</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">logger</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"This is an info message"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #555555;">2024-08-19T00:04:19.097Z</span> <span style="color: #0000BB;">INFO   </span> <span style="color: #BBBBBB;">This is an info message</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #555555;">2024-08-19T01:32:43.976Z</span> <span style="color: #0000BB;">INFO   </span> <span style="color: #BBBBBB;">This is an info message</span> </span>
 <span class="r-in"><span><span class="va">logger</span><span class="op">$</span><span class="fu">warn</span><span class="op">(</span><span class="st">"This is a warning"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #555555;">2024-08-19T00:04:19.101Z</span> <span style="color: #BBBB00;">WARNING</span> <span style="color: #BBBBBB;">This is a warning</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #555555;">2024-08-19T01:32:43.981Z</span> <span style="color: #BBBB00;">WARNING</span> <span style="color: #BBBBBB;">This is a warning</span> </span>
 <span class="r-in"><span><span class="va">logger</span><span class="op">$</span><span class="fu">error</span><span class="op">(</span><span class="st">"This is an error"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #555555;">2024-08-19T00:04:19.124Z</span> <span style="color: #BB0000;">ERROR  </span> <span style="color: #BBBBBB;">This is an error</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #555555;">2024-08-19T01:32:44.005Z</span> <span style="color: #BB0000;">ERROR  </span> <span style="color: #BBBBBB;">This is an error</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Create a logger with custom settings, message formatting, and context</span></span></span>
 <span class="r-in"><span><span class="va">custom_logger</span> <span class="op">&lt;-</span> <span class="va">Logger</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span></span>
@@ -291,7 +291,7 @@ Should accept level and msg as inputs and return a formatted string.</p></dd>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">custom_logger</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"This won't be logged"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">custom_logger</span><span class="op">$</span><span class="fu">warn</span><span class="op">(</span><span class="st">"This will be logged with a custom prefix"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Custom: <span style="color: #555555;">2024-08-19T00:04:19.129Z</span> <span style="color: #BBBB00;">WARNING</span> <span style="color: #BBBBBB;">Hello prefix: This will be logged with a custom prefix</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Custom: <span style="color: #555555;">2024-08-19T01:32:44.010Z</span> <span style="color: #BBBB00;">WARNING</span> <span style="color: #BBBBBB;">Hello prefix: This will be logged with a custom prefix</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BB00BB;">Context:</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> {</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   "program": "MyApp"</span>
@@ -301,7 +301,7 @@ Should accept level and msg as inputs and return a formatted string.</p></dd>
 <span class="r-in"><span><span class="va">custom_logger</span><span class="op">$</span><span class="fu">set_level</span><span class="op">(</span><span class="va">LogLevel</span><span class="op">$</span><span class="va">INFO</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">custom_logger</span><span class="op">$</span><span class="fu">update_context</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>user <span class="op">=</span> <span class="st">"John"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">custom_logger</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"Now this will be logged with a custom prefix and context"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Custom: <span style="color: #555555;">2024-08-19T00:04:19.133Z</span> <span style="color: #0000BB;">INFO   </span> <span style="color: #BBBBBB;">Hello prefix: Now this will be logged with a custom prefix and context</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Custom: <span style="color: #555555;">2024-08-19T01:32:44.014Z</span> <span style="color: #0000BB;">INFO   </span> <span style="color: #BBBBBB;">Hello prefix: Now this will be logged with a custom prefix and context</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BB00BB;">Context:</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> {</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   "program": "MyApp",</span>
@@ -321,7 +321,7 @@ Should accept level and msg as inputs and return a formatted string.</p></dd>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">logger</span> <span class="op">&lt;-</span> <span class="va">Logger</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">logger</span><span class="op">$</span><span class="fu">error</span><span class="op">(</span><span class="st">"An error occurred"</span>, data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>, error <span class="op">=</span> <span class="st">"Oops!"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #555555;">2024-08-19T00:04:19.137Z</span> <span style="color: #BB0000;">ERROR  </span> <span style="color: #BBBBBB;">An error occurred</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #555555;">2024-08-19T01:32:44.018Z</span> <span style="color: #BB0000;">ERROR  </span> <span style="color: #BBBBBB;">An error occurred</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">Data:</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> {</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   "x": 1</span>
@@ -335,7 +335,7 @@ Should accept level and msg as inputs and return a formatted string.</p></dd>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">logger</span> <span class="op">&lt;-</span> <span class="va">Logger</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">logger</span><span class="op">$</span><span class="fu">warn</span><span class="op">(</span><span class="st">"This is a warning"</span>, data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>reason <span class="op">=</span> <span class="st">"example"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #555555;">2024-08-19T00:04:19.141Z</span> <span style="color: #BBBB00;">WARNING</span> <span style="color: #BBBBBB;">This is a warning</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #555555;">2024-08-19T01:32:44.022Z</span> <span style="color: #BBBB00;">WARNING</span> <span style="color: #BBBBBB;">This is a warning</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">Data:</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> {</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   "reason": "example"</span>
@@ -347,7 +347,7 @@ Should accept level and msg as inputs and return a formatted string.</p></dd>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">logger</span> <span class="op">&lt;-</span> <span class="va">Logger</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">logger</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"Operation completed successfully"</span>, data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>duration <span class="op">=</span> <span class="fl">5.2</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #555555;">2024-08-19T00:04:19.143Z</span> <span style="color: #0000BB;">INFO   </span> <span style="color: #BBBBBB;">Operation completed successfully</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #555555;">2024-08-19T01:32:44.025Z</span> <span style="color: #0000BB;">INFO   </span> <span style="color: #BBBBBB;">Operation completed successfully</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">Data:</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> {</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   "duration": 5.2</span>
