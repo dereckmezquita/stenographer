@@ -49,6 +49,25 @@
       ],
       "Hash": "46b45a4dd7bb0e0f4e3fc22245817240"
     },
+    "RSQlite": {
+      "Package": "RSQLite",
+      "Version": "2.3.7",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Requirements": [
+        "DBI",
+        "R",
+        "bit64",
+        "blob",
+        "cpp11",
+        "memoise",
+        "methods",
+        "pkgconfig",
+        "plogr",
+        "rlang"
+      ],
+      "Hash": "46b45a4dd7bb0e0f4e3fc22245817240"
+    },
     "askpass": {
       "Package": "askpass",
       "Version": "1.2.0",

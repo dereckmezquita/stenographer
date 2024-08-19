@@ -22,7 +22,9 @@ Imports:
     rlang,
     jsonlite,
     fs,
-    crayon
+    crayon,
+    RSQlite,
+    DBI
 Suggests:
     testthat (>= 3.0.0),
     knitr,
