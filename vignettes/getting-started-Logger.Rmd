@@ -85,9 +85,6 @@ db_log$error("An error occurred", error = "Division by zero")
 query <- "SELECT * FROM app_logs WHERE level = 'ERROR'"
 result <- dbGetQuery(db, query)
 print(result)
-
-# Don't forget to close the database connection when you're done
-dbDisconnect(db)
 ```
 
 ## Using Context
