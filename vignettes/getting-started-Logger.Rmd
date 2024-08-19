@@ -31,7 +31,7 @@ remotes::install_github("derecksprojects/R-Logger")
 First, let's load the package and create a basic logger:
 
 ```{r}
-box::use(Logger, Logger[Logger, LogLevel])
+box::use(Logger[Logger, LogLevel, messageParallel])
 
 # Create a basic logger
 log <- Logger$new()
@@ -132,7 +132,7 @@ combined_log <- Logger$new(
     db_conn = db,
     table_name = "combined_logs",
     context = list(app_name = "CombinedApp", version = "2.0.0"),
-    print_fn = Logger$messageParallel,
+    print_fn = messageParallel,
     format_fn = function(level, msg) {
         # manipulate the message before logging
         msg <- gsub("API_KEY=[^\\s]+", "API_KEY=***", msg)
@@ -246,12 +246,12 @@ When working with parallel processing, standard logging functions might not work
 box::use(future)
 box::use(future.apply[future_lapply])
 
-log <- Logger$new(print_fn = Logger$messageParallel)
+log <- Logger$new(print_fn = messageParallel)
 
 future::plan(future::multisession, workers = 2)
 
 result <- future_lapply(1:5, function(i) {
-    Logger$messageParallel(sprintf("Processing item %d", i))
+    messageParallel(sprintf("Processing item %d", i))
     if (i == 3) {
         log$warn(sprintf("Warning for item %d", i))
     }
