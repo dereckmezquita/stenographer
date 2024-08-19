@@ -226,7 +226,7 @@ process_data <- function(df) {
             data = list(dataset_preview = tableToString(df)),
             error = e
         )
-        stop(e)
+        cat(e)
     })
 }
 
