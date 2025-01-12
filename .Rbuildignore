@@ -19,4 +19,4 @@ research/
 ^run-tests\.R$
 ^scripts/
 
-^.*\.html$
+^README\.html$
