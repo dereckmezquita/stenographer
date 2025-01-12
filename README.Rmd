@@ -12,7 +12,7 @@ knitr::opts_chunk$set(
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 <!-- <img src="./.graphics/512-20240803_logger-logo.png" align="right" height="140" /> -->
-# Logger <a href="https://dereckmezquita.github.io/R-Logger"></a>
+# Logger <a href="https://dereckmezquita.github.io/stenographer"></a>
 
 <!-- badges: start -->
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
@@ -29,7 +29,7 @@ You can install Logger from [GitHub](https://github.com/) with:
 
 ```{r, eval = FALSE}
 # install.packages("remotes")
-remotes::install_github("derecksprojects/R-Logger")
+remotes::install_github("derecksprojects/stenographer")
 ```
 
 ## Basic Usage

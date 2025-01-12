@@ -23,7 +23,7 @@ The `Logger` package provides a flexible and powerful logging system for R appli
 You can install the `Logger` package from GitHub with:
 
 ```{r, eval = FALSE}
-remotes::install_github("derecksprojects/R-Logger")
+remotes::install_github("dereckmezquita/stenographer")
 ```
 
 ## Basic Usage

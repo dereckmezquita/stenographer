@@ -2,7 +2,7 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 <!-- <img src="./.graphics/512-20240803_logger-logo.png" align="right" height="140" /> -->
 
-# Logger <a href="https://dereckmezquita.github.io/R-Logger"></a>
+# Logger <a href="https://dereckmezquita.github.io/stenographer"></a>
 
 <!-- badges: start -->
 
@@ -25,7 +25,7 @@ You can install Logger from [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("remotes")
-remotes::install_github("derecksprojects/R-Logger")
+remotes::install_github("dereckmezquita/stenographer")
 ```
 
 ## Basic Usage
