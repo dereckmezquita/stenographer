@@ -1,7 +1,5 @@
 # tests/testthat/test-valueCoordinates.R
 
-box::use(../../R/valueCoordinates[valueCoordinates])
-
 # Access internal function for testing
 value_check <- stenographer:::value_check
 

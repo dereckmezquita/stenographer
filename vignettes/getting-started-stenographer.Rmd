@@ -207,7 +207,7 @@ This will produce a log entry like:
 When an error occurs, it's often useful to catch and log not just the error message, but also the context in which the error occurred. Here's an example of how to do this using the `Stenographer` class and helper functions:
 
 ```{r}
-box::use(Stenographer[tableToString])
+box::use(stenographer[tableToString])
 
 steno <- Stenographer$new()
 

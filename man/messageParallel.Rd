@@ -28,12 +28,14 @@ messageParallel("Hello World")
 # Multiple arguments are concatenated
 messageParallel("Hello", " ", "World")
 
-# Use with future package
+\donttest{
 if (requireNamespace("future", quietly = TRUE)) {
   future::plan(future::multisession)
-  future::future({
+  f <- future::future({
     messageParallel("Message from parallel process")
   })
+  future::value(f)
+  future::plan(future::sequential)
 }
-
+}
 }
