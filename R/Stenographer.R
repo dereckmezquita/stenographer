@@ -41,6 +41,12 @@ LogLevel <- list(
 #' * Contextual data attachment
 #' * Coloured console output
 #'
+#' @importFrom R6 R6Class
+#' @importFrom fs path_dir dir_exists dir_create file_exists file_create
+#' @importFrom DBI dbExistsTable dbExecute dbWriteTable
+#' @importFrom jsonlite toJSON fromJSON
+#' @importFrom crayon silver red yellow blue white cyan magenta
+#'
 #' @examples
 #' # Create a basic Stenographer
 #' steno <- Stenographer$new()
@@ -69,8 +75,9 @@ LogLevel <- list(
 #' custom_steno$set_level(LogLevel$INFO)
 #' custom_steno$update_context(list(user = "John"))
 #' custom_steno$info("Now this will be logged with a custom prefix and context")
+#'
 #' @export
-Stenographer <- R6::R6Class(
+Stenographer <- R6Class(
     "Stenographer",
     public = list(
         #' @description
@@ -185,18 +192,18 @@ Stenographer <- R6::R6Class(
         context = NULL,
 
         ensure_log_file_exists = function() {
-            dir <- fs::path_dir(private$file_path)
-            if (!fs::dir_exists(dir)) {
-                fs::dir_create(dir, recursive = TRUE)
+            dir <- path_dir(private$file_path)
+            if (!dir_exists(dir)) {
+                dir_create(dir, recursive = TRUE)
             }
-            if (!fs::file_exists(private$file_path)) {
-                fs::file_create(private$file_path)
+            if (!file_exists(private$file_path)) {
+                file_create(private$file_path)
             }
         },
 
         ensure_log_table_exists = function() {
-            if (!DBI::dbExistsTable(private$db_conn, private$table_name)) {
-                DBI::dbExecute(private$db_conn, sprintf("
+            if (!dbExistsTable(private$db_conn, private$table_name)) {
+                dbExecute(private$db_conn, sprintf("
                     CREATE TABLE %s (
                         id INTEGER PRIMARY KEY AUTOINCREMENT,
                         datetime TEXT,
@@ -213,7 +220,7 @@ Stenographer <- R6::R6Class(
         log_to_file = function(entry) {
             if (!is.null(private$file_path)) {
                 cat(
-                    jsonlite::toJSON(entry, auto_unbox = TRUE),
+                    toJSON(entry, auto_unbox = TRUE),
                     "\n",
                     file = private$file_path,
                     append = TRUE
@@ -225,19 +232,19 @@ Stenographer <- R6::R6Class(
             if (!is.null(private$db_conn)) {
                 db_entry <- entry
                 if (!is.null(db_entry$data)) {
-                    db_entry$data <- jsonlite::toJSON(db_entry$data)
+                    db_entry$data <- toJSON(db_entry$data)
                 }
                 if (!is.null(db_entry$error)) {
-                    db_entry$error <- jsonlite::toJSON(db_entry$error)
+                    db_entry$error <- toJSON(db_entry$error)
                 }
                 if (length(private$context) > 0) {
-                    db_entry$context <- jsonlite::toJSON(private$context)
+                    db_entry$context <- toJSON(private$context)
                 } else {
                     db_entry$context <- NULL
                 }
                 # Remove NULL elements from `db_entry`
                 db_entry <- db_entry[!sapply(db_entry, is.null)]
-                DBI::dbWriteTable(private$db_conn, private$table_name, as.data.frame(db_entry), append = TRUE)
+                dbWriteTable(private$db_conn, private$table_name, as.data.frame(db_entry), append = TRUE)
             }
         },
 
@@ -252,9 +259,9 @@ Stenographer <- R6::R6Class(
                 datetime = format(Sys.time(), "%Y-%m-%dT%H:%M:%OS3Z"),
                 level = level,
                 msg = msg,
-                data = if (!is.null(data)) jsonlite::toJSON(data) else NULL,
-                error = if (!is.null(error)) jsonlite::toJSON(private$serialise_error(error)) else NULL,
-                context = if (length(private$context) > 0) jsonlite::toJSON(private$context) else NULL
+                data = if (!is.null(data)) toJSON(data) else NULL,
+                error = if (!is.null(error)) toJSON(private$serialise_error(error)) else NULL,
+                context = if (length(private$context) > 0) toJSON(private$context) else NULL
             )
             return(entry)
         },
@@ -271,36 +278,37 @@ Stenographer <- R6::R6Class(
         },
 
         format_console_output = function(entry) {
-            timestamp <- crayon::silver(entry$datetime)
-            level_color <- switch(entry$level,
-                ERROR = crayon::red,
-                WARNING = crayon::yellow,
-                INFO = crayon::blue,
-                crayon::white
+            timestamp <- silver(entry$datetime)
+            level_color <- switch(
+                entry$level,
+                ERROR = red,
+                WARNING = yellow,
+                INFO = blue,
+                white
             )
             level <- level_color(sprintf("%-7s", entry$level)) # the %-7s left-aligns the string
-            message <- crayon::white(entry$msg)
+            message <- white(entry$msg)
 
             output <- sprintf("%s %s %s", timestamp, level, message)
 
             if (!is.null(entry$data)) {
                 output <- paste0(
-                    output, "\n", crayon::cyan("Data:"), "\n",
-                    jsonlite::toJSON(jsonlite::fromJSON(entry$data), auto_unbox = TRUE, pretty = TRUE)
+                    output, "\n", cyan("Data:"), "\n",
+                    toJSON(fromJSON(entry$data), auto_unbox = TRUE, pretty = TRUE)
                 )
             }
 
             if (!is.null(entry$error)) {
                 output <- paste0(
-                    output, "\n", crayon::red("Error:"), "\n",
-                    jsonlite::toJSON(jsonlite::fromJSON(entry$error), auto_unbox = TRUE, pretty = TRUE)
+                    output, "\n", red("Error:"), "\n",
+                    toJSON(fromJSON(entry$error), auto_unbox = TRUE, pretty = TRUE)
                 )
             }
 
             if (!is.null(entry$context)) {
                 output <- paste0(
-                    output, "\n", crayon::magenta("Context:"), "\n",
-                    jsonlite::toJSON(jsonlite::fromJSON(entry$context), auto_unbox = TRUE, pretty = TRUE)
+                    output, "\n", magenta("Context:"), "\n",
+                    toJSON(fromJSON(entry$context), auto_unbox = TRUE, pretty = TRUE)
                 )
             }
 

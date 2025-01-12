@@ -22,15 +22,16 @@
 #' # Empty vector
 #' collapse(character(0), ", ")  # Returns character(0)
 #'
+#' @importFrom rlang abort
 #' @export
 collapse <- function(vector, collapse = " ") {
     if (!is.character(collapse) || length(collapse) != 1) {
-        rlang::abort("'collapse' must be a single string")
+        abort("'collapse' must be a single string")
     }
     if (!is.vector(vector)) {
-        rlang::abort("'vector' must be a vector")
+        abort("'vector' must be a vector")
     }
-    if(length(vector) < 1) {
+    if (length(vector) < 1) {
         return(vector)
     }
     return(paste0(vector, collapse = collapse))
