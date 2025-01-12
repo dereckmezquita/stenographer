@@ -1,9 +1,16 @@
 #' Log Levels
 #'
-#' Defines the available log levels for the Stenographer class.
+#' Defines the available log levels for the Stenographer class. The levels from lowest to highest are:
+#' \itemize{
+#'   \item OFF (-1L): No logging output
+#'   \item ERROR (0L): Only error messages
+#'   \item WARNING (1L): Error and warning messages
+#'   \item INFO (2L): All messages (errors, warnings, and info)
+#' }
 #'
 #' @export
 LogLevel <- list(
+    OFF = -1L,
     ERROR = 0L,
     WARNING = 1L,
     INFO = 2L
@@ -18,6 +25,12 @@ LogLevel <- list(
 #' steno$info("This is an info message")
 #' steno$warn("This is a warning")
 #' steno$error("This is an error")
+#'
+#' # Disable all logging
+#' steno$set_level(LogLevel$OFF)
+#' steno$info("This won't be logged")
+#' steno$warn("This won't be logged either")
+#' steno$error("This also won't be logged")
 #'
 #' # Create a logger with custom settings, message formatting, and context
 #' custom_steno <- Stenographer$new(

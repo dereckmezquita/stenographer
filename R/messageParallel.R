@@ -1,14 +1,32 @@
-#' Print from parallel forked processes
+#' Print Messages from Parallel Processes
 #'
-#' Uses `sprintf` `C` function to echo messages back up to the R console during parallel computation
-#' with `future` and `future.apply`.
-#' 
-#' Beware this function may consume large amounts of resources.
+#' @description
+#' Enables message output from forked processes during parallel computation using
+#' the system's echo command. Primarily designed for use with `parallel` `future`
+#' and `future.apply` parallel processing.
 #'
-#' @param ... Character vector of messages to print.
-#' 
+#' @param ... Arguments to be concatenated into a single character string for printing
+#'
+#' @return Invisible NULL, called for its side effect of printing
+#'
+#' @note
+#' This function may have significant resource overhead when used frequently or
+#' with large amounts of output. Use sparingly in performance-critical code.
+#'
 #' @examples
-#' messageParallel("Send this message back up.")
+#' # Basic usage
+#' messageParallel("Hello World")
+#'
+#' # Multiple arguments are concatenated
+#' messageParallel("Hello", " ", "World")
+#'
+#' # Use with future package
+#' if (requireNamespace("future", quietly = TRUE)) {
+#'   future::plan(future::multisession)
+#'   future::future({
+#'     messageParallel("Message from parallel process")
+#'   })
+#' }
 #'
 #' @export
 messageParallel <- function(...) {
