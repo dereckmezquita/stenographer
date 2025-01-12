@@ -175,7 +175,7 @@ The `Stenographer` package includes several helper functions that can be used in
 Suppose we have a dataset with some problematic values, and we want to log where these issues occur. We can use the `valueCoordinates` function to locate the problematic values and include this information in our log messages.
 
 ```{r}
-box::use(Stenographer[valueCoordinates])
+box::use(stenographer[valueCoordinates])
 
 # Create a sample dataset with some issues
 df <- data.frame(

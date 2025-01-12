@@ -2,21 +2,38 @@
 % Please edit documentation in R/messageParallel.R
 \name{messageParallel}
 \alias{messageParallel}
-\title{Print from parallel forked processes}
+\title{Print Messages from Parallel Processes}
 \usage{
 messageParallel(...)
 }
 \arguments{
-\item{...}{Character vector of messages to print.}
+\item{...}{Arguments to be concatenated into a single character string for printing}
+}
+\value{
+Invisible NULL, called for its side effect of printing
 }
 \description{
-Uses `sprintf` `C` function to echo messages back up to the R console during parallel computation
-with `future` and `future.apply`.
+Enables message output from forked processes during parallel computation using
+the system's echo command. Primarily designed for use with `parallel` `future`
+and `future.apply` parallel processing.
 }
-\details{
-Beware this function may consume large amounts of resources.
+\note{
+This function may have significant resource overhead when used frequently or
+with large amounts of output. Use sparingly in performance-critical code.
 }
 \examples{
-messageParallel("Send this message back up.")
+# Basic usage
+messageParallel("Hello World")
+
+# Multiple arguments are concatenated
+messageParallel("Hello", " ", "World")
+
+# Use with future package
+if (requireNamespace("future", quietly = TRUE)) {
+  future::plan(future::multisession)
+  future::future({
+    messageParallel("Message from parallel process")
+  })
+}
 
 }

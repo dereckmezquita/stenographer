@@ -2,58 +2,50 @@
 % Please edit documentation in R/valueCoordinates.R
 \name{valueCoordinates}
 \alias{valueCoordinates}
-\title{Find Coordinates of Specific Values in a data.frame}
+\title{Locate Specific Values in a Data Frame}
 \usage{
 valueCoordinates(df, value = NA, eq_fun = value_check)
 }
 \arguments{
-\item{df}{A data.frame to be searched.}
+\item{df}{A data.frame to search}
 
-\item{value}{The value to search for. Default is NA.}
+\item{value}{The target value to find (default: NA)}
 
-\item{eq_fun}{A function used to check equality. It should take two arguments:
-the current value in the data.frame and the `value` parameter. 
-Default is the internal `eq_fun` function that uses `identical()` for non-NA values and `is.na()` for NA.}
+\item{eq_fun}{A comparison function that takes two parameters: the current value
+from the data.frame and the target value. Returns TRUE for matches.
+Default uses internal value_check function; handles NA values.}
 }
 \value{
 A data.frame with two columns:
-  \item{column}{The column numbers where the specified condition was met}
-  \item{row}{The row numbers where the specified condition was met}
-  The returned data.frame is sorted first by column, then by row.
+\describe{
+  \item{column}{Column indices where matches were found}
+  \item{row}{Row indices where matches were found}
+}
+Results are sorted by column, then by row.
 }
 \description{
-This function locates the row and column coordinates of values in a data.frame
-that satisfy a given condition. It's particularly useful for identifying the
-positions of specific or problematic values in large datasets.
-}
-\details{
-The function performs the following steps:
-1. Creates a logical matrix where TRUE indicates values meeting the specified condition.
-2. Finds the row and column indices of TRUE values.
-3. Combines these indices into a data.frame.
-4. Sorts the results by column, then by row.
-
-If no custom equality function is provided, the function uses the internal `eq_fun`
-which checks for NA values with `is.na()` and uses `identical()` for all other values.
+Finds the positions (row and column indices) of values in a data.frame that match
+specified criteria. This function is useful for locating particular values within
+large datasets.
 }
 \examples{
-# Create a sample data.frame
+# Sample data.frame
 df <- data.frame(
   a = c(1, NA, 3),
   b = c(NA, 2, NA),
   c = c(3, 2, 1)
 )
 
-# Find coordinates of NA values
+# Find NA positions
 valueCoordinates(df)
 
-# Find coordinates of the value 2
+# Find positions of value 2
 valueCoordinates(df, 2)
 
-# Find coordinates of values greater than 2
+# Find positions where values exceed 2
 valueCoordinates(df, 2, function(x, y) x > y)
 
-# Find coordinates of values within a range
+# Find positions of values in range [1,3]
 valueCoordinates(df, c(1, 3), function(x, y) x >= y[1] & x <= y[2])
 
 }
