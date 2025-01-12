@@ -42,6 +42,7 @@ custom_steno$warn("This will be logged with a custom prefix")
 custom_steno$set_level(LogLevel$INFO)
 custom_steno$update_context(list(user = "John"))
 custom_steno$info("Now this will be logged with a custom prefix and context")
+
 }
 \section{Methods}{
 \subsection{Public methods}{

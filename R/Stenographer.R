@@ -5,7 +5,7 @@
 #' Use as a configuration for the `Stenographer` class to control which messages
 #' are logged.
 #'
-#' @format A list with four integer elements:
+#' A list with four integer elements:
 #' \describe{
 #'   \item{OFF}{(-1) Disables all logging}
 #'   \item{ERROR}{(0) Logs only errors}

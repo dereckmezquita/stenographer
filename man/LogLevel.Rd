@@ -5,13 +5,7 @@
 \alias{LogLevel}
 \title{Logging Level}
 \format{
-A list with four integer elements:
-\describe{
-  \item{OFF}{(-1) Disables all logging}
-  \item{ERROR}{(0) Logs only errors}
-  \item{WARNING}{(1) Logs errors and warnings}
-  \item{INFO}{(2) Logs all messages}
-}
+An object of class \code{list} of length 4.
 }
 \usage{
 LogLevel
@@ -20,6 +14,14 @@ LogLevel
 Defines standard logging levels for controlling message output granularity.
 Use as a configuration for the `Stenographer` class to control which messages
 are logged.
+
+A list with four integer elements:
+\describe{
+  \item{OFF}{(-1) Disables all logging}
+  \item{ERROR}{(0) Logs only errors}
+  \item{WARNING}{(1) Logs errors and warnings}
+  \item{INFO}{(2) Logs all messages}
+}
 }
 \examples{
 # Check logging levels
