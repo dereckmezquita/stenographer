@@ -73,14 +73,6 @@ LogLevel <- list(
 Stenographer <- R6::R6Class(
     "Stenographer",
     public = list(
-        initialize = function(...) {
-            if (!is.null(private$file_path)) {
-                private$ensure_log_file_exists()
-            }
-            if (!is.null(private$db_conn)) {
-                private$ensure_log_table_exists()
-            }
-        },
         #' @description
         #' Create a new Stenographer instance
         #' @param level The minimum log level to output. Default is LogLevel$INFO.
