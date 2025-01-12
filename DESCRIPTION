@@ -1,7 +1,7 @@
 Package: stenographer
 Type: Package
-Title: Flexible and Customisable Logging System for R
-Version: 0.0.4
+Title: Flexible and Customisable Logging System
+Version: 1.0.0
 URL: https://github.com/dereckmezquita/stenographer
 Authors@R: 
     person(given = "Dereck",
@@ -9,8 +9,10 @@ Authors@R:
            role = c("aut", "cre"),
            email = "dereck@mezquita.io",
            comment = c(ORCID = "0000-0002-9307-6762"))
-Maintainer: Dereck Mezquita <dereck@mezquita.io>
-Description: A flexible logging system for R that supports multiple log levels, custom output functions, and file logging. It provides an R6 class for easy integration into existing projects and supports colored console output.
+Description: Implements a logging framework with hierarchical logging levels, 
+    database integration, and contextual logging. Features SQLite storage, 
+    colour coded output, parallel processing support, and structured error 
+    reporting with JSON formatting
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
@@ -27,8 +29,11 @@ Imports:
     DBI
 Suggests:
     testthat (>= 3.0.0),
+    diffviewer,
     knitr,
     rmarkdown,
     box,
     future,
-    future.apply
+    future.apply,
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3

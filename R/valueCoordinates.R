@@ -66,6 +66,11 @@ value_check <- function(x, y) {
 #'
 #' @export
 valueCoordinates <- function(df, value = NA, eq_fun = value_check) {
+    if (!is.data.frame(df)) {
+        rlang::abort("'df' must be a data frame")
+    }
+    
+    # Rest of the original code remains exactly the same
     truths <- apply(df, c(1, 2), function(x) eq_fun(x, value))
 
     r <- apply(truths, 2, function(x) {
