@@ -86,11 +86,11 @@
 <span></span>
 <span><span class="co"># Log some messages</span></span>
 <span><span class="va">steno</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"This is an informational message"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2025-01-12T11:46:27.222Z INFO    This is an informational message</span></span>
+<span><span class="co">#&gt; 2025-01-12T13:57:03.797Z INFO    This is an informational message</span></span>
 <span><span class="va">steno</span><span class="op">$</span><span class="fu">warn</span><span class="op">(</span><span class="st">"This is a warning"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2025-01-12T11:46:27.229Z WARNING This is a warning</span></span>
+<span><span class="co">#&gt; 2025-01-12T13:57:03.803Z WARNING This is a warning</span></span>
 <span><span class="va">steno</span><span class="op">$</span><span class="fu">error</span><span class="op">(</span><span class="st">"This is an error"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2025-01-12T11:46:27.252Z ERROR   This is an error</span></span></code></pre></div>
+<span><span class="co">#&gt; 2025-01-12T13:57:03.828Z ERROR   This is an error</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="features">Features<a class="anchor" aria-label="anchor" href="#features"></a>
@@ -110,16 +110,16 @@
 <span></span>
 <span><span class="va">custom_steno</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"This won't be logged"</span><span class="op">)</span></span>
 <span><span class="va">custom_steno</span><span class="op">$</span><span class="fu">warn</span><span class="op">(</span><span class="st">"This will be logged to console and file"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2025-01-12T11:46:27.378Z WARNING This will be logged to console and file</span></span>
+<span><span class="co">#&gt; 2025-01-12T13:57:03.963Z WARNING This will be logged to console and file</span></span>
 <span><span class="va">custom_steno</span><span class="op">$</span><span class="fu">error</span><span class="op">(</span><span class="st">"This is an error message"</span>, error <span class="op">=</span> <span class="st">"Some error"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2025-01-12T11:46:27.398Z ERROR   This is an error message</span></span>
+<span><span class="co">#&gt; 2025-01-12T13:57:03.981Z ERROR   This is an error message</span></span>
 <span><span class="co">#&gt; Error:</span></span>
 <span><span class="co">#&gt; "Some error"</span></span></code></pre></div>
 <p>Logs are written to the specified file as JSON objects:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/readLines.html" class="external-link">readLines</a></span><span class="op">(</span><span class="va">log_file</span><span class="op">)</span>, sep <span class="op">=</span> <span class="st">"\n"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; {"datetime":"2025-01-12T11:46:27.378Z","level":"WARNING","msg":"This will be logged to console and file","data":{},"error":{},"context":{}} </span></span>
-<span><span class="co">#&gt; {"datetime":"2025-01-12T11:46:27.398Z","level":"ERROR","msg":"This is an error message","data":{},"error":"[\"Some error\"]","context":{}}</span></span></code></pre></div>
+<span><span class="co">#&gt; {"datetime":"2025-01-12T13:57:03.963Z","level":"WARNING","msg":"This will be logged to console and file","data":{},"error":{},"context":{}} </span></span>
+<span><span class="co">#&gt; {"datetime":"2025-01-12T13:57:03.981Z","level":"ERROR","msg":"This is an error message","data":{},"error":"[\"Some error\"]","context":{}}</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="database-logging">Database Logging<a class="anchor" aria-label="anchor" href="#database-logging"></a>
@@ -141,14 +141,14 @@
 <span></span>
 <span><span class="co"># Log some messages</span></span>
 <span><span class="va">db_steno</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"This is logged to the database"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2025-01-12T11:46:27.600Z INFO    This is logged to the database</span></span>
+<span><span class="co">#&gt; 2025-01-12T13:57:04.170Z INFO    This is logged to the database</span></span>
 <span><span class="co">#&gt; Context:</span></span>
 <span><span class="co">#&gt; {</span></span>
 <span><span class="co">#&gt;   "app_name": "MyApp",</span></span>
 <span><span class="co">#&gt;   "fun": "main"</span></span>
 <span><span class="co">#&gt; }</span></span>
 <span><span class="va">db_steno</span><span class="op">$</span><span class="fu">warn</span><span class="op">(</span><span class="st">"This is a warning"</span>, data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>code <span class="op">=</span> <span class="fl">101</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2025-01-12T11:46:27.607Z WARNING This is a warning</span></span>
+<span><span class="co">#&gt; 2025-01-12T13:57:04.177Z WARNING This is a warning</span></span>
 <span><span class="co">#&gt; Data:</span></span>
 <span><span class="co">#&gt; {</span></span>
 <span><span class="co">#&gt;   "code": 101</span></span>
@@ -159,7 +159,7 @@
 <span><span class="co">#&gt;   "fun": "main"</span></span>
 <span><span class="co">#&gt; }</span></span>
 <span><span class="va">db_steno</span><span class="op">$</span><span class="fu">error</span><span class="op">(</span><span class="st">"An error occurred"</span>, error <span class="op">=</span> <span class="st">"Division by zero"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2025-01-12T11:46:27.628Z ERROR   An error occurred</span></span>
+<span><span class="co">#&gt; 2025-01-12T13:57:04.243Z ERROR   An error occurred</span></span>
 <span><span class="co">#&gt; Error:</span></span>
 <span><span class="co">#&gt; "Division by zero"</span></span>
 <span><span class="co">#&gt; Context:</span></span>
@@ -179,6 +179,7 @@
 <span><span class="co">#&gt; 4 12 2025-01-12T11:30:34.129Z ERROR {"app_name":["MyApp"],"fun":["main"]}</span></span>
 <span><span class="co">#&gt; 5 15 2025-01-12T11:30:52.105Z ERROR {"app_name":["MyApp"],"fun":["main"]}</span></span>
 <span><span class="co">#&gt; 6 18 2025-01-12T11:46:27.628Z ERROR {"app_name":["MyApp"],"fun":["main"]}</span></span>
+<span><span class="co">#&gt; 7 21 2025-01-12T13:57:04.243Z ERROR {"app_name":["MyApp"],"fun":["main"]}</span></span>
 <span><span class="co">#&gt;                 msg data                        error</span></span>
 <span><span class="co">#&gt; 1 An error occurred &lt;NA&gt; ["[\\"Division by zero\\"]"]</span></span>
 <span><span class="co">#&gt; 2 An error occurred &lt;NA&gt; ["[\\"Division by zero\\"]"]</span></span>
@@ -186,6 +187,7 @@
 <span><span class="co">#&gt; 4 An error occurred &lt;NA&gt; ["[\\"Division by zero\\"]"]</span></span>
 <span><span class="co">#&gt; 5 An error occurred &lt;NA&gt; ["[\\"Division by zero\\"]"]</span></span>
 <span><span class="co">#&gt; 6 An error occurred &lt;NA&gt; ["[\\"Division by zero\\"]"]</span></span>
+<span><span class="co">#&gt; 7 An error occurred &lt;NA&gt; ["[\\"Division by zero\\"]"]</span></span>
 <span></span>
 <span><span class="co"># Don't forget to close the database connection when you're done</span></span>
 <span><span class="fu">dbDisconnect</span><span class="op">(</span><span class="va">db</span><span class="op">)</span></span></code></pre></div>
@@ -216,7 +218,7 @@
 <span>        <span class="op">)</span></span>
 <span>    <span class="op">)</span></span>
 <span><span class="op">}</span></span>
-<span><span class="co">#&gt; 2025-01-12T11:46:27.643Z WARNING NA values found in the dataset</span></span>
+<span><span class="co">#&gt; 2025-01-12T13:57:04.258Z WARNING NA values found in the dataset</span></span>
 <span><span class="co">#&gt; Data:</span></span>
 <span><span class="co">#&gt; {</span></span>
 <span><span class="co">#&gt;   "na_locations": [</span></span>
@@ -269,7 +271,7 @@
 <span><span class="co"># Test the function with problematic data</span></span>
 <span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span>, b <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">2</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu">process_data</span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2025-01-12T11:46:27.669Z ERROR   Division by zero occurred</span></span>
+<span><span class="co">#&gt; 2025-01-12T13:57:04.285Z ERROR   Division by zero occurred</span></span>
 <span><span class="co">#&gt; Data:</span></span>
 <span><span class="co">#&gt; {</span></span>
 <span><span class="co">#&gt;   "infinite_values": [</span></span>
@@ -284,7 +286,7 @@
 <span><span class="co">#&gt;   ],</span></span>
 <span><span class="co">#&gt;   "dataset_preview": "  a b\n1 1 0\n2 2 2\n3 3 0"</span></span>
 <span><span class="co">#&gt; } </span></span>
-<span><span class="co">#&gt; 2025-01-12T11:46:27.673Z ERROR   An error occurred while processing data: Division by zero error</span></span>
+<span><span class="co">#&gt; 2025-01-12T13:57:04.286Z ERROR   An error occurred while processing data: Division by zero error</span></span>
 <span><span class="co">#&gt; Data:</span></span>
 <span><span class="co">#&gt; {</span></span>
 <span><span class="co">#&gt;   "dataset_preview": "  a b\n1 1 0\n2 2 2\n3 3 0"</span></span>
@@ -336,6 +338,12 @@
 <h2 id="license">License<a class="anchor" aria-label="anchor" href="#license"></a>
 </h2>
 <p>stenographer is released under the MIT License. See the <a href="LICENSE">LICENSE</a> file for details.</p>
+</div>
+<div class="section level2">
+<h2 id="citation">Citation<a class="anchor" aria-label="anchor" href="#citation"></a>
+</h2>
+<p>If you use this package in your research or work, please cite it as:</p>
+<p>Mezquita, D. (2025). stenographer: Flexible and Customisable Logging System. R package version 1.0.0. <a href="https://github.com/dereckmezquita/stenographer" class="external-link uri">https://github.com/dereckmezquita/stenographer</a></p>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">
