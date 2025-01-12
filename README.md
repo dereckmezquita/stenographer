@@ -2,7 +2,7 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 <!-- <img src="./.graphics/512-stenographer-logo.png" align="right" height="140" /> -->
 
-# stenographer <a href="https://dereckmezquita.github.io/stenographer"></a>
+# stenographer <a href="https://dereckmezquita.github.io/stenographer/"></a>
 
 <!-- badges: start -->
 
