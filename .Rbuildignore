@@ -10,3 +10,11 @@ dev-docs/
 dev/
 research/
 .*\.sqlite$
+
+^BUILD\.sh$
+^CONTRIBUTING\.md$
+^DEV\.md$
+^LICENSE\.md$
+^pkgdown/
+^run-tests\.R$
+^scripts/

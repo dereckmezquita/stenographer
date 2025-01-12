@@ -1,0 +1,9 @@
+\CITATION{ 
+  @Manual{stenographer,
+    title = {stenographer: Flexible and Customisable Logging System},
+    author = {Dereck Mezquita},
+    year = {2024},
+    note = {URL: \url{https://github.com/dereckmezquita/stenographer}},
+    doi = {0000-0002-9307-6762}  # Replace with actual DOI if available
+  }
+}
