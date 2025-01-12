@@ -8,8 +8,8 @@
 <title>Getting started with Logger • Logger</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.4.2/css/all.min.css" rel="stylesheet">
-<link href="../deps/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Getting started with Logger">
 </head>
 <body>
@@ -62,7 +62,7 @@
       <h1>Getting started with Logger</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/dereckmezquita/R-Logger/blob/master/vignettes/getting-started-Logger.Rmd" class="external-link"><code>vignettes/getting-started-Logger.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/dereckmezquita/R-Logger/blob/DT-19-stenographer-from-R-Logger-rename/vignettes/getting-started-Logger.Rmd" class="external-link"><code>vignettes/getting-started-Logger.Rmd</code></a></small>
       <div class="d-none name"><code>getting-started-Logger.Rmd</code></div>
     </div>
 
@@ -97,11 +97,11 @@ leverage its features to improve your R workflows.</p>
 <span></span>
 <span><span class="co"># Log some messages</span></span>
 <span><span class="va">log</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"This is an informational message"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #555555;">2024-08-19T01:32:48.478Z</span> <span style="color: #0000BB;">INFO   </span> <span style="color: #BBBBBB;">This is an informational message</span></span></span>
+<span><span class="co">#&gt; <span style="color: #555555;">2025-01-12T16:26:17.373Z</span> <span style="color: #0000BB;">INFO   </span> <span style="color: #BBBBBB;">This is an informational message</span></span></span>
 <span><span class="va">log</span><span class="op">$</span><span class="fu">warn</span><span class="op">(</span><span class="st">"This is a warning"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #555555;">2024-08-19T01:32:48.482Z</span> <span style="color: #BBBB00;">WARNING</span> <span style="color: #BBBBBB;">This is a warning</span></span></span>
+<span><span class="co">#&gt; <span style="color: #555555;">2025-01-12T16:26:17.378Z</span> <span style="color: #BBBB00;">WARNING</span> <span style="color: #BBBBBB;">This is a warning</span></span></span>
 <span><span class="va">log</span><span class="op">$</span><span class="fu">error</span><span class="op">(</span><span class="st">"This is an error"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #555555;">2024-08-19T01:32:48.521Z</span> <span style="color: #BB0000;">ERROR  </span> <span style="color: #BBBBBB;">This is an error</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #555555;">2025-01-12T16:26:17.416Z</span> <span style="color: #BB0000;">ERROR  </span> <span style="color: #BBBBBB;">This is an error</span></span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="customising-the-logger">Customising the Logger<a class="anchor" aria-label="anchor" href="#customising-the-logger"></a>
@@ -118,9 +118,9 @@ output file, and custom print function:</p>
 <span></span>
 <span><span class="va">custom_log</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"This won't be logged"</span><span class="op">)</span></span>
 <span><span class="va">custom_log</span><span class="op">$</span><span class="fu">warn</span><span class="op">(</span><span class="st">"This will be logged to console and file"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #555555;">2024-08-19T01:32:48.730Z</span> <span style="color: #BBBB00;">WARNING</span> <span style="color: #BBBBBB;">This will be logged to console and file</span></span></span>
+<span><span class="co">#&gt; <span style="color: #555555;">2025-01-12T16:26:17.614Z</span> <span style="color: #BBBB00;">WARNING</span> <span style="color: #BBBBBB;">This will be logged to console and file</span></span></span>
 <span><span class="va">custom_log</span><span class="op">$</span><span class="fu">error</span><span class="op">(</span><span class="st">"This is an error message"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #555555;">2024-08-19T01:32:48.732Z</span> <span style="color: #BB0000;">ERROR  </span> <span style="color: #BBBBBB;">This is an error message</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #555555;">2025-01-12T16:26:17.616Z</span> <span style="color: #BB0000;">ERROR  </span> <span style="color: #BBBBBB;">This is an error message</span></span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="logging-to-a-database">Logging to a Database<a class="anchor" aria-label="anchor" href="#logging-to-a-database"></a>
@@ -142,15 +142,15 @@ output file, and custom print function:</p>
 <span></span>
 <span><span class="co"># Log some messages</span></span>
 <span><span class="va">db_log</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"This is logged to the database"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #555555;">2024-08-19T01:32:49.010Z</span> <span style="color: #0000BB;">INFO   </span> <span style="color: #BBBBBB;">This is logged to the database</span></span></span>
+<span><span class="co">#&gt; <span style="color: #555555;">2025-01-12T16:26:17.886Z</span> <span style="color: #0000BB;">INFO   </span> <span style="color: #BBBBBB;">This is logged to the database</span></span></span>
 <span><span class="va">db_log</span><span class="op">$</span><span class="fu">warn</span><span class="op">(</span><span class="st">"This is a warning"</span>, data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>code <span class="op">=</span> <span class="fl">101</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #555555;">2024-08-19T01:32:49.021Z</span> <span style="color: #BBBB00;">WARNING</span> <span style="color: #BBBBBB;">This is a warning</span></span></span>
+<span><span class="co">#&gt; <span style="color: #555555;">2025-01-12T16:26:17.897Z</span> <span style="color: #BBBB00;">WARNING</span> <span style="color: #BBBBBB;">This is a warning</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">Data:</span></span></span>
 <span><span class="co">#&gt; {</span></span>
 <span><span class="co">#&gt;   "code": 101</span></span>
 <span><span class="co">#&gt; }</span></span>
 <span><span class="va">db_log</span><span class="op">$</span><span class="fu">error</span><span class="op">(</span><span class="st">"An error occurred"</span>, error <span class="op">=</span> <span class="st">"Division by zero"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #555555;">2024-08-19T01:32:49.135Z</span> <span style="color: #BB0000;">ERROR  </span> <span style="color: #BBBBBB;">An error occurred</span></span></span>
+<span><span class="co">#&gt; <span style="color: #555555;">2025-01-12T16:26:18.008Z</span> <span style="color: #BB0000;">ERROR  </span> <span style="color: #BBBBBB;">An error occurred</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BB0000;">Error:</span></span></span>
 <span><span class="co">#&gt; "Division by zero"</span></span>
 <span></span>
@@ -159,7 +159,7 @@ output file, and custom print function:</p>
 <span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu">dbGetQuery</span><span class="op">(</span><span class="va">db</span>, <span class="va">query</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   id                 datetime level context               msg data</span></span>
-<span><span class="co">#&gt; 1  3 2024-08-19T01:32:49.135Z ERROR    &lt;NA&gt; An error occurred &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 1  3 2025-01-12T16:26:18.008Z ERROR    &lt;NA&gt; An error occurred &lt;NA&gt;</span></span>
 <span><span class="co">#&gt;                          error</span></span>
 <span><span class="co">#&gt; 1 ["[\\"Division by zero\\"]"]</span></span></code></pre></div>
 </div>
@@ -176,7 +176,7 @@ allows you to add persistent information to your log entries:</p>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">context_log</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"Application started"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #555555;">2024-08-19T01:32:49.222Z</span> <span style="color: #0000BB;">INFO   </span> <span style="color: #BBBBBB;">Application started</span></span></span>
+<span><span class="co">#&gt; <span style="color: #555555;">2025-01-12T16:26:18.092Z</span> <span style="color: #0000BB;">INFO   </span> <span style="color: #BBBBBB;">Application started</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BB00BB;">Context:</span></span></span>
 <span><span class="co">#&gt; {</span></span>
 <span><span class="co">#&gt;   "app_name": "MyApp",</span></span>
@@ -186,7 +186,7 @@ allows you to add persistent information to your log entries:</p>
 <span><span class="co"># Update context</span></span>
 <span><span class="va">context_log</span><span class="op">$</span><span class="fu">update_context</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>user_id <span class="op">=</span> <span class="st">"12345"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">context_log</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"User logged in"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #555555;">2024-08-19T01:32:49.235Z</span> <span style="color: #0000BB;">INFO   </span> <span style="color: #BBBBBB;">User logged in</span></span></span>
+<span><span class="co">#&gt; <span style="color: #555555;">2025-01-12T16:26:18.103Z</span> <span style="color: #0000BB;">INFO   </span> <span style="color: #BBBBBB;">User logged in</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BB00BB;">Context:</span></span></span>
 <span><span class="co">#&gt; {</span></span>
 <span><span class="co">#&gt;   "app_name": "MyApp",</span></span>
@@ -196,7 +196,7 @@ allows you to add persistent information to your log entries:</p>
 <span></span>
 <span><span class="co"># Log an error with context</span></span>
 <span><span class="va">context_log</span><span class="op">$</span><span class="fu">error</span><span class="op">(</span><span class="st">"Operation failed"</span>, data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>operation <span class="op">=</span> <span class="st">"data_fetch"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #555555;">2024-08-19T01:32:49.246Z</span> <span style="color: #BB0000;">ERROR  </span> <span style="color: #BBBBBB;">Operation failed</span></span></span>
+<span><span class="co">#&gt; <span style="color: #555555;">2025-01-12T16:26:18.114Z</span> <span style="color: #BB0000;">ERROR  </span> <span style="color: #BBBBBB;">Operation failed</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">Data:</span></span></span>
 <span><span class="co">#&gt; {</span></span>
 <span><span class="co">#&gt;   "operation": "data_fetch"</span></span>
@@ -218,7 +218,7 @@ allows you to add persistent information to your log entries:</p>
 <span><span class="co"># Clear context</span></span>
 <span><span class="va">context_log</span><span class="op">$</span><span class="fu">clear_context</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">context_log</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"Context cleared"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #555555;">2024-08-19T01:32:49.262Z</span> <span style="color: #0000BB;">INFO   </span> <span style="color: #BBBBBB;">Context cleared</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #555555;">2025-01-12T16:26:18.128Z</span> <span style="color: #0000BB;">INFO   </span> <span style="color: #BBBBBB;">Context cleared</span></span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="combining-features">Combining Features<a class="anchor" aria-label="anchor" href="#combining-features"></a>
@@ -303,7 +303,7 @@ and include this information in our log messages.</p>
 <span>        <span class="op">)</span></span>
 <span>    <span class="op">)</span></span>
 <span><span class="op">}</span></span>
-<span><span class="co">#&gt; <span style="color: #555555;">2024-08-19T01:32:49.484Z</span> <span style="color: #BBBB00;">WARNING</span> <span style="color: #BBBBBB;">NA values found in the dataset</span></span></span>
+<span><span class="co">#&gt; <span style="color: #555555;">2025-01-12T16:26:18.343Z</span> <span style="color: #BBBB00;">WARNING</span> <span style="color: #BBBBBB;">NA values found in the dataset</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">Data:</span></span></span>
 <span><span class="co">#&gt; {</span></span>
 <span><span class="co">#&gt;   "na_locations": [</span></span>
@@ -363,7 +363,7 @@ helper functions:</p>
 <span><span class="co"># Test the function with problematic data</span></span>
 <span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span>, b <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">2</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu">process_data</span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #555555;">2024-08-19T01:32:49.588Z</span> <span style="color: #BB0000;">ERROR  </span> <span style="color: #BBBBBB;">Division by zero occurred</span></span></span>
+<span><span class="co">#&gt; <span style="color: #555555;">2025-01-12T16:26:18.443Z</span> <span style="color: #BB0000;">ERROR  </span> <span style="color: #BBBBBB;">Division by zero occurred</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">Data:</span></span></span>
 <span><span class="co">#&gt; {</span></span>
 <span><span class="co">#&gt;   "infinite_values": [</span></span>
@@ -437,7 +437,7 @@ analyze and troubleshoot issues in your applications.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
 </div>
 
     </footer>
