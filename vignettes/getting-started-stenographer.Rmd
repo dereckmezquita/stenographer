@@ -20,7 +20,13 @@ The `stenographer` package provides a flexible and powerful logging system for R
 
 ## Installation
 
-You can install the `stenographer` package from GitHub with:
+You can install the released version of stenographer from CRAN:
+
+```{r, eval = FALSE}
+install.packages("stenographer")
+```
+
+You can install stenographer from [www.github.com/dereckmezquita/stenographer](https://github.com/dereckmezquita/stenographer) with:
 
 ```{r, eval = FALSE}
 remotes::install_github("dereckmezquita/stenographer")

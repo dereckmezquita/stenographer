@@ -15,15 +15,21 @@ knitr::opts_chunk$set(
 # stenographer <a href="https://dereckmezquita.github.io/stenographer"></a>
 
 <!-- badges: start -->
-[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
-[![Travis build status](https://travis-ci.org/dereckmezquita/kucoin.svg?branch=master)](https://travis-ci.org/dereckmezquita/kucoin)
+[![CRAN status](https://www.r-pkg.org/badges/version/stenographer)](https://CRAN.R-project.org/package=stenographer)
+[![R-CMD-check](https://github.com/dereckmezquita/stenographer/workflows/R-CMD-check/badge.svg)](https://github.com/dereckmezquita/stenographer/actions)
 <!-- badges: end -->
 
-The `stenographer` package is a flexible and powerful logging system for R applications. It provides a `Stenographer` class for creating customisable loggers, as well as helper functions for debugging and error reporting.
+The `stenographer` package provides a flexible logging framework with hierarchical logging levels, database integration, and contextual logging capabilities. It includes support for SQLite storage, colour-coded output, and parallel processing support.
 
 The latest version includes support for `SQLite` database logging and context management.
 
 ## Installation
+
+You can install the released version of stenographer from CRAN:
+
+```{r, eval = FALSE}
+install.packages("stenographer")
+```
 
 You can install stenographer from [www.github.com/dereckmezquita/stenographer](https://github.com/dereckmezquita/stenographer) with:
 
