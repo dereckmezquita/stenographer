@@ -15,8 +15,12 @@ knitr::opts_chunk$set(
 # stenographer <a href="https://dereckmezquita.github.io/stenographer"></a>
 
 <!-- badges: start -->
-[![CRAN status](https://www.r-pkg.org/badges/version/stenographer)](https://CRAN.R-project.org/package=stenographer)
 [![R-CMD-check](https://github.com/dereckmezquita/stenographer/workflows/R-CMD-check/badge.svg)](https://github.com/dereckmezquita/stenographer/actions)
+[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+[![CRAN status](https://www.r-pkg.org/badges/version/stenographer)](https://CRAN.R-project.org/package=stenographer)
+[![GitHub version](https://img.shields.io/github/r-package/v/dereckmezquita/stenographer?label=GitHub)](https://github.com/dereckmezquita/stenographer)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Downloads](https://cranlogs.r-pkg.org/badges/stenographer)](https://cran.r-project.org/package=stenographer)
 <!-- badges: end -->
 
 The `stenographer` package provides a flexible logging framework with hierarchical logging levels, database integration, and contextual logging capabilities. It includes support for SQLite storage, colour-coded output, and parallel processing support.

@@ -6,9 +6,16 @@
 
 <!-- badges: start -->
 
+[![R-CMD-check](https://github.com/dereckmezquita/stenographer/workflows/R-CMD-check/badge.svg)](https://github.com/dereckmezquita/stenographer/actions)
+[![Lifecycle:
+experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/stenographer)](https://CRAN.R-project.org/package=stenographer)
-[![R-CMD-check](https://github.com/dereckmezquita/stenographer/workflows/R-CMD-check/badge.svg)](https://github.com/dereckmezquita/stenographer/actions)
+[![GitHub
+version](https://img.shields.io/github/r-package/v/dereckmezquita/stenographer?label=GitHub)](https://github.com/dereckmezquita/stenographer)
+[![License:
+MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Downloads](https://cranlogs.r-pkg.org/badges/stenographer)](https://cran.r-project.org/package=stenographer)
 <!-- badges: end -->
 
 The `stenographer` package provides a flexible logging framework with
@@ -48,11 +55,11 @@ steno <- Stenographer$new()
 
 # Log some messages
 steno$info("This is an informational message")
-#> 2025-01-12T13:57:03.797Z INFO    This is an informational message
+#> 2025-01-12T14:10:47.361Z INFO    This is an informational message
 steno$warn("This is a warning")
-#> 2025-01-12T13:57:03.803Z WARNING This is a warning
+#> 2025-01-12T14:10:47.368Z WARNING This is a warning
 steno$error("This is an error")
-#> 2025-01-12T13:57:03.828Z ERROR   This is an error
+#> 2025-01-12T14:10:47.392Z ERROR   This is an error
 ```
 
 ## Features
@@ -73,9 +80,9 @@ custom_steno <- Stenographer$new(
 
 custom_steno$info("This won't be logged")
 custom_steno$warn("This will be logged to console and file")
-#> 2025-01-12T13:57:03.963Z WARNING This will be logged to console and file
+#> 2025-01-12T14:10:47.515Z WARNING This will be logged to console and file
 custom_steno$error("This is an error message", error = "Some error")
-#> 2025-01-12T13:57:03.981Z ERROR   This is an error message
+#> 2025-01-12T14:10:47.533Z ERROR   This is an error message
 #> Error:
 #> "Some error"
 ```
@@ -84,8 +91,8 @@ Logs are written to the specified file as JSON objects:
 
 ``` r
 cat(readLines(log_file), sep = "\n")
-#> {"datetime":"2025-01-12T13:57:03.963Z","level":"WARNING","msg":"This will be logged to console and file","data":{},"error":{},"context":{}} 
-#> {"datetime":"2025-01-12T13:57:03.981Z","level":"ERROR","msg":"This is an error message","data":{},"error":"[\"Some error\"]","context":{}}
+#> {"datetime":"2025-01-12T14:10:47.515Z","level":"WARNING","msg":"This will be logged to console and file","data":{},"error":{},"context":{}} 
+#> {"datetime":"2025-01-12T14:10:47.533Z","level":"ERROR","msg":"This is an error message","data":{},"error":"[\"Some error\"]","context":{}}
 ```
 
 ### Database Logging
@@ -111,14 +118,14 @@ db_steno <- Stenographer$new(
 
 # Log some messages
 db_steno$info("This is logged to the database")
-#> 2025-01-12T13:57:04.170Z INFO    This is logged to the database
+#> 2025-01-12T14:10:47.682Z INFO    This is logged to the database
 #> Context:
 #> {
 #>   "app_name": "MyApp",
 #>   "fun": "main"
 #> }
 db_steno$warn("This is a warning", data = list(code = 101))
-#> 2025-01-12T13:57:04.177Z WARNING This is a warning
+#> 2025-01-12T14:10:47.711Z WARNING This is a warning
 #> Data:
 #> {
 #>   "code": 101
@@ -129,7 +136,7 @@ db_steno$warn("This is a warning", data = list(code = 101))
 #>   "fun": "main"
 #> }
 db_steno$error("An error occurred", error = "Division by zero")
-#> 2025-01-12T13:57:04.243Z ERROR   An error occurred
+#> 2025-01-12T14:10:47.777Z ERROR   An error occurred
 #> Error:
 #> "Division by zero"
 #> Context:
@@ -143,21 +150,9 @@ query <- "SELECT * FROM app_logs WHERE level = 'ERROR'"
 result <- dbGetQuery(db, query)
 print(result)
 #>   id                 datetime level                               context
-#> 1  3 2025-01-12T11:29:44.461Z ERROR {"app_name":["MyApp"],"fun":["main"]}
-#> 2  6 2025-01-12T11:30:05.059Z ERROR {"app_name":["MyApp"],"fun":["main"]}
-#> 3  9 2025-01-12T11:30:13.358Z ERROR {"app_name":["MyApp"],"fun":["main"]}
-#> 4 12 2025-01-12T11:30:34.129Z ERROR {"app_name":["MyApp"],"fun":["main"]}
-#> 5 15 2025-01-12T11:30:52.105Z ERROR {"app_name":["MyApp"],"fun":["main"]}
-#> 6 18 2025-01-12T11:46:27.628Z ERROR {"app_name":["MyApp"],"fun":["main"]}
-#> 7 21 2025-01-12T13:57:04.243Z ERROR {"app_name":["MyApp"],"fun":["main"]}
+#> 1  3 2025-01-12T14:10:47.777Z ERROR {"app_name":["MyApp"],"fun":["main"]}
 #>                 msg data                        error
 #> 1 An error occurred <NA> ["[\\"Division by zero\\"]"]
-#> 2 An error occurred <NA> ["[\\"Division by zero\\"]"]
-#> 3 An error occurred <NA> ["[\\"Division by zero\\"]"]
-#> 4 An error occurred <NA> ["[\\"Division by zero\\"]"]
-#> 5 An error occurred <NA> ["[\\"Division by zero\\"]"]
-#> 6 An error occurred <NA> ["[\\"Division by zero\\"]"]
-#> 7 An error occurred <NA> ["[\\"Division by zero\\"]"]
 
 # Don't forget to close the database connection when you're done
 dbDisconnect(db)
@@ -190,7 +185,7 @@ if (nrow(na_coords) > 0) {
         )
     )
 }
-#> 2025-01-12T13:57:04.258Z WARNING NA values found in the dataset
+#> 2025-01-12T14:10:47.791Z WARNING NA values found in the dataset
 #> Data:
 #> {
 #>   "na_locations": [
@@ -244,7 +239,7 @@ process_data <- function(df) {
 # Test the function with problematic data
 df <- data.frame(a = c(1, 2, 3), b = c(0, 2, 0))
 process_data(df)
-#> 2025-01-12T13:57:04.285Z ERROR   Division by zero occurred
+#> 2025-01-12T14:10:47.816Z ERROR   Division by zero occurred
 #> Data:
 #> {
 #>   "infinite_values": [
@@ -259,7 +254,7 @@ process_data(df)
 #>   ],
 #>   "dataset_preview": "  a b\n1 1 0\n2 2 2\n3 3 0"
 #> } 
-#> 2025-01-12T13:57:04.286Z ERROR   An error occurred while processing data: Division by zero error
+#> 2025-01-12T14:10:47.817Z ERROR   An error occurred while processing data: Division by zero error
 #> Data:
 #> {
 #>   "dataset_preview": "  a b\n1 1 0\n2 2 2\n3 3 0"
