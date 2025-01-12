@@ -15,8 +15,8 @@ navbar:
     articles:
       text: Articles
       menu:
-      - text: "Getting Started with Logger"
-        href: articles/getting-started-Logger.html
+      - text: "Getting Started with stenographer"
+        href: articles/getting-started-stenographer.html
     donate:
       text: Donate
       href: articles/donate.html

@@ -1,4 +1,4 @@
-Package: Logger
+Package: stenographer
 Type: Package
 Title: Flexible and Customisable Logging System for R
 Version: 0.0.32

@@ -11,6 +11,6 @@ An object of class \code{list} of length 3.
 LogLevel
 }
 \description{
-Defines the available log levels for the Logger class.
+Defines the available log levels for the Stenographer class.
 }
 \keyword{datasets}

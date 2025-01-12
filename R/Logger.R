@@ -1,6 +1,6 @@
 #' Log Levels
 #'
-#' Defines the available log levels for the Logger class.
+#' Defines the available log levels for the Stenographer class.
 #'
 #' @export
 LogLevel <- list(
@@ -9,37 +9,37 @@ LogLevel <- list(
     INFO = 2L
 )
 
-#' @title Logger
+#' @title Stenographer
 #' @description An R6 class for flexible logging with customisable output, message formatting, and context.
 #'
 #' @examples
-#' # Create a basic logger
-#' logger <- Logger$new()
-#' logger$info("This is an info message")
-#' logger$warn("This is a warning")
-#' logger$error("This is an error")
+#' # Create a basic Stenographer
+#' steno <- Stenographer$new()
+#' steno$info("This is an info message")
+#' steno$warn("This is a warning")
+#' steno$error("This is an error")
 #'
 #' # Create a logger with custom settings, message formatting, and context
-#' custom_logger <- Logger$new(
+#' custom_steno <- Stenographer$new(
 #'   level = LogLevel$WARNING,
 #'   file_path = tempfile("log_"),
 #'   print_fn = function(x) message(paste0("Custom: ", x)),
 #'   format_fn = function(level, msg) paste0("Hello prefix: ", msg),
 #'   context = list(program = "MyApp")
 #' )
-#' custom_logger$info("This won't be logged")
-#' custom_logger$warn("This will be logged with a custom prefix")
+#' custom_steno$info("This won't be logged")
+#' custom_steno$warn("This will be logged with a custom prefix")
 #'
 #' # Change log level and update context
-#' custom_logger$set_level(LogLevel$INFO)
-#' custom_logger$update_context(list(user = "John"))
-#' custom_logger$info("Now this will be logged with a custom prefix and context")
+#' custom_steno$set_level(LogLevel$INFO)
+#' custom_steno$update_context(list(user = "John"))
+#' custom_steno$info("Now this will be logged with a custom prefix and context")
 #' @export
-Logger <- R6::R6Class(
-    "Logger",
+Stenographer <- R6::R6Class(
+    "Stenographer",
     public = list(
         #' @description
-        #' Create a new Logger object.
+        #' Create a new Stenographer object.
         #' @param level The minimum log level to output. Default is LogLevel$INFO.
         #' @param file_path Character; the path to a file to save log entries to. Default is NULL.
         #' @param db_conn DBI connection object; an existing database connection. Default is NULL.
@@ -49,7 +49,7 @@ Logger <- R6::R6Class(
         #' @param format_fn Function; custom format function to modify the log message.
         #'   Should accept level and msg as inputs and return a formatted string.
         #' @param context List; initial context for the logger. Default is an empty list.
-        #' @return A new `Logger` object.
+        #' @return A new `Stenographer` object.
         initialize = function(
             level = LogLevel$INFO,
             file_path = NULL,
@@ -79,8 +79,8 @@ Logger <- R6::R6Class(
         #' Set the minimum log level.
         #' @param level The new minimum log level to set.
         #' @examples
-        #' logger <- Logger$new()
-        #' logger$set_level(LogLevel$WARNING)
+        #' steno <- Stenographer$new()
+        #' steno$set_level(LogLevel$WARNING)
         set_level = function(level) {
             private$level <- level
         },
@@ -110,8 +110,8 @@ Logger <- R6::R6Class(
         #' @param data Optional; additional data to include in the log entry.
         #' @param error Optional; an error object to include in the log entry.
         #' @examples
-        #' logger <- Logger$new()
-        #' logger$error("An error occurred", data = list(x = 1), error = "Oops!")
+        #' steno <- Stenographer$new()
+        #' steno$error("An error occurred", data = list(x = 1), error = "Oops!")
         error = function(msg, data = NULL, error = NULL) {
             if (private$level >= LogLevel$ERROR) {
                 formatted_msg <- private$format_fn("ERROR", msg)
@@ -125,8 +125,8 @@ Logger <- R6::R6Class(
         #' @param msg Character; the warning message to log.
         #' @param data Optional; additional data to include in the log entry.
         #' @examples
-        #' logger <- Logger$new()
-        #' logger$warn("This is a warning", data = list(reason = "example"))
+        #' steno <- Stenographer$new()
+        #' steno$warn("This is a warning", data = list(reason = "example"))
         warn = function(msg, data = NULL) {
             if (private$level >= LogLevel$WARNING) {
                 formatted_msg <- private$format_fn("WARNING", msg)
@@ -140,8 +140,8 @@ Logger <- R6::R6Class(
         #' @param msg Character; the info message to log.
         #' @param data Optional; additional data to include in the log entry.
         #' @examples
-        #' logger <- Logger$new()
-        #' logger$info("Operation completed successfully", data = list(duration = 5.2))
+        #' steno <- Stenographer$new()
+        #' steno$info("Operation completed successfully", data = list(duration = 5.2))
         info = function(msg, data = NULL) {
             if (private$level >= LogLevel$INFO) {
                 formatted_msg <- private$format_fn("INFO", msg)
