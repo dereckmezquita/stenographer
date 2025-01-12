@@ -28,7 +28,8 @@
 #'   message(msg)
 #' }
 #'
+#' @importFrom utils capture.output
 #' @export
 tableToString <- function(obj) {
-    return(paste(utils::capture.output(print(as.data.frame(obj))), collapse = "\n"))
+    return(paste(capture.output(print(as.data.frame(obj))), collapse = "\n"))
 }

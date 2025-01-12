@@ -59,14 +59,15 @@ value_check <- function(x, y) {
 #' # Find positions of values in range [1,3]
 #' valueCoordinates(df, c(1, 3), function(x, y) x >= y[1] & x <= y[2])
 #'
+#' @importFrom rlang abort
 #' @export
 valueCoordinates <- function(df, value = NA, eq_fun = value_check) {
     if (!is.data.frame(df)) {
-        rlang::abort("'df' must be a data.frame")
+        abort("'df' must be a data.frame")
     }
 
     if (!is.function(eq_fun)) {
-        rlang::abort("'eq_fun' must be a function")
+        abort("'eq_fun' must be a function")
     }
     
     # Rest of the original code remains exactly the same
