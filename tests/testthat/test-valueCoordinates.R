@@ -19,7 +19,7 @@ test_that("value_check performs exact matching", {
 })
 
 test_that("valueCoordinates validates input type", {
-  expect_error(valueCoordinates(list(a = 1)), "'df' must be a data frame")
+  expect_error(valueCoordinates(list(a = 1)), "'df' must be a data.frame")
 })
 
 test_that("valueCoordinates finds NA values correctly", {
