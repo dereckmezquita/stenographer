@@ -215,3 +215,9 @@ Contributions to stenographer are welcome! Please refer to the [CONTRIBUTING.md]
 ## License
 
 stenographer is released under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+## Citation
+
+If you use this package in your research or work, please cite it as:
+
+Mezquita, D. (2025). stenographer: Flexible and Customisable Logging System. R package version 1.0.0. https://github.com/dereckmezquita/stenographer
