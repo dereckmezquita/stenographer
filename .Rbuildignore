@@ -18,3 +18,5 @@ research/
 ^pkgdown/
 ^run-tests\.R$
 ^scripts/
+
+^.*\.html$
