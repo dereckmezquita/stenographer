@@ -1,3 +1,4 @@
+# .github/workflows/R-CMD-check.yml
 name: R-CMD-check
 
 on:
@@ -9,25 +10,21 @@ on:
 jobs:
   R-CMD-check:
     runs-on: ${{ matrix.config.os }}
-
-    name: ${{ matrix.config.os }} (${{ matrix.config.r }})
-
+    name: ${{ matrix.config.os }} (R ${{ matrix.config.r }})
+    
     strategy:
       fail-fast: false
       matrix:
         config:
           - {os: macos-latest,   r: 'release'}
           - {os: windows-latest, r: 'release'}
-          - {os: ubuntu-latest,   r: 'devel', http-user-agent: 'release'}
-          - {os: ubuntu-latest,   r: 'release'}
-          - {os: ubuntu-latest,   r: 'oldrel-1'}
+          - {os: ubuntu-latest,  r: 'release'}
 
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
-      R_KEEP_PKG_SOURCE: yes
       _R_CHECK_CRAN_INCOMING_: false
       _R_CHECK_FORCE_SUGGESTS_: false
-      
+
     steps:
       - uses: actions/checkout@v3
 
@@ -36,21 +33,14 @@ jobs:
       - uses: r-lib/actions/setup-r@v2
         with:
           r-version: ${{ matrix.config.r }}
-          http-user-agent: ${{ matrix.config.http-user-agent }}
-          use-public-rspm: true
 
-      - uses: r-lib/actions/setup-r-dependencies@v2
-        with:
-          extra-packages: any::rcmdcheck
-          needs: check
-
-      - name: Restore renv snapshot
-        shell: Rscript {0}
+      - name: Install dependencies
         run: |
-          if (!require("renv")) install.packages("renv")
-          renv::restore()
+          install.packages('remotes')
+          remotes::install_deps(dependencies = TRUE)
 
-      - uses: r-lib/actions/check-r-package@v2
+      - name: Run R CMD check
+        uses: r-lib/actions/check-r-package@v2
         with:
           error-on: '"error"'
           check-dir: '"check"'
