@@ -3,8 +3,8 @@ pkgdown: 2.1.1
 pkgdown_sha: ~
 articles:
   donate: donate.html
-  getting-started-Logger: getting-started-Logger.html
-last_built: 2025-01-12T16:28Z
+  getting-started-stenographer: getting-started-stenographer.html
+last_built: 2025-01-12T19:27Z
 urls:
   reference: https://dereckmezquita.github.io/stenographer/reference
   article: https://dereckmezquita.github.io/stenographer/articles
