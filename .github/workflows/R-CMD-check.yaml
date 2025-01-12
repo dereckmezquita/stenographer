@@ -1,29 +1,33 @@
-# .github/workflows/R-CMD-check.yml
 name: R-CMD-check
 
 on:
   push:
-    branches: [main, master]
+    branches: [master]
   pull_request:
-    branches: [main, master]
+    branches: [master]
+  schedule:
+    - cron: '0 0 * * 0'  # Run every Sunday at midnight UTC
 
 jobs:
   R-CMD-check:
     runs-on: ${{ matrix.config.os }}
-    name: ${{ matrix.config.os }} (R ${{ matrix.config.r }})
-    
+    name: ${{ matrix.config.os }} (R-${{ matrix.config.r }})
+
     strategy:
       fail-fast: false
       matrix:
         config:
-          - {os: macos-latest,   r: 'release'}
+          - {os: macOS-latest, r: 'release'}
+          - {os: macOS-latest, r: 'devel'}
+          - {os: ubuntu-latest, r: '4.1.0'}
+          - {os: ubuntu-latest, r: 'release'}
+          - {os: ubuntu-latest, r: 'devel'}
           - {os: windows-latest, r: 'release'}
-          - {os: ubuntu-latest,  r: 'release'}
+          - {os: windows-latest, r: 'devel'}
 
     env:
+      R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
-      _R_CHECK_CRAN_INCOMING_: false
-      _R_CHECK_FORCE_SUGGESTS_: false
 
     steps:
       - uses: actions/checkout@v3
@@ -33,14 +37,47 @@ jobs:
       - uses: r-lib/actions/setup-r@v2
         with:
           r-version: ${{ matrix.config.r }}
+          http-user-agent: ${{ matrix.config.http-user-agent }}
 
-      - name: Install dependencies
+      - name: Install system dependencies (Linux)
+        if: runner.os == 'Linux'
         run: |
-          install.packages('remotes')
-          remotes::install_deps(dependencies = TRUE)
+          sudo apt-get update
+          sudo apt-get install -y texlive-latex-base texlive-latex-recommended texlive-fonts-recommended texlive-fonts-extra
 
-      - name: Run R CMD check
-        uses: r-lib/actions/check-r-package@v2
+      - name: Install system dependencies (macOS)
+        if: runner.os == 'macOS'
+        run: |
+          brew install --cask basictex
+          sudo /Library/TeX/texbin/tlmgr update --self
+          sudo /Library/TeX/texbin/tlmgr install inconsolata
+          echo "/Library/TeX/texbin" >> $GITHUB_PATH
+
+      # EUREKA this windows set up worked!
+      - name: Install system dependencies (Windows)
+        if: runner.os == 'Windows'
+        run: |
+          choco install miktex --params="/FileTypeAssociations=0" -y
+          echo "C:\Program Files\MiKTeX\miktex\bin\x64" >> $env:GITHUB_PATH
+
+      - uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          error-on: '"error"'
-          check-dir: '"check"'
+          extra-packages: any::rcmdcheck
+          needs: check
+
+      - uses: r-lib/actions/check-r-package@v2
+        with:
+          upload-snapshots: true
+          args: c('--as-cran')
+
+      - name: Show testthat output
+        if: always()
+        run: find check -name 'testthat.Rout*' -exec cat '{}' \; || true
+        shell: bash
+
+      - name: Upload check results
+        if: failure()
+        uses: actions/upload-artifact@main
+        with:
+          name: ${{ runner.os }}-r${{ matrix.config.r }}-results
+          path: check
