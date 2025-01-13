@@ -1,7 +1,7 @@
 Package: stenographer
 Type: Package
 Title: Flexible and Customisable Logging System
-Version: 0.1.0
+Version: 1.0.0
 URL: https://github.com/dereckmezquita/stenographer
 Authors@R: 
     person(given = "Dereck",
