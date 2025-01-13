@@ -39,7 +39,7 @@ You can install stenographer from [www.github.com/dereckmezquita/stenographer](h
 
 ```{r, eval = FALSE}
 # install.packages("remotes")
-remotes::install_github("derecksprojects/stenographer")
+remotes::install_github("dereckmezquita/stenographer")
 ```
 
 ## Basic Usage
@@ -214,11 +214,11 @@ future::plan(future::sequential)
 
 ## Contributing
 
-Contributions to stenographer are welcome! Please refer to the [CONTRIBUTING.md](CONTRIBUTING.md) file for guidelines.
+Contributions to stenographer are welcome! Please refer to the [CONTRIBUTING.md](https://github.com/dereckmezquita/stenographer/blob/master/CONTRIBUTING.md) file for guidelines.
 
 ## License
 
-stenographer is released under the MIT License. See the [LICENSE](LICENSE) file for details.
+This package is licensed under the MIT License.
 
 ## Citation
 
