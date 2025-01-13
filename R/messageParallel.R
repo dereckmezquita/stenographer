@@ -1,4 +1,4 @@
-#' Print Messages from Parallel Processes
+#' @title Print Messages from Parallel Processes
 #'
 #' @description
 #' Enables message output from forked processes during parallel computation using

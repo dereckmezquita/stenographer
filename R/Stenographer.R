@@ -1,4 +1,4 @@
-#' Logging Level
+#' @title Logging Level
 #'
 #' @description
 #' Defines standard logging levels for controlling message output granularity.
@@ -28,7 +28,7 @@ LogLevel <- list(
     INFO = 2L
 )
 
-#' R6 Class for Advanced Logging Functionality
+#' @title R6 Class for Advanced Logging Functionality
 #'
 #' @description
 #' Provides a flexible logging system with support for multiple output destinations,

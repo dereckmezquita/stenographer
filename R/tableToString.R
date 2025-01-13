@@ -1,4 +1,4 @@
-#' Convert a Data Frame or R Object to a String Representation
+#' @title Convert a Data Frame or R Object to a String Representation
 #'
 #' @description
 #' Captures the printed output of a data.frame or an R object (coerced to a data.frame)

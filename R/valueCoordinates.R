@@ -1,4 +1,4 @@
-#' Default Equality Function for valueCoordinates
+#' @title Default Equality Function for valueCoordinates
 #'
 #' @description
 #' A helper function that performs equality checks between values, with special
@@ -19,7 +19,7 @@ value_check <- function(x, y) {
     }
 }
 
-#' Locate Specific Values in a Data Frame
+#' @title Locate Specific Values in a Data Frame
 #'
 #' @description
 #' Finds the positions (row and column indices) of values in a data.frame that match

@@ -1,4 +1,4 @@
-#' Concatenate Vector Elements with Optional Separator
+#' @title Concatenate Vector Elements with Optional Separator
 #'
 #' @description
 #' Concatenates vector elements into a single string. Unlike `paste0`, it handles
