@@ -1,8 +1,8 @@
 ---
-title: "Getting started with Logger"
+title: "Getting started with stenographer"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Getting started with Logger}
+  %\VignetteIndexEntry{Getting started with stenographer}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -16,52 +16,58 @@ knitr::opts_chunk$set(
 
 ## Introduction
 
-The `Logger` package provides a flexible and powerful logging system for R applications. It includes a `Logger` class for creating customisable loggers, as well as helper functions for debugging and error reporting. This vignette will guide you through the basics of using the `Logger` package and demonstrate how to leverage its features to improve your R workflows.
+The `stenographer` package provides a flexible and powerful logging system for R applications. It includes a `Stenographer` class for creating customisable loggers, as well as helper functions for debugging and error reporting. This vignette will guide you through the basics of using the `stenographer` package and demonstrate how to leverage its features to improve your R workflows.
 
 ## Installation
 
-You can install the `Logger` package from GitHub with:
+You can install the released version of stenographer from CRAN:
 
 ```{r, eval = FALSE}
-remotes::install_github("derecksprojects/R-Logger")
+install.packages("stenographer")
+```
+
+You can install stenographer from [www.github.com/dereckmezquita/stenographer](https://github.com/dereckmezquita/stenographer) with:
+
+```{r, eval = FALSE}
+remotes::install_github("dereckmezquita/stenographer")
 ```
 
 ## Basic Usage
 
-First, let's load the package and create a basic logger:
+First, let's load the package and create a basic stenographer:
 
 ```{r}
-box::use(Logger[Logger, LogLevel, messageParallel])
+box::use(stenographer[Stenographer, LogLevel, messageParallel])
 
 # Create a basic logger
-log <- Logger$new()
+steno <- Stenographer$new()
 
 # Log some messages
-log$info("This is an informational message")
-log$warn("This is a warning")
-log$error("This is an error")
+steno$info("This is an informational message")
+steno$warn("This is a warning")
+steno$error("This is an error")
 ```
 
-## Customising the Logger
+## Customising the Stenographer
 
-You can customise the logger by specifying the minimum log level, output file, and custom print function:
+You can customise the `Stenographer` by specifying the minimum log level, output file, and custom print function:
 
 ```{r}
-# Create a custom logger
-custom_log <- Logger$new(
+# Create a custom stenographer
+custom_steno <- Stenographer$new(
     level = LogLevel$WARNING,
     file_path = "app.log",
     print_fn = message
 )
 
-custom_log$info("This won't be logged")
-custom_log$warn("This will be logged to console and file")
-custom_log$error("This is an error message")
+custom_steno$info("This won't be logged")
+custom_steno$warn("This will be logged to console and file")
+custom_steno$error("This is an error message")
 ```
 
 ## Logging to a Database
 
-The `Logger` class supports logging to a `SQLite` database. Here's how you can set it up:
+The `Stenographer` class supports logging to a `SQLite` database. Here's how you can set it up:
 
 ```{r}
 box::use(RSQLite[ SQLite ])
@@ -70,16 +76,16 @@ box::use(DBI[ dbConnect, dbDisconnect, dbGetQuery ])
 # Create a database connection
 db <- dbConnect(SQLite(), "log.sqlite")
 
-# Create a logger that logs to the database
-db_log <- Logger$new(
+# Create a Stenographer that logs to the database
+db_steno <- Stenographer$new(
     db_conn = db,
     table_name = "app_logs"
 )
 
 # Log some messages
-db_log$info("This is logged to the database")
-db_log$warn("This is a warning", data = list(code = 101))
-db_log$error("An error occurred", error = "Division by zero")
+db_steno$info("This is logged to the database")
+db_steno$warn("This is a warning", data = list(code = 101))
+db_steno$error("An error occurred", error = "Division by zero")
 
 # Example of querying the logs
 query <- "SELECT * FROM app_logs WHERE level = 'ERROR'"
@@ -89,23 +95,23 @@ print(result)
 
 ## Using Context
 
-The `Logger` class now supports a context feature, which allows you to add persistent information to your log entries:
+The `Stenographer` class supports a context feature, which allows you to add persistent information to your log entries:
 
 ```{r}
-context_log <- Logger$new(
+context_steno <- Stenographer$new(
     db_conn = db,
     table_name = "context_logs",
     context = list(app_name = "MyApp", version = "1.0.0")
 )
 
-context_log$info("Application started")
+context_steno$info("Application started")
 
 # Update context
-context_log$update_context(list(user_id = "12345"))
-context_log$info("User logged in")
+context_steno$update_context(list(user_id = "12345"))
+context_steno$info("User logged in")
 
 # Log an error with context
-context_log$error("Operation failed", data = list(operation = "data_fetch"))
+context_steno$error("Operation failed", data = list(operation = "data_fetch"))
 
 # Example of querying logs with context
 query <- "SELECT * FROM context_logs WHERE json_extract(context, '$.user_id') = '12345'"
@@ -113,17 +119,17 @@ result <- dbGetQuery(db, query)
 print(result)
 
 # Clear context
-context_log$clear_context()
-context_log$info("Context cleared")
+context_steno$clear_context()
+context_steno$info("Context cleared")
 ```
 
 ## Combining Features
 
-You can combine various features of the `Logger` class to create a powerful logging system:
+You can combine various features of the `Stenographer` class to create a powerful logging system:
 
 ```{r}
-# Create a combined logger
-combined_log <- Logger$new(
+# Create a combined Stenographer
+combined_steno <- Stenographer$new(
     level = LogLevel$INFO,
     file_path = "combined_app.log",
     db_conn = db,
@@ -138,13 +144,13 @@ combined_log <- Logger$new(
 )
 
 # Log some messages
-combined_log$info("Application started")
-combined_log$warn("Low memory", data = list(available_mb = 100))
-combined_log$error("Database connection failed", error = "Connection timeout")
+combined_steno$info("Application started")
+combined_steno$warn("Low memory", data = list(available_mb = 100))
+combined_steno$error("Database connection failed", error = "Connection timeout")
 
 # Update context
-combined_log$update_context(list(user_id = "67890"))
-combined_log$info("User action", data = list(action = "button_click"))
+combined_steno$update_context(list(user_id = "67890"))
+combined_steno$info("User action", data = list(action = "button_click"))
 
 # Example of a more complex query using context and data
 query <- "
@@ -162,14 +168,14 @@ dbDisconnect(db)
 
 ## Using Helper Functions
 
-The `Logger` package includes several helper functions that can be used in conjunction with the `Logger` class to provide more detailed information in your logs. Let's explore how to use these functions effectively.
+The `Stenographer` package includes several helper functions that can be used in conjunction with the `Stenographer` class to provide more detailed information in your logs. Let's explore how to use these functions effectively.
 
 ### Finding and Logging Data Issues
 
 Suppose we have a dataset with some problematic values, and we want to log where these issues occur. We can use the `valueCoordinates` function to locate the problematic values and include this information in our log messages.
 
 ```{r}
-box::use(Logger[valueCoordinates])
+box::use(stenographer[valueCoordinates])
 
 # Create a sample dataset with some issues
 df <- data.frame(
@@ -178,14 +184,14 @@ df <- data.frame(
     c = c(3, 6, 9, NA, 15)
 )
 
-# Create a logger
-log <- Logger$new()
+# Create a Stenographer
+steno <- Stenographer$new()
 
 # Find coordinates of NA values
 na_coords <- valueCoordinates(df)
 
 if (nrow(na_coords) > 0) {
-    log$warn(
+    steno$warn(
         "NA values found in the dataset",
         data = list(
             na_locations = na_coords
@@ -198,19 +204,19 @@ This will produce a log entry like:
 
 ### Logging Errors with Context
 
-When an error occurs, it's often useful to catch and log not just the error message, but also the context in which the error occurred. Here's an example of how to do this using the `Logger` class and helper functions:
+When an error occurs, it's often useful to catch and log not just the error message, but also the context in which the error occurred. Here's an example of how to do this using the `Stenographer` class and helper functions:
 
 ```{r}
-box::use(Logger[tableToString])
+box::use(stenographer[tableToString])
 
-log <- Logger$new()
+steno <- Stenographer$new()
 
 process_data <- function(df) {
     tryCatch({
         result <- df$a / df$b
         if (any(is.infinite(result))) {
             inf_coords <- valueCoordinates(data.frame(result), Inf)
-            log$error(
+            steno$error(
                 "Division by zero occurred",
                 data = list(
                     infinite_values = inf_coords,
@@ -221,7 +227,7 @@ process_data <- function(df) {
         }
         return(result)
     }, error = function(e) {
-        log$error(
+        steno$error(
             paste("An error occurred while processing data:", e$message),
             data = list(dataset_preview = tableToString(df)),
             error = e
@@ -237,20 +243,20 @@ process_data(df)
 
 ## Logging in Parallel Environments
 
-When working with parallel processing, standard logging functions might not work as expected. The `Logger` package provides a `messageParallel` function to ensure messages are properly logged from parallel processes:
+When working with parallel processing, standard logging functions might not work as expected. The stenographer package provides a `messageParallel` function to ensure messages are properly logged from parallel processes:
 
 ```{r}
 box::use(future)
 box::use(future.apply[future_lapply])
 
-log <- Logger$new(print_fn = messageParallel)
+steno <- Stenographer$new(print_fn = messageParallel)
 
 future::plan(future::multisession, workers = 2)
 
 result <- future_lapply(1:5, function(i) {
     messageParallel(sprintf("Processing item %d", i))
     if (i == 3) {
-        log$warn(sprintf("Warning for item %d", i))
+        steno$warn(sprintf("Warning for item %d", i))
     }
     return(i * 2)
 })
@@ -262,7 +268,7 @@ This ensures that messages from parallel processes are properly captured and log
 
 ## Conclusion
 
-The `Logger` package provides a robust and flexible logging system for R applications. With features like file logging, database logging, and context management, you can create informative and context-rich log messages that greatly aid in debugging and monitoring your R scripts and applications.
+The stenographer package provides a robust and flexible logging system for R applications. With features like file logging, database logging, and context management, you can create informative and context-rich log messages that greatly aid in debugging and monitoring your R scripts and applications.
 
 Moreover, by using helper functions like `valueCoordinates` and `tableToString` you can more easily track down and log data issues and errors, providing valuable information for troubleshooting and analysis.
 

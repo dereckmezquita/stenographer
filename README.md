@@ -1,73 +1,88 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-<!-- <img src="./.graphics/512-20240803_logger-logo.png" align="right" height="140" /> -->
+<!-- <img src="./.graphics/512-stenographer-logo.png" align="right" height="140" /> -->
 
-# Logger <a href="https://dereckmezquita.github.io/R-Logger"></a>
+# stenographer <a href="https://dereckmezquita.github.io/stenographer/"></a>
 
 <!-- badges: start -->
 
+[![R-CMD-check](https://github.com/dereckmezquita/stenographer/workflows/R-CMD-check/badge.svg)](https://github.com/dereckmezquita/stenographer/actions)
 [![Lifecycle:
-experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
-[![Travis build
-status](https://travis-ci.org/dereckmezquita/kucoin.svg?branch=master)](https://travis-ci.org/dereckmezquita/kucoin)
+experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+[![CRAN
+status](https://www.r-pkg.org/badges/version/stenographer)](https://CRAN.R-project.org/package=stenographer)
+[![GitHub
+version](https://img.shields.io/github/r-package/v/dereckmezquita/stenographer?label=GitHub)](https://github.com/dereckmezquita/stenographer)
+[![License:
+MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Downloads](https://cranlogs.r-pkg.org/badges/stenographer)](https://cran.r-project.org/package=stenographer)
 <!-- badges: end -->
 
-Logger is a flexible and powerful logging system for R applications. It
-provides a `Logger` class for creating customisable loggers, as well as
-helper functions for debugging and error reporting.
+The `stenographer` package provides a flexible logging framework with
+hierarchical logging levels, database integration, and contextual
+logging capabilities. It includes support for SQLite storage,
+colour-coded output, and parallel processing support.
 
 The latest version includes support for `SQLite` database logging and
 context management.
 
 ## Installation
 
-You can install Logger from [GitHub](https://github.com/) with:
+You can install the released version of stenographer from CRAN:
+
+``` r
+install.packages("stenographer")
+```
+
+You can install stenographer from
+[www.github.com/dereckmezquita/stenographer](https://github.com/dereckmezquita/stenographer)
+with:
 
 ``` r
 # install.packages("remotes")
-remotes::install_github("derecksprojects/R-Logger")
+remotes::install_github("derecksprojects/stenographer")
 ```
 
 ## Basic Usage
 
-Here’s a quick example of how to use Logger:
+Here’s a quick example of how to use stenographer:
 
 ``` r
-box::use(Logger[Logger, LogLevel])
+box::use(stenographer[Stenographer, LogLevel])
 
 # Create a basic logger
-log <- Logger$new()
+steno <- Stenographer$new()
 
 # Log some messages
-log$info("This is an informational message")
-#> 2024-08-18T18:57:50.871Z INFO    This is an informational message
-log$warn("This is a warning")
-#> 2024-08-18T18:57:50.884Z WARNING This is a warning
-log$error("This is an error")
-#> 2024-08-18T18:57:50.921Z ERROR   This is an error
+steno$info("This is an informational message")
+#> 2025-01-12T20:03:39.811Z INFO    This is an informational message
+steno$warn("This is a warning")
+#> 2025-01-12T20:03:39.813Z WARNING This is a warning
+steno$error("This is an error")
+#> 2025-01-12T20:03:39.835Z ERROR   This is an error
 ```
 
 ## Features
 
 ### Customisable Logging
 
-You can customise the logger by specifying the minimum log level, output
-file, and custom print function:
+You can customise the stenographer by specifying the minimum log level,
+output file, and custom print function:
 
 ``` r
 log_file <- tempfile("app_log")
 
-custom_log <- Logger$new(
+custom_steno <- Stenographer$new(
     level = LogLevel$WARNING,
     file_path = log_file,
     print_fn = message
 )
 
-custom_log$info("This won't be logged")
-custom_log$warn("This will be logged to console and file")
-#> 2024-08-18T18:57:51.208Z WARNING This will be logged to console and file
-custom_log$error("This is an error message", error = "Some error")
-#> 2024-08-18T18:57:51.226Z ERROR   This is an error message
+custom_steno$info("This won't be logged")
+custom_steno$warn("This will be logged to console and file")
+#> 2025-01-12T20:03:39.935Z WARNING This will be logged to console and file
+custom_steno$error("This is an error message", error = "Some error")
+#> 2025-01-12T20:03:39.936Z ERROR   This is an error message
 #> Error:
 #> "Some error"
 ```
@@ -76,15 +91,16 @@ Logs are written to the specified file as JSON objects:
 
 ``` r
 cat(readLines(log_file), sep = "\n")
-#> {"datetime":"2024-08-18T18:57:51.208Z","level":"WARNING","msg":"This will be logged to console and file","data":{},"error":{},"context":{}} 
-#> {"datetime":"2024-08-18T18:57:51.226Z","level":"ERROR","msg":"This is an error message","data":{},"error":"[\"Some error\"]","context":{}}
+#> {"datetime":"2025-01-12T20:03:39.935Z","level":"WARNING","msg":"This will be logged to console and file","data":{},"error":{},"context":{}} 
+#> {"datetime":"2025-01-12T20:03:39.936Z","level":"ERROR","msg":"This is an error message","data":{},"error":"[\"Some error\"]","context":{}}
 ```
 
 ### Database Logging
 
-Logger now supports logging to a SQLite database and context management
-so you can easily track application events. The context is useful for
-filtering and querying logs based on specific criteria from `SQLite`:
+stenographer now supports logging to a SQLite database and context
+management so you can easily track application events. The context is
+useful for filtering and querying logs based on specific criteria from
+`SQLite`:
 
 ``` r
 box::use(RSQLite[ SQLite ])
@@ -93,23 +109,23 @@ box::use(DBI[ dbConnect, dbDisconnect, dbGetQuery ])
 # Create a database connection
 db <- dbConnect(SQLite(), "log.sqlite")
 
-# Create a logger that logs to the database
-db_log <- Logger$new(
+# Create a stenographer that logs to the database
+db_steno <- Stenographer$new(
     context = list(app_name = "MyApp", fun = "main"),
     db_conn = db,
     table_name = "app_logs"
 )
 
 # Log some messages
-db_log$info("This is logged to the database")
-#> 2024-08-18T18:57:51.625Z INFO    This is logged to the database
+db_steno$info("This is logged to the database")
+#> 2025-01-12T20:03:40.040Z INFO    This is logged to the database
 #> Context:
 #> {
 #>   "app_name": "MyApp",
 #>   "fun": "main"
 #> }
-db_log$warn("This is a warning", data = list(code = 101))
-#> 2024-08-18T18:57:51.701Z WARNING This is a warning
+db_steno$warn("This is a warning", data = list(code = 101))
+#> 2025-01-12T20:03:40.047Z WARNING This is a warning
 #> Data:
 #> {
 #>   "code": 101
@@ -119,8 +135,8 @@ db_log$warn("This is a warning", data = list(code = 101))
 #>   "app_name": "MyApp",
 #>   "fun": "main"
 #> }
-db_log$error("An error occurred", error = "Division by zero")
-#> 2024-08-18T18:57:51.739Z ERROR   An error occurred
+db_steno$error("An error occurred", error = "Division by zero")
+#> 2025-01-12T20:03:40.117Z ERROR   An error occurred
 #> Error:
 #> "Division by zero"
 #> Context:
@@ -134,11 +150,9 @@ query <- "SELECT * FROM app_logs WHERE level = 'ERROR'"
 result <- dbGetQuery(db, query)
 print(result)
 #>   id                 datetime level                               context
-#> 1  3 2024-08-18T18:20:15.806Z ERROR {"app_name":["MyApp"],"fun":["main"]}
-#> 2  6 2024-08-18T18:57:51.739Z ERROR {"app_name":["MyApp"],"fun":["main"]}
+#> 1  3 2025-01-12T20:03:40.117Z ERROR {"app_name":["MyApp"],"fun":["main"]}
 #>                 msg data                        error
 #> 1 An error occurred <NA> ["[\\"Division by zero\\"]"]
-#> 2 An error occurred <NA> ["[\\"Division by zero\\"]"]
 
 # Don't forget to close the database connection when you're done
 dbDisconnect(db)
@@ -146,11 +160,11 @@ dbDisconnect(db)
 
 ### Helper Functions
 
-Logger includes helper functions like `valueCoordinates` and
+Stenographer includes helper functions like `valueCoordinates` and
 `tableToString` to provide detailed context in log messages:
 
 ``` r
-box::use(Logger[valueCoordinates, tableToString])
+box::use(stenographer[valueCoordinates, tableToString])
 
 # Create a sample dataset with some issues
 df <- data.frame(
@@ -163,7 +177,7 @@ df <- data.frame(
 na_coords <- valueCoordinates(df)
 
 if (nrow(na_coords) > 0) {
-    log$warn(
+    steno$warn(
         "NA values found in the dataset",
         data = list(
             na_locations = na_coords,
@@ -171,7 +185,7 @@ if (nrow(na_coords) > 0) {
         )
     )
 }
-#> 2024-08-18T18:57:51.762Z WARNING NA values found in the dataset
+#> 2025-01-12T20:03:40.134Z WARNING NA values found in the dataset
 #> Data:
 #> {
 #>   "na_locations": [
@@ -194,7 +208,7 @@ if (nrow(na_coords) > 0) {
 
 ### Error Logging with Context
 
-Logger makes it easy to log errors with context:
+stenographer makes it easy to log errors with context:
 
 ``` r
 process_data <- function(df) {
@@ -202,7 +216,7 @@ process_data <- function(df) {
         result <- df$a / df$b
         if (any(is.infinite(result))) {
             inf_coords <- valueCoordinates(data.frame(result), Inf)
-            log$error(
+            steno$error(
                 "Division by zero occurred",
                 data = list(
                     infinite_values = inf_coords,
@@ -213,7 +227,7 @@ process_data <- function(df) {
         }
         return(result)
     }, error = function(e) {
-        log$error(
+        steno$error(
             paste("An error occurred while processing data:", e$message),
             data = list(dataset_preview = tableToString(df)),
             error = e
@@ -225,7 +239,7 @@ process_data <- function(df) {
 # Test the function with problematic data
 df <- data.frame(a = c(1, 2, 3), b = c(0, 2, 0))
 process_data(df)
-#> 2024-08-18T18:57:51.801Z ERROR   Division by zero occurred
+#> 2025-01-12T20:03:40.161Z ERROR   Division by zero occurred
 #> Data:
 #> {
 #>   "infinite_values": [
@@ -240,7 +254,7 @@ process_data(df)
 #>   ],
 #>   "dataset_preview": "  a b\n1 1 0\n2 2 2\n3 3 0"
 #> } 
-#> 2024-08-18T18:57:51.803Z ERROR   An error occurred while processing data: Division by zero error
+#> 2025-01-12T20:03:40.163Z ERROR   An error occurred while processing data: Division by zero error
 #> Data:
 #> {
 #>   "dataset_preview": "  a b\n1 1 0\n2 2 2\n3 3 0"
@@ -256,21 +270,21 @@ process_data(df)
 
 ### Parallel Processing Support
 
-Logger provides support for logging in parallel environments:
+stenographer provides support for logging in parallel environments:
 
 ``` r
 box::use(future)
 box::use(future.apply[future_lapply])
-box::use(Logger[messageParallel])
+box::use(stenographer[messageParallel])
 
-log <- Logger$new(print_fn = messageParallel)
+steno <- Stenographer$new(print_fn = messageParallel)
 
-future::plan(future::multisession, workers = 2)
+future::plan(future$multisession, workers = 2)
 
 result <- future_lapply(1:5, function(i) {
     messageParallel(sprintf("Processing item %d", i))
     if (i == 3) {
-        log$warn(sprintf("Warning for item %d", i))
+        steno$warn(sprintf("Warning for item %d", i))
     }
     return(i * 2)
 })
@@ -287,10 +301,18 @@ future::plan(future::sequential)
 
 ## Contributing
 
-Contributions to Logger are welcome! Please refer to the
+Contributions to stenographer are welcome! Please refer to the
 [CONTRIBUTING.md](CONTRIBUTING.md) file for guidelines.
 
 ## License
 
-Logger is released under the MIT License. See the [LICENSE](LICENSE)
-file for details.
+stenographer is released under the MIT License. See the
+[LICENSE](LICENSE) file for details.
+
+## Citation
+
+If you use this package in your research or work, please cite it as:
+
+Mezquita, D. (2025). stenographer: Flexible and Customisable Logging
+System. R package version 1.0.0.
+<https://github.com/dereckmezquita/stenographer>

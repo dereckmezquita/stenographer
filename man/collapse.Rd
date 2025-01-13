@@ -2,22 +2,33 @@
 % Please edit documentation in R/collapse.R
 \name{collapse}
 \alias{collapse}
-\title{Concatenate a vector of strings}
+\title{Concatenate Vector Elements with Optional Separator}
 \usage{
 collapse(vector, collapse = " ")
 }
 \arguments{
-\item{vector}{Character vector.}
+\item{vector}{A character vector to be concatenated}
 
-\item{collapse}{A separator.}
+\item{collapse}{String to use as separator between elements (default: " ")}
 }
 \value{
-character
+A character string containing the concatenated elements
 }
 \description{
-Helper function for pretty printing vectors. Avoids repetitive paste0 code. If only one element does not add the separator at the end.
+Concatenates vector elements into a single string. Unlike `paste0`, it handles
+single-element vectors without adding a trailing separator.
 }
 \examples{
-collapse(letters, ", ")
-collapse(letters[1], ", ")
+# Multiple elements
+collapse(c("a", "b", "c"), ", ")  # Returns "a, b, c"
+
+# Single element - no trailing separator
+collapse("a", ", ")  # Returns "a"
+
+# With default separator
+collapse(c("Hello", "World"))  # Returns "Hello World"
+
+# Empty vector
+collapse(character(0), ", ")  # Returns character(0)
+
 }

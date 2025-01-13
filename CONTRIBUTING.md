@@ -1,6 +1,6 @@
-# Contributing to Logger
+# Contributing to stenographer
 
-Thank you for your interest in contributing to Logger!
+Thank you for your interest in contributing to stenographer!
 
 ## Code of Conduct
 
@@ -25,19 +25,6 @@ Please read and adhere to our [Code of Conduct](CODE_OF_CONDUCT.md).
 - Prefer base R functions and avoid unnecessary dependencies.
 - We aim to minimise external dependencies, including tidyverse packages.
 - Write clear, efficient, and maintainable code.
-
-Example:
-
-```r
-box::use(
-    Logger[Logger, LogLevel]
-)
-
-log_message <- function(message, level = LogLevel$INFO) {
-    logger <- Logger$new()
-    logger$log(level, message)
-}
-```
 
 ## Commit Messages
 

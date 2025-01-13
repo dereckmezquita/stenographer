@@ -1,7 +1,7 @@
 template:
   bootstrap: 5
 
-url: https://dereckmezquita.github.io/R-Logger/
+url: https://dereckmezquita.github.io/stenographer/
 
 authors:
   Dereck Mezquita:
@@ -15,14 +15,14 @@ navbar:
     articles:
       text: Articles
       menu:
-      - text: "Getting Started with Logger"
-        href: articles/getting-started-Logger.html
+      - text: "Getting Started with stenographer"
+        href: articles/getting-started-stenographer.html
     donate:
       text: Donate
       href: articles/donate.html
     github:
       icon: fa-github fa-lg
-      href: https://github.com/dereckmezquita/R-Logger
+      href: https://github.com/dereckmezquita/stenographer
       target: _blank
     youtube:
       icon: fa-youtube fa-lg

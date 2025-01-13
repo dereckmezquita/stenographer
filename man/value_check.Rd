@@ -7,15 +7,16 @@
 value_check(x, y)
 }
 \arguments{
-\item{x}{The current value in the data.frame}
+\item{x}{A value from the data frame being searched}
 
-\item{y}{The value to compare against (from the `value` parameter of valueCoordinates)}
+\item{y}{The target value to compare against}
 }
 \value{
-Logical value indicating whether the condition is met
+A logical value: TRUE if the values match according to the comparison rules,
+        FALSE otherwise
 }
 \description{
-This helper function is used as the default equality check in valueCoordinates.
-It handles NA values and uses identical() for non-NA comparisons.
+A helper function that performs equality checks between values, with special
+handling for NA values.
 }
 \keyword{internal}
