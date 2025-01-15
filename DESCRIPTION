@@ -3,24 +3,20 @@ Type: Package
 Title: Flexible and Customisable Logging System
 Version: 1.0.0
 URL: https://github.com/dereckmezquita/stenographer
-Authors@R: 
+Authors@R:
     person(given = "Dereck",
            family = "Mezquita",
            role = c("aut", "cre"),
            email = "dereck@mezquita.io",
            comment = c(ORCID = "0000-0002-9307-6762"))
-Description: A comprehensive logging framework for R applications that provides 
-    hierarchical logging levels, database integration, and contextual logging capabilities.
-    The package supports SQLite storage for persistent logs, provides colour-coded console
-    output for better readability, includes parallel processing support, and implements
-    structured error reporting with JSON formatting. It is designed to help developers
-    track application behaviour, debug issues, and maintain audit trails in production
-    environments.
+Author: Dereck Mezquita [aut, cre] (0000-0002-9307-6762)
+Maintainer: Dereck Mezquita <dereck@mezquita.io>
+Description: A comprehensive logging framework for R applications that provides hierarchical logging levels, database integration, and contextual logging capabilities. The package supports SQLite storage for persistent logs, provides colour-coded console output for better readability, includes parallel processing support, and implements structured error reporting with JSON formatting. It is designed to help developers track application behaviour, debug issues, and maintain audit trails in production environments.
 License: MIT + file LICENSE
 Encoding: UTF-8
+VignetteBuilder: knitr
 RoxygenNote: 7.3.2
-Depends: 
-    R (>= 4.1.0)
+Depends: R (>= 4.1.0)
 Imports:
     R6,
     rlang,
@@ -37,5 +33,4 @@ Suggests:
     future,
     future.apply,
     RSQLite
-VignetteBuilder: knitr
 Config/testthat/edition: 3
