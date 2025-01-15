@@ -11,7 +11,7 @@ Authors@R:
            email = "dereck@mezquita.io",
            comment = c(ORCID = "0000-0002-9307-6762"))
 Maintainer: Dereck Mezquita <dereck@mezquita.io>
-Description: A comprehensive logging framework for R applications that provides hierarchical logging levels, database integration, and contextual logging capabilities. The package supports SQLite storage for persistent logs, provides colour-coded console output for better readability, includes parallel processing support, and implements structured error reporting with JSON formatting.
+Description: A comprehensive logging framework for R applications that provides hierarchical logging levels, database integration, and contextual logging capabilities. The package supports 'SQLite' storage for persistent logs, provides colour-coded console output for better readability, includes parallel processing support, and implements structured error reporting with JSON formatting.
 License: MIT + file LICENSE
 Encoding: UTF-8
 VignetteBuilder: knitr
