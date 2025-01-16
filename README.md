@@ -40,7 +40,7 @@ with:
 
 ``` r
 # install.packages("remotes")
-remotes::install_github("derecksprojects/stenographer")
+remotes::install_github("dereckmezquita/stenographer")
 ```
 
 ## Basic Usage
@@ -55,11 +55,11 @@ steno <- Stenographer$new()
 
 # Log some messages
 steno$info("This is an informational message")
-#> 2025-01-12T20:03:39.811Z INFO    This is an informational message
+#> 2025-01-13T13:55:15.524Z INFO    This is an informational message
 steno$warn("This is a warning")
-#> 2025-01-12T20:03:39.813Z WARNING This is a warning
+#> 2025-01-13T13:55:15.526Z WARNING This is a warning
 steno$error("This is an error")
-#> 2025-01-12T20:03:39.835Z ERROR   This is an error
+#> 2025-01-13T13:55:15.549Z ERROR   This is an error
 ```
 
 ## Features
@@ -80,9 +80,9 @@ custom_steno <- Stenographer$new(
 
 custom_steno$info("This won't be logged")
 custom_steno$warn("This will be logged to console and file")
-#> 2025-01-12T20:03:39.935Z WARNING This will be logged to console and file
+#> 2025-01-13T13:55:15.650Z WARNING This will be logged to console and file
 custom_steno$error("This is an error message", error = "Some error")
-#> 2025-01-12T20:03:39.936Z ERROR   This is an error message
+#> 2025-01-13T13:55:15.651Z ERROR   This is an error message
 #> Error:
 #> "Some error"
 ```
@@ -91,8 +91,8 @@ Logs are written to the specified file as JSON objects:
 
 ``` r
 cat(readLines(log_file), sep = "\n")
-#> {"datetime":"2025-01-12T20:03:39.935Z","level":"WARNING","msg":"This will be logged to console and file","data":{},"error":{},"context":{}} 
-#> {"datetime":"2025-01-12T20:03:39.936Z","level":"ERROR","msg":"This is an error message","data":{},"error":"[\"Some error\"]","context":{}}
+#> {"datetime":"2025-01-13T13:55:15.650Z","level":"WARNING","msg":"This will be logged to console and file","data":{},"error":{},"context":{}} 
+#> {"datetime":"2025-01-13T13:55:15.651Z","level":"ERROR","msg":"This is an error message","data":{},"error":"[\"Some error\"]","context":{}}
 ```
 
 ### Database Logging
@@ -118,14 +118,14 @@ db_steno <- Stenographer$new(
 
 # Log some messages
 db_steno$info("This is logged to the database")
-#> 2025-01-12T20:03:40.040Z INFO    This is logged to the database
+#> 2025-01-13T13:55:15.772Z INFO    This is logged to the database
 #> Context:
 #> {
 #>   "app_name": "MyApp",
 #>   "fun": "main"
 #> }
 db_steno$warn("This is a warning", data = list(code = 101))
-#> 2025-01-12T20:03:40.047Z WARNING This is a warning
+#> 2025-01-13T13:55:15.778Z WARNING This is a warning
 #> Data:
 #> {
 #>   "code": 101
@@ -136,7 +136,7 @@ db_steno$warn("This is a warning", data = list(code = 101))
 #>   "fun": "main"
 #> }
 db_steno$error("An error occurred", error = "Division by zero")
-#> 2025-01-12T20:03:40.117Z ERROR   An error occurred
+#> 2025-01-13T13:55:15.844Z ERROR   An error occurred
 #> Error:
 #> "Division by zero"
 #> Context:
@@ -151,8 +151,12 @@ result <- dbGetQuery(db, query)
 print(result)
 #>   id                 datetime level                               context
 #> 1  3 2025-01-12T20:03:40.117Z ERROR {"app_name":["MyApp"],"fun":["main"]}
+#> 2  6 2025-01-13T13:54:50.711Z ERROR {"app_name":["MyApp"],"fun":["main"]}
+#> 3  9 2025-01-13T13:55:15.844Z ERROR {"app_name":["MyApp"],"fun":["main"]}
 #>                 msg data                        error
 #> 1 An error occurred <NA> ["[\\"Division by zero\\"]"]
+#> 2 An error occurred <NA> ["[\\"Division by zero\\"]"]
+#> 3 An error occurred <NA> ["[\\"Division by zero\\"]"]
 
 # Don't forget to close the database connection when you're done
 dbDisconnect(db)
@@ -185,7 +189,7 @@ if (nrow(na_coords) > 0) {
         )
     )
 }
-#> 2025-01-12T20:03:40.134Z WARNING NA values found in the dataset
+#> 2025-01-13T13:55:15.858Z WARNING NA values found in the dataset
 #> Data:
 #> {
 #>   "na_locations": [
@@ -239,7 +243,7 @@ process_data <- function(df) {
 # Test the function with problematic data
 df <- data.frame(a = c(1, 2, 3), b = c(0, 2, 0))
 process_data(df)
-#> 2025-01-12T20:03:40.161Z ERROR   Division by zero occurred
+#> 2025-01-13T13:55:15.883Z ERROR   Division by zero occurred
 #> Data:
 #> {
 #>   "infinite_values": [
@@ -254,7 +258,7 @@ process_data(df)
 #>   ],
 #>   "dataset_preview": "  a b\n1 1 0\n2 2 2\n3 3 0"
 #> } 
-#> 2025-01-12T20:03:40.163Z ERROR   An error occurred while processing data: Division by zero error
+#> 2025-01-13T13:55:15.884Z ERROR   An error occurred while processing data: Division by zero error
 #> Data:
 #> {
 #>   "dataset_preview": "  a b\n1 1 0\n2 2 2\n3 3 0"
@@ -302,12 +306,12 @@ future::plan(future::sequential)
 ## Contributing
 
 Contributions to stenographer are welcome! Please refer to the
-[CONTRIBUTING.md](CONTRIBUTING.md) file for guidelines.
+[CONTRIBUTING.md](https://github.com/dereckmezquita/stenographer/blob/master/CONTRIBUTING.md)
+file for guidelines.
 
 ## License
 
-stenographer is released under the MIT License. See the
-[LICENSE](LICENSE) file for details.
+This package is licensed under the MIT License.
 
 ## Citation
 
