@@ -28,6 +28,13 @@ LogLevel <- list(
     INFO = 2L
 )
 
+#' @title Check if an object is a valid log level
+#' @param x Object to check
+#' @return Logical
+valid_log_level <- function(x) {
+    return(is.integer(x) && (x %in% c(-1L, 0L, 1L, 2L)))
+}
+
 #' @title R6 Class for Advanced Logging Functionality
 #'
 #' @description
@@ -41,6 +48,7 @@ LogLevel <- list(
 #' * Contextual data attachment
 #' * Coloured console output
 #'
+#' @importFrom rlang abort
 #' @importFrom R6 R6Class
 #' @importFrom fs path_dir dir_exists dir_create file_exists file_create
 #' @importFrom DBI dbExistsTable dbExecute dbWriteTable
@@ -79,6 +87,11 @@ LogLevel <- list(
 #' @export
 Stenographer <- R6Class(
     "Stenographer",
+    active = list(
+        #' @field Get log level (read-only)
+        get_level = function() return(private$level)
+    ),
+
     public = list(
         #' @description
         #' Create a new Stenographer instance
@@ -121,6 +134,9 @@ Stenographer <- R6Class(
         #' Update the minimum logging level
         #' @param level New log level (see `LogLevel`)
         set_level = function(level) {
+            if (!valid_log_level(level)) {
+                abort("Invalid log level")
+            }
             private$level <- level
         },
 
