@@ -1,3 +1,23 @@
+# stenographer [v1.1.0](https://github.com/dereckmezquita/stenographer/milestone/2)
+
+## BREAKING CHANGES
+
+- **N/A**
+
+## NEW FEATURES
+
+1. **Access set LogLevel:** Use `Stenographer$get_level` to read the current logging level; active field.
+
+## IMPROVEMENTS
+
+1. **Stenographer$set_level method checks value:** The `set_level` method now validates the input value to ensure it is a valid logging level.
+
+## DOCUMENTATION
+
+## DEVELOPMENT
+
+## NOTES
+
 # stenographer [v1.0.0](https://github.com/dereckmezquita/stenographer/milestone/1) (12 January 2025)
 
 ## BREAKING CHANGES

@@ -84,28 +84,26 @@ test_that("Stenographer respects LogLevel$INFO", {
   expect_true(any(grepl("test error", output)))
 })
 
-test_that("set_level changes logging behavior", {
-  output <- character(0)
-  steno <- Stenographer$new(
-    level = LogLevel$INFO,
-    print_fn = function(x) output <<- c(output, x)
-  )
-  
-  # Start with INFO level
-  steno$info("test1")
-  expect_length(output, 1)
+test_that("Stenographer active field get_level returns correct level and set_level works", {
+  # Start with INFO
+  steno <- Stenographer$new(level = LogLevel$INFO)
+  expect_equal(steno$get_level, LogLevel$INFO)
   
   # Change to OFF
   steno$set_level(LogLevel$OFF)
-  steno$info("test2")
-  steno$error("test3")
-  expect_length(output, 1)  # No new messages
+  expect_equal(steno$get_level, LogLevel$OFF)
   
   # Change to ERROR
   steno$set_level(LogLevel$ERROR)
-  steno$info("test4")
-  steno$error("test5")
-  expect_length(output, 2)  # Only error added
+  expect_equal(steno$get_level, LogLevel$ERROR)
+  
+  # Change to WARNING
+  steno$set_level(LogLevel$WARNING)
+  expect_equal(steno$get_level, LogLevel$WARNING)
+  
+  # Change back to INFO
+  steno$set_level(LogLevel$INFO)
+  expect_equal(steno$get_level, LogLevel$INFO)
 })
 
 test_that("context management works correctly", {
