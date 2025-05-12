@@ -153,7 +153,7 @@ Logger <- R6::R6Class(
         ensure_log_file_exists = function() {
             dir <- fs::path_dir(private$file_path)
             if (!fs::dir_exists(dir)) {
-                fs::dir_create(dir, recursive = TRUE)
+                fs::dir_create(dir, recurse = TRUE)
             }
             if (!fs::file_exists(private$file_path)) {
                 fs::file_create(private$file_path)
