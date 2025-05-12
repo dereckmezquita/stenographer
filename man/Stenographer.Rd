@@ -44,17 +44,10 @@ custom_steno$update_context(list(user = "John"))
 custom_steno$info("Now this will be logged with a custom prefix and context")
 
 }
-\section{Public fields}{
-\if{html}{\out{<div class="r6-fields">}}
-\describe{
-\item{\code{Get}}{log level (read-only)}
-}
-\if{html}{\out{</div>}}
-}
 \section{Active bindings}{
 \if{html}{\out{<div class="r6-active-bindings">}}
 \describe{
-\item{\code{Get}}{log level (read-only)}
+\item{\code{get_level}}{(active binding) Getter for the current log level (read-only).}
 }
 \if{html}{\out{</div>}}
 }

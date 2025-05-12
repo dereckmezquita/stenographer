@@ -88,7 +88,7 @@ valid_log_level <- function(x) {
 Stenographer <- R6Class(
     "Stenographer",
     active = list(
-        #' @field Get log level (read-only)
+        #' @field get_level (active binding) Getter for the current log level (read-only).
         get_level = function() return(private$level)
     ),
 
