@@ -153,4 +153,11 @@ test_that("error serialization works", {
   # Check error details are included
   expect_true(any(grepl("test error", output)))
   expect_true(any(grepl("Error:", output)))
+
+  # log from within a try catch
+  tryCatch({
+    stop("test error")
+  }, error = function(e) {
+    steno$error("An error occurred", error = e)
+  })
 })

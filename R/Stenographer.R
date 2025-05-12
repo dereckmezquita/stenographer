@@ -88,7 +88,7 @@ valid_log_level <- function(x) {
 Stenographer <- R6Class(
     "Stenographer",
     active = list(
-        #' @field Get log level (read-only)
+        #' @field get_level (active binding) Getter for the current log level (read-only).
         get_level = function() return(private$level)
     ),
 
@@ -210,7 +210,7 @@ Stenographer <- R6Class(
         ensure_log_file_exists = function() {
             dir <- path_dir(private$file_path)
             if (!dir_exists(dir)) {
-                dir_create(dir, recursive = TRUE)
+                dir_create(dir, recurse = TRUE)
             }
             if (!file_exists(private$file_path)) {
                 file_create(private$file_path)
